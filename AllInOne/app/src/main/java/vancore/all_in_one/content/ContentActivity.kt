@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.all_in_one.databinding.ActivityContentBinding
 import dagger.hilt.android.AndroidEntryPoint
-import vancore.all_in_one.hearthstone.ui.HearthstoneCardBrowserActivity
+import vancore.all_in_one.hearthstone_card_browser.ui.BrowserActivity
 
 
 @AndroidEntryPoint
@@ -39,7 +39,7 @@ class ContentActivity : AppCompatActivity(), ContentClickListener {
     }
 
     override fun onContentClicked(contentType: ContentType?) {
-        val intent = Intent(this, HearthstoneCardBrowserActivity::class.java).apply {
+        val intent = Intent(this, BrowserActivity::class.java).apply {
             putExtra("name", "value")
         }
         this.startActivity(intent)

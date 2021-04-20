@@ -4,8 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.all_in_one.databinding.ActivityContentBinding
-import vancore.all_in_one.hearthstone.HearthstoneCardBrowserActivity
+import dagger.hilt.android.AndroidEntryPoint
+import vancore.all_in_one.hearthstone.ui.HearthstoneCardBrowserActivity
 
+
+@AndroidEntryPoint
 class ContentActivity : AppCompatActivity(), ContentClickListener {
 
     private lateinit var binding: ActivityContentBinding

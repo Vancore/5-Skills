@@ -1,7 +1,9 @@
-package vancore.all_in_one.hearthstone
+package vancore.all_in_one.hearthstone.ui
 
 import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HearthstoneCardBrowserActivity : AppCompatActivity() {
 
 

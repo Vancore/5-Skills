@@ -6,6 +6,8 @@ import android.os.Bundle
 import com.example.all_in_one.databinding.ActivityContentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import vancore.all_in_one.hearthstone_card_browser.ui.BrowserActivity
+import vancore.all_in_one.hearthstone_card_browser.ui.BrowserViewModel
+import javax.inject.Inject
 
 
 @AndroidEntryPoint

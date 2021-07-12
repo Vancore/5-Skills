@@ -4,7 +4,7 @@ object Versions {
   const val targetSdkVersion = 30
   const val compileSdkVersion = 30
   const val buildToolsVersion = "30.0.3"
-  const val appVersion = "4.2.3"
+  const val appVersion = "0.1"
 
   const val kotlin = "1.4.32"
   const val gradlePlugin = "4.1.3"

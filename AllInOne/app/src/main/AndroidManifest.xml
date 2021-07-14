@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AllInOne">
-        <activity android:name="vancore.all_in_one.content.ContentActivity">
+        <activity android:name="vancore.all_in_one.content.ui.ContentActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="vancore.all_in_one.hearthstone_card_browser.ui.BrowserActivity" />
+        <activity android:name="vancore.all_in_one.five_skills.ui.BrowserActivity" />
 
     </application>
 

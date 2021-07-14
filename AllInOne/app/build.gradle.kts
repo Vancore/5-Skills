@@ -78,7 +78,9 @@ dependencies {
     /// Paging
     implementation(Deps.pagingRuntime)
     implementation(Deps.pagingCommon) // alternatively - without Android dependencies for testing
-    implementation(Deps.pagingRxJava) // optional - RxJava support
+    implementation(Deps.pagingRxJava)
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0") // optional - RxJava support
 
     /// Room
     kapt (Deps.roomCompiler)

@@ -19,4 +19,8 @@
     <color name="grey_primary">#AFAFAF</color>
     <color name="grey_light">#DDDDDD</color>
     <color name="grey_dark">#5C5C5C</color>
+
+    <color name="bottom_nav_selected">#000000</color>
+    <color name="bottom_nav_unselected">#5C5C5C</color>
+
 </resources>

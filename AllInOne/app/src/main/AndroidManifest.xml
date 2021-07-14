@@ -18,7 +18,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="vancore.all_in_one.five_skills.skill_browser.ui.BrowserActivity" />
         <activity android:name="vancore.all_in_one.five_skills.FiveSkillsActivity" />
 
     </application>

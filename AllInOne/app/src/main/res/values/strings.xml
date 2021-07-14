@@ -2,4 +2,6 @@
     <string name="app_name">All-In-One</string>
     <string name="menu_five_skills_profile">Profile</string>
     <string name="menu_five_skills_browser">Browse</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

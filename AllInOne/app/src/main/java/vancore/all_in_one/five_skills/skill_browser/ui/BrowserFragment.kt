@@ -1,11 +1,11 @@
 package vancore.all_in_one.five_skills.skill_browser.ui
 
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BrowserActivity : AppCompatActivity() {
+class BrowserFragment : Fragment() {
 
 
 //    GrantType: "client_credentials"

@@ -8,7 +8,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import vancore.all_in_one.content.data.ContentItem
 import vancore.all_in_one.content.data.ContentType
 import vancore.all_in_one.five_skills.FiveSkillsActivity
-import vancore.all_in_one.five_skills.skill_browser.ui.BrowserActivity
 
 
 @AndroidEntryPoint

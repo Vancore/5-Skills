@@ -29,7 +29,7 @@ class FiveSkillsActivity: AppCompatActivity() {
 //        }
 
         val navigationController = findNavController(R.id.host_fragment_five_skills)
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.browserFragment, R.id.skillProfile))
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.browserFragment, R.id.skillProfileFragment))
         setupActionBarWithNavController(navigationController, appBarConfiguration)
         binding.bnvFiveSkills.setupWithNavController(navigationController)
 

@@ -10,8 +10,7 @@
         android:name="vancore.all_in_one.five_skills.skill_browser.ui.BrowserFragment"
         android:label="BrowserFragment" />
     <fragment
-        android:id="@+id/skillProfile"
-        android:name="com.example.all_in_one.SkillProfile"
-        android:label="fragment_skill_profile"
-        tools:layout="@layout/fragment_skill_profile" />
+        android:id="@+id/skillProfileFragment"
+        android:name="vancore.all_in_one.five_skills.skill_profile.ui.SkillProfileFragment"
+        android:label="SkillProfileFragment" />
 </navigation>

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        app:menu="@menu/five_skill_menu_items" />
+        app:menu="@menu/five_skills_menu_items" />
 
     <fragment
         android:id="@+id/host_fragment_five_skills"

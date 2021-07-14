@@ -1,4 +1,4 @@
-package vancore.all_in_one.five_skills.di
+package vancore.all_in_one.five_skills.skill_browser.di
 
 import android.content.Context
 import dagger.Module
@@ -6,10 +6,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import vancore.all_in_one.five_skills.data.BrowserLocalRepository
-import vancore.all_in_one.five_skills.data.BrowserRemoteRepository
-import vancore.all_in_one.five_skills.data.BrowserRepository
-import vancore.all_in_one.five_skills.data.BrowserRepositoryImpl
+import vancore.all_in_one.five_skills.skill_browser.data.BrowserLocalRepository
+import vancore.all_in_one.five_skills.skill_browser.data.BrowserRemoteRepository
+import vancore.all_in_one.five_skills.skill_browser.data.BrowserRepository
+import vancore.all_in_one.five_skills.skill_browser.data.BrowserRepositoryImpl
 import javax.inject.Singleton
 
 @Module

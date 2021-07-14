@@ -1,4 +1,4 @@
-package vancore.all_in_one.five_skills.data
+package vancore.all_in_one.five_skills.skill_browser.data
 
 import javax.inject.Inject
 import javax.inject.Singleton

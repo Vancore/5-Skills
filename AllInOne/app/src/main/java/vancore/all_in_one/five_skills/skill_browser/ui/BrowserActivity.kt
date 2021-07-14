@@ -1,4 +1,4 @@
-package vancore.all_in_one.five_skills.ui
+package vancore.all_in_one.five_skills.skill_browser.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint

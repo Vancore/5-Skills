@@ -1,7 +1,7 @@
-package vancore.all_in_one.five_skills.ui
+package vancore.all_in_one.five_skills.skill_browser.ui
 
 import androidx.lifecycle.ViewModel
-import vancore.all_in_one.five_skills.data.BrowserRepository
+import vancore.all_in_one.five_skills.skill_browser.data.BrowserRepository
 import javax.inject.Inject
 
 class BrowserViewModel @Inject constructor(

@@ -7,7 +7,8 @@ import com.example.all_in_one.databinding.ActivityContentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import vancore.all_in_one.content.data.ContentItem
 import vancore.all_in_one.content.data.ContentType
-import vancore.all_in_one.five_skills.ui.BrowserActivity
+import vancore.all_in_one.five_skills.FiveSkillsActivity
+import vancore.all_in_one.five_skills.skill_browser.ui.BrowserActivity
 
 
 @AndroidEntryPoint
@@ -43,13 +44,13 @@ class ContentActivity : AppCompatActivity(), ContentClickListener {
     override fun onContentClicked(contentType: ContentType?) {
         when (contentType) {
             ContentType.MyGame -> {
-                val intent = Intent(this, BrowserActivity::class.java).apply {
+                val intent = Intent(this, FiveSkillsActivity::class.java).apply {
                     putExtra("name", "value")
                 }
                 this.startActivity(intent)
             }
             ContentType.FiveSkills -> {
-                val intent = Intent(this, BrowserActivity::class.java).apply {
+                val intent = Intent(this, FiveSkillsActivity::class.java).apply {
                     putExtra("name", "value")
                 }
                 this.startActivity(intent)

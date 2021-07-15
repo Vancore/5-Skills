@@ -1,4 +1,4 @@
-package vancore.all_in_one.five_skills.skill_browser.data
+package vancore.all_in_one.five_skills.skill_browser.data.models
 
 data class BrowserItem(
     val accountName: String,

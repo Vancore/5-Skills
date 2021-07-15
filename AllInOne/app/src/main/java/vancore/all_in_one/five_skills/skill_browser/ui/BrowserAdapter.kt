@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.all_in_one.databinding.ListitemSkillBrowserBinding
-import vancore.all_in_one.five_skills.skill_browser.data.BrowserItem
+import vancore.all_in_one.five_skills.skill_browser.data.models.BrowserItem
 
 class BrowserAdapter(
     private val browserItems: List<BrowserItem>,

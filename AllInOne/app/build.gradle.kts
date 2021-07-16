@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-android-extensions")
     id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
 }
 
 val appVersionCode: Int
@@ -103,6 +104,10 @@ dependencies {
     // Hilt DI
     implementation(Deps.hiltAndroid)
     implementation(Deps.hiltCompiler)
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:28.2.1"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
 
     /// Testing
     testImplementation(Deps.jUnit)

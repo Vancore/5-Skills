@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "253471104963",
+    "project_id": "five-skills-a3a1f",
+    "storage_bucket": "five-skills-a3a1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253471104963:android:cc1925cf339974aaece776",
+        "android_client_info": {
+          "package_name": "vancore.all_in_one"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253471104963-8kk6fosl45oevbusi0sb27timp5cd8mp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtwl-RaVazqfJnoehPdmeWBiENu42__J0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253471104963-8kk6fosl45oevbusi0sb27timp5cd8mp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

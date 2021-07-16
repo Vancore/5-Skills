@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.all_in_one.databinding.FragmentBrowserBinding
 import dagger.hilt.android.AndroidEntryPoint
+import vancore.all_in_one.five_skills.FiveSkillsActivity
 import vancore.all_in_one.five_skills.skill_browser.data.models.BrowserItem
 import javax.inject.Inject
 
@@ -26,6 +27,10 @@ class BrowserFragment : Fragment(), BrowserItemClickListener {
     ): View {
         _binding = FragmentBrowserBinding.inflate(layoutInflater)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onStart() {

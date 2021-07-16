@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.all_in_one.databinding.FragmentSkillProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
+import vancore.all_in_one.five_skills.FiveSkillsActivity
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,9 +28,12 @@ class SkillProfileFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
     override fun onStart() {
         super.onStart()
-
         profileViewModel.doSomething()
     }
 }

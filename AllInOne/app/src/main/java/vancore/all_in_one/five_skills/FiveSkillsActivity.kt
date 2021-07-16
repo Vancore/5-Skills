@@ -33,11 +33,11 @@ class FiveSkillsActivity : AppCompatActivity() {
         setContentView(view)
 
         fragmentManager.beginTransaction().apply {
-            add(R.id.container, browserFragment, "BrowserFragment").show(browserFragment)
-            add(R.id.container, profileFragment, "SkillProfileFragment").hide(profileFragment)
+            add(R.id.container, browserFragment, browserFragment.tag).show(browserFragment)
+            add(R.id.container, profileFragment, profileFragment.tag).hide(profileFragment)
         }.commit()
 
-        // First fragment here
+        // Set first fragment here
         activeFragment = browserFragment
         this.title = "Browser"
 
@@ -47,14 +47,14 @@ class FiveSkillsActivity : AppCompatActivity() {
                     Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
                     fragmentManager.beginTransaction().hide(activeFragment).show(profileFragment).commit()
                     activeFragment = profileFragment
-                    this.title = "Profile"
+                    this.title = getString(R.string.menu_five_skills_profile)
                     true
                 }
                 R.id.browserFragment -> {
                     Toast.makeText(this, "Browser clicked", Toast.LENGTH_SHORT).show()
                     fragmentManager.beginTransaction().hide(activeFragment).show(browserFragment).commit()
                     activeFragment = browserFragment
-                    this.title = "Browser"
+                    this.title = getString(R.string.menu_five_skills_browser)
                     true
                 }
                 else -> false

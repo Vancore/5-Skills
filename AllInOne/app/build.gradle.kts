@@ -106,8 +106,13 @@ dependencies {
     implementation(Deps.hiltCompiler)
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:28.2.1"))
+    implementation("com.google.firebase:firebase-bom:28.2.1")
     implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx:21.0.1")
+    implementation("com.firebaseui:firebase-ui-auth:7.2.0")
+    implementation("com.google.android.gms:play-services-auth:19.0.0")
+    // No versionen needed because of BoM
+    implementation("com.google.firebase:firebase-auth")
 
     /// Testing
     testImplementation(Deps.jUnit)

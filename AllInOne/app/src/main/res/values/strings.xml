@@ -4,7 +4,8 @@
     <string name="menu_five_skills_browser">Browse</string>
 
     <!--Profile strings-->
-    <string name="profile_login_label">Hello, please login or register</string>
+    <string name="profile_login_logged_in">Hello, %s!</string>
+    <string name="profile_login_logged_out">Hello, please login or register</string>
     <string name="profile_login_button">Login</string>
     <string name="profile_login_hint_account_name">Account Name</string>
     <string name="profile_login_hint_password">Password</string>

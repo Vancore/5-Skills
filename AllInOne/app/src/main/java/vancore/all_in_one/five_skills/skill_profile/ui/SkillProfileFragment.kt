@@ -49,9 +49,11 @@ class SkillProfileFragment : Fragment() {
         binding.bLogin.setOnClickListener {
             signIn(binding.tietAccountName.text.toString(), binding.tietPassword.text.toString())
         }
+
         binding.bLogout.setOnClickListener {
             signOut()
         }
+
         binding.bRegister.setOnClickListener {
             createUserWithMailAndPassword(
                 binding.tietAccountName.text.toString(),
@@ -117,5 +119,9 @@ class SkillProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

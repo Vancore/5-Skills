@@ -69,4 +69,8 @@ class BrowserFragment : Fragment(), BrowserItemClickListener {
         _binding = null
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
 }

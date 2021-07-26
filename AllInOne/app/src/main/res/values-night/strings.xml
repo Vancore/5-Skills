@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="menu_five_skills_browser">Browse</string>
-    <string name="profile_login_button">Login</string>
-    <string name="profile_login_hint_account_name">Account Name</string>
-    <string name="profile_login_hint_password">Password</string>
+    <string name="app_name">All-In-One</string>
+    <string name="menu_five_skills_profile">Profile (dark)</string>
+    <string name="menu_five_skills_browser">Browse (dark)</string>
 </resources>

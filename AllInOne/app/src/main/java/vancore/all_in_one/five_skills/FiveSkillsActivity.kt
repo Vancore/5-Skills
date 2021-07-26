@@ -4,11 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.fragment.app.FragmentManager
 import com.example.all_in_one.R
 import com.example.all_in_one.databinding.ActivityFiveSkillsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,33 +28,55 @@ class FiveSkillsActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        fragmentManager.beginTransaction().apply {
-            add(R.id.container, browserFragment, browserFragment.tag).show(browserFragment)
-            add(R.id.container, profileFragment, profileFragment.tag).hide(profileFragment)
-        }.commit()
-
         // Set first fragment here
         activeFragment = browserFragment
-        this.title = "Browser"
+        displayFragment(activeFragment, getString(R.string.menu_five_skills_browser))
+        fragmentManager.primaryNavigationFragment
 
         binding.bnvFiveSkills.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.skillProfileFragment -> {
                     Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
-                    fragmentManager.beginTransaction().hide(activeFragment).show(profileFragment).commit()
-                    activeFragment = profileFragment
-                    this.title = getString(R.string.menu_five_skills_profile)
+                    displayFragment(profileFragment, getString(R.string.menu_five_skills_profile))
                     true
                 }
                 R.id.browserFragment -> {
                     Toast.makeText(this, "Browser clicked", Toast.LENGTH_SHORT).show()
-                    fragmentManager.beginTransaction().hide(activeFragment).show(browserFragment).commit()
-                    activeFragment = browserFragment
-                    this.title = getString(R.string.menu_five_skills_browser)
+                    displayFragment(browserFragment, getString(R.string.menu_five_skills_browser))
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    private fun displayFragment(fragment: Fragment, navigationBarTitle: String) { //switching fragment
+        changeFragment(fragment, fragment::class.java.simpleName, navigationBarTitle)
+    }
+
+    private fun changeFragment(fragment: Fragment, tagFragmentName: String?, navigationBarTitle: String) {
+        activeFragment = fragment
+        val fm: FragmentManager = supportFragmentManager
+        fm.beginTransaction().apply {
+            val currentFragment: Fragment? = fm.primaryNavigationFragment
+            if (currentFragment != null) {
+                detach(currentFragment)
+            }
+            var fragmentTemp: Fragment? = fm.findFragmentByTag(tagFragmentName)
+            if (fragmentTemp == null) {
+                fragmentTemp = fragment
+                add(R.id.container, fragmentTemp, tagFragmentName)
+            } else {
+                attach(fragmentTemp)
+            }
+            setPrimaryNavigationFragment(fragmentTemp)
+            setReorderingAllowed(true)
+            commitNowAllowingStateLoss()
+        }
+        this.title = navigationBarTitle
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

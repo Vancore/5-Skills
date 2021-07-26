@@ -5,9 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.example.all_in_one.R
 import com.example.all_in_one.databinding.FragmentSkillProfileBinding
 import com.google.android.material.snackbar.Snackbar
@@ -15,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import vancore.all_in_one.five_skills.extensions.hideKeyboard
 import javax.inject.Inject
 
 
@@ -24,8 +28,9 @@ class SkillProfileFragment : Fragment() {
     private var _binding: FragmentSkillProfileBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var auth: FirebaseAuth
+    private var currentSnackbar: Snackbar? = null
 
+    private lateinit var auth: FirebaseAuth
 
     @Inject
     lateinit var viewModel: SkillProfileViewModel
@@ -62,6 +67,7 @@ class SkillProfileFragment : Fragment() {
 
         binding.bLogin.setOnClickListener {
             signIn(binding.tietAccountName.text.toString(), binding.tietPassword.text.toString())
+            requireActivity().hideKeyboard()
         }
 
         binding.bLogout.setOnClickListener {
@@ -83,8 +89,13 @@ class SkillProfileFragment : Fragment() {
     }
 
     private fun signIn(email: String, password: String) {
+        // ToDo: Email and Password validation
+        val drawable = CircularProgressDrawable(requireContext())
+        binding.bLogin.setCompoundDrawables(drawable, null, null, null)
+        drawable.start()
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
+                drawable.stop()
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(tag, "signInWithEmail:success")
@@ -95,10 +106,7 @@ class SkillProfileFragment : Fragment() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(tag, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        requireContext(), "Authentication failed.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showSnackBar(task.exception?.localizedMessage)
                     // Update from ViewModel
                     viewModel.onLoginFailed()
                     //updateUI(user)
@@ -108,8 +116,14 @@ class SkillProfileFragment : Fragment() {
 
     private fun signOut() {
         auth.signOut()
+        val drawable = CircularProgressDrawable(requireContext())
+        binding.bLogout.setCompoundDrawables(drawable, null, null, null)
+        drawable.start()
         auth.addAuthStateListener {
-            if (it.currentUser == null) viewModel.onSignOut()
+            if (it.currentUser == null) {
+                viewModel.onSignOut()
+                drawable.stop()
+            }
         }
     }
 
@@ -125,15 +139,37 @@ class SkillProfileFragment : Fragment() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("TAG", "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        context, "Authentication failed.",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     //Update from ViewModel
                     //updateUI(null)
                     viewModel.onUserCreationFailed()
                 }
             }
+    }
+
+    private fun showSnackBar(text: String?) {
+        dismissCurrentErrorSnackbar()
+        (view?.findViewById(R.id.snackbar_container) ?: view)?.let { container ->
+            val backgroundColor = ResourcesCompat.getColor(
+                resources,
+                R.color.snackbar_error,
+                context?.theme
+            )
+            val snackbar = Snackbar.make(container, text ?: "Error", Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(backgroundColor)
+
+            val snackbarView = snackbar.view
+            val textView =
+                snackbarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+            textView.maxLines = 3
+            snackbar.show()
+            currentSnackbar = snackbar
+        }
+    }
+
+    private fun dismissCurrentErrorSnackbar() {
+        if (currentSnackbar?.isShownOrQueued == true) {
+            currentSnackbar?.dismiss()
+        }
     }
 
     override fun onDestroyView() {

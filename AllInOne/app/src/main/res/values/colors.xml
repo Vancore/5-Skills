@@ -23,4 +23,6 @@
     <color name="bottom_nav_selected">#000000</color>
     <color name="bottom_nav_unselected">#5C5C5C</color>
 
+    <color name="snackbar_error">#E65100</color>
+
 </resources>

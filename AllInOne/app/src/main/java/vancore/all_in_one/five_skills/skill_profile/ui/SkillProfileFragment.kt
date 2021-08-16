@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.example.all_in_one.R
 import com.example.all_in_one.databinding.FragmentSkillProfileBinding
 import com.google.android.material.snackbar.Snackbar
@@ -19,6 +18,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import vancore.all_in_one.five_skills.extensions.hideKeyboard
+import vancore.all_in_one.five_skills.skill_profile.data.models.LoginValidation
+import vancore.all_in_one.shared.view.CircularProgressDrawable
 import javax.inject.Inject
 
 
@@ -89,29 +90,39 @@ class SkillProfileFragment : Fragment() {
     }
 
     private fun signIn(email: String, password: String) {
-        // ToDo: Email and Password validation
         val drawable = CircularProgressDrawable(requireContext())
-        binding.bLogin.setCompoundDrawables(drawable, null, null, null)
+        // With normal MaterialButton currently not working, because it does not redraw
+        // https://github.com/material-components/material-components-android/issues/1209
+        //binding.bLogin.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+        binding.bLogin.icon = drawable
         drawable.start()
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(requireActivity()) { task ->
-                drawable.stop()
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(tag, "signInWithEmail:success")
-                    val user = auth.currentUser
-                    // Update from ViewModel
-                    viewModel.onLoginSuccessful(user)
-                    //updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(tag, "signInWithEmail:failure", task.exception)
-                    showSnackBar(task.exception?.localizedMessage)
-                    // Update from ViewModel
-                    viewModel.onLoginFailed()
-                    //updateUI(user)
-                }
+
+        viewModel.validateInput(email, password)
+        viewModel.inputValidation.observe(viewLifecycleOwner, { validation ->
+            if (validation == LoginValidation.Valid) {
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(requireActivity()) { task ->
+                        drawable.stop()
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(tag, "signInWithEmail:success")
+                            val user = auth.currentUser
+                            // Update from ViewModel
+                            viewModel.onLoginSuccessful(user)
+                            //updateUI(user)
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(tag, "signInWithEmail:failure", task.exception)
+                            showSnackBar(task.exception?.localizedMessage)
+                            // Update from ViewModel
+                            viewModel.onLoginFailed()
+                            //updateUI(user)
+                        }
+                    }
+            } else {
+                showSnackBar(validation.name)
             }
+        })
     }
 
     private fun signOut() {
@@ -128,22 +139,29 @@ class SkillProfileFragment : Fragment() {
     }
 
     private fun createUserWithMailAndPassword(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("TAG", "createUserWithEmail:success")
-                    val user = auth.currentUser
-                    // Update from ViewModel
-                    viewModel.onUserCreationSuccessFully(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("TAG", "createUserWithEmail:failure", task.exception)
-                    //Update from ViewModel
-                    //updateUI(null)
-                    viewModel.onUserCreationFailed()
-                }
+        viewModel.validateInput(email, password)
+        viewModel.inputValidation.observe(viewLifecycleOwner, { validation ->
+            if (validation == LoginValidation.Valid) {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(requireActivity()) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("TAG", "createUserWithEmail:success")
+                            val user = auth.currentUser
+                            // Update from ViewModel
+                            viewModel.onUserCreationSuccessFully(user)
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "createUserWithEmail:failure", task.exception)
+                            //Update from ViewModel
+                            //updateUI(null)
+                            viewModel.onUserCreationFailed()
+                        }
+                    }
+            } else {
+                showSnackBar(validation.name)
             }
+        })
     }
 
     private fun showSnackBar(text: String?) {

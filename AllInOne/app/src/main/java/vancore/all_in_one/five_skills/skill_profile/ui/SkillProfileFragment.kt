@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.all_in_one.R
 import com.example.all_in_one.databinding.FragmentSkillProfileBinding
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -90,19 +91,13 @@ class SkillProfileFragment : Fragment() {
     }
 
     private fun signIn(email: String, password: String) {
-        val drawable = CircularProgressDrawable(requireContext())
-        // With normal MaterialButton currently not working, because it does not redraw
-        // https://github.com/material-components/material-components-android/issues/1209
-        //binding.bLogin.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
-        binding.bLogin.icon = drawable
-        drawable.start()
-
+        val drawable = showProgressOnButton(binding.bLogin)
         viewModel.validateInput(email, password)
         viewModel.inputValidation.observe(viewLifecycleOwner, { validation ->
             if (validation == LoginValidation.Valid) {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(requireActivity()) { task ->
-                        drawable.stop()
+                        hideProgressButton(binding.bLogin, drawable)
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(tag, "signInWithEmail:success")
@@ -121,29 +116,45 @@ class SkillProfileFragment : Fragment() {
                     }
             } else {
                 showSnackBar(validation.name)
+                hideProgressButton(binding.bLogin, drawable)
             }
         })
     }
 
-    private fun signOut() {
-        auth.signOut()
+    private fun showProgressOnButton(button: ExtendedFloatingActionButton): CircularProgressDrawable {
         val drawable = CircularProgressDrawable(requireContext())
-        binding.bLogout.setCompoundDrawables(drawable, null, null, null)
+        // With normal MaterialButton currently not working, because it does not redraw
+        // https://github.com/material-components/material-components-android/issues/1209
+        //binding.bLogin.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+        button.icon = drawable
         drawable.start()
+        return drawable
+    }
+
+    private fun hideProgressButton(button: ExtendedFloatingActionButton, drawable: CircularProgressDrawable) {
+        button.icon = null
+        drawable.stop()
+    }
+
+    private fun signOut() {
+        val drawable = showProgressOnButton(binding.bLogout)
+        auth.signOut()
         auth.addAuthStateListener {
             if (it.currentUser == null) {
                 viewModel.onSignOut()
-                drawable.stop()
+                hideProgressButton(binding.bLogout, drawable)
             }
         }
     }
 
     private fun createUserWithMailAndPassword(email: String, password: String) {
+        val drawable = showProgressOnButton(binding.bRegister)
         viewModel.validateInput(email, password)
         viewModel.inputValidation.observe(viewLifecycleOwner, { validation ->
             if (validation == LoginValidation.Valid) {
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(requireActivity()) { task ->
+                        hideProgressButton(binding.bRegister, drawable)
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "createUserWithEmail:success")
@@ -160,6 +171,7 @@ class SkillProfileFragment : Fragment() {
                     }
             } else {
                 showSnackBar(validation.name)
+                hideProgressButton(binding.bRegister, drawable)
             }
         })
     }

@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import vancore.all_in_one.five_skills.skill_profile.data.SkillProfileRepository
 import vancore.all_in_one.five_skills.skill_profile.data.models.LoginValidation
+import vancore.all_in_one.shared.models.SkillItem
 import javax.inject.Inject
 
 class SkillProfileViewModel @Inject constructor(
@@ -22,6 +23,10 @@ class SkillProfileViewModel @Inject constructor(
     private val _inputValidation: MutableLiveData<LoginValidation> = MutableLiveData()
     val inputValidation: LiveData<LoginValidation>
         get() = _inputValidation
+
+    private val _userSkills: MutableLiveData<List<SkillItem>> = MutableLiveData()
+    val userSkills: LiveData<List<SkillItem>>
+        get() = _userSkills
 
     fun doSomething() {
         profileRepository.profileMethod()
@@ -69,5 +74,17 @@ class SkillProfileViewModel @Inject constructor(
             else -> LoginValidation.Valid
         }
         _inputValidation.postValue(validation)
+    }
+
+    fun fetchUserSkills(user: FirebaseUser) {
+        // Dummy implementation
+        val skillList = listOf(
+            SkillItem("displayName1", "SkillTitle1", "SkillDescription1", 1),
+            SkillItem("displayName2", "SkillTitle2", "SkillDescription2", 2),
+            SkillItem("displayName3", "SkillTitle3", "SkillDescription3", 3),
+            SkillItem("displayName4", "SkillTitle4", "SkillDescription4", 4),
+            SkillItem("displayName5", "SkillTitle5", "SkillDescription5", 5)
+        )
+        _userSkills.postValue(skillList)
     }
 }

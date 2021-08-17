@@ -20,12 +20,13 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import vancore.all_in_one.five_skills.extensions.hideKeyboard
 import vancore.all_in_one.five_skills.skill_profile.data.models.LoginValidation
+import vancore.all_in_one.shared.models.SkillItem
 import vancore.all_in_one.shared.view.CircularProgressDrawable
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class SkillProfileFragment : Fragment() {
+class SkillProfileFragment : Fragment(), SkillItemClickListener {
 
     private var _binding: FragmentSkillProfileBinding? = null
     private val binding get() = _binding!!
@@ -50,23 +51,11 @@ class SkillProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         auth = Firebase.auth
 
-        viewModel.isUserOnline.observe(viewLifecycleOwner, { user ->
-            binding.bLogin.isVisible = user == null
-            binding.bRegister.isVisible = user == null
-            binding.bLogout.isVisible = user != null
+        observe()
+        setupClickListeners()
+    }
 
-            if (user != null) {
-                // What is user.displayName?
-                binding.tvLogin.text = getString(R.string.profile_login_logged_in, user.email)
-                binding.tietAccountName.visibility = View.GONE
-                binding.tilPassword.visibility = View.GONE
-            } else {
-                binding.tvLogin.text = getString(R.string.profile_login_logged_out)
-                binding.tietAccountName.visibility = View.VISIBLE
-                binding.tilPassword.visibility = View.VISIBLE
-            }
-        })
-
+    private fun setupClickListeners() {
         binding.bLogin.setOnClickListener {
             signIn(binding.tietAccountName.text.toString(), binding.tietPassword.text.toString())
             requireActivity().hideKeyboard()
@@ -82,6 +71,32 @@ class SkillProfileFragment : Fragment() {
                 binding.tietPassword.text.toString()
             )
         }
+    }
+
+    private fun observe() {
+        viewModel.isUserOnline.observe(viewLifecycleOwner, { user ->
+            binding.bLogin.isVisible = user == null
+            binding.bRegister.isVisible = user == null
+            binding.bLogout.isVisible = user != null
+
+            if (user != null) {
+                // What is user.displayName?
+                binding.tvLogin.text = getString(R.string.profile_login_logged_in, user.email)
+                binding.tietAccountName.visibility = View.GONE
+                binding.tilPassword.visibility = View.GONE
+                viewModel.fetchUserSkills(user)
+            } else {
+                binding.tvLogin.text = getString(R.string.profile_login_logged_out)
+                binding.tietAccountName.visibility = View.VISIBLE
+                binding.tilPassword.visibility = View.VISIBLE
+                binding.rvUserSkills.visibility = View.GONE
+            }
+        })
+
+        viewModel.userSkills.observe(viewLifecycleOwner, { list ->
+            binding.rvUserSkills.adapter = SkillsAdapter(list, this)
+            binding.rvUserSkills.visibility = View.VISIBLE
+        })
     }
 
     override fun onStart() {
@@ -200,6 +215,10 @@ class SkillProfileFragment : Fragment() {
         if (currentSnackbar?.isShownOrQueued == true) {
             currentSnackbar?.dismiss()
         }
+    }
+
+    override fun onSkillItemClicked(item: SkillItem) {
+        showSnackBar("SkillItem clicked: ${item.skillTitle}")
     }
 
     override fun onDestroyView() {

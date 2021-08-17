@@ -1,6 +1,6 @@
-package vancore.all_in_one.five_skills.skill_browser.data.models
+package vancore.all_in_one.shared.models
 
-data class BrowserItem(
+data class SkillItem(
     val accountName: String,
     val skillTitle: String,
     val skillDescription: String,

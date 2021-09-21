@@ -29,11 +29,11 @@ class SkillProfileViewModel @Inject constructor(
         get() = _userSkills
 
     fun doSomething() {
-        profileRepository.profileMethod()
+        profileRepository.getSkillsForProfile()
     }
 
     fun checkIfUserIsOnline(auth: FirebaseAuth) {
-        profileRepository.profileMethod()
+        profileRepository.getSkillsForProfile()
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = auth.currentUser
         if (currentUser != null) {
@@ -67,7 +67,7 @@ class SkillProfileViewModel @Inject constructor(
     }
 
     fun validateInput(email: String, password: String) {
-        var validation = when {
+        val validation = when {
             email.isEmpty() && password.isEmpty() -> LoginValidation.InvalidEmailAndPassword
             email.isEmpty() -> LoginValidation.InvalidEmail
             password.isEmpty() -> LoginValidation.InvalidPassword
@@ -77,14 +77,7 @@ class SkillProfileViewModel @Inject constructor(
     }
 
     fun fetchUserSkills(user: FirebaseUser) {
-        // Dummy implementation
-        val skillList = listOf(
-            SkillItem("displayName1", "SkillTitle1", "SkillDescription1", 1),
-            SkillItem("displayName2", "SkillTitle2", "SkillDescription2", 2),
-            SkillItem("displayName3", "SkillTitle3", "SkillDescription3", 3),
-            SkillItem("displayName4", "SkillTitle4", "SkillDescription4", 4),
-            SkillItem("displayName5", "SkillTitle5", "SkillDescription5", 5)
-        )
+        val skillList = profileRepository.getSkillsForProfile()
         _userSkills.postValue(skillList)
     }
 }

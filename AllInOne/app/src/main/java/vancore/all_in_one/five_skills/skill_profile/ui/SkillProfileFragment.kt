@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -103,6 +102,7 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
         super.onStart()
         viewModel.doSomething()
         viewModel.checkIfUserIsOnline(auth)
+
     }
 
     private fun signIn(email: String, password: String) {

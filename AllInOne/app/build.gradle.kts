@@ -107,6 +107,7 @@ dependencies {
 
     // Firebase
     implementation("com.google.firebase:firebase-bom:28.2.1")
+    implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-auth-ktx:21.0.1")
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")

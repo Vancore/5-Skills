@@ -1,5 +1,6 @@
 package vancore.all_in_one.five_skills.skill_profile.data
 
+import com.google.firebase.auth.FirebaseUser
 import vancore.all_in_one.shared.models.SkillItem
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -10,8 +11,15 @@ class SkillProfileRepositoryImpl @Inject constructor(
     private val localRepository: SkillProfileLocalRepository
 ) : SkillProfileRepository {
 
-    override fun getSkillsForProfile(): List<SkillItem> {
-        return remoteRepository.getSkillsForProfile()
+    override fun getSkillsForProfile(user: FirebaseUser?): List<SkillItem> {
+        return remoteRepository.getSkillsForProfile(user)
     }
 
+    override fun saveSkill(skill: SkillItem) {
+        remoteRepository.saveSkill(skill)
+    }
+
+    override fun saveSkills(user: FirebaseUser?, list: List<SkillItem>) {
+        remoteRepository.saveSkills(user, list)
+    }
 }

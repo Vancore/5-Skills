@@ -29,11 +29,9 @@ class SkillProfileViewModel @Inject constructor(
         get() = _userSkills
 
     fun doSomething() {
-        profileRepository.getSkillsForProfile()
     }
 
     fun checkIfUserIsOnline(auth: FirebaseAuth) {
-        profileRepository.getSkillsForProfile()
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = auth.currentUser
         if (currentUser != null) {
@@ -76,8 +74,12 @@ class SkillProfileViewModel @Inject constructor(
         _inputValidation.postValue(validation)
     }
 
-    fun fetchUserSkills(user: FirebaseUser) {
-        val skillList = profileRepository.getSkillsForProfile()
+    fun saveUserSkills(list: List<SkillItem>) {
+        profileRepository.saveSkills(currentUser, list)
+    }
+
+    fun fetchUserSkills() {
+        val skillList = profileRepository.getSkillsForProfile(currentUser)
         _userSkills.postValue(skillList)
     }
 }

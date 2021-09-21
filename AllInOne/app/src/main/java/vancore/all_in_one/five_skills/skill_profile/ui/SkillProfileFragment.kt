@@ -70,25 +70,40 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
                 binding.tietPassword.text.toString()
             )
         }
+
+        binding.bSaveSkill.setOnClickListener {
+            // Add some real skills here! ;)
+            viewModel.saveUserSkills(
+                listOf(
+                    SkillItem("SkillTitle1", "SkillDescription1", 1),
+                    SkillItem("SkillTitle2", "SkillDescription2", 2),
+                    SkillItem("SkillTitle3", "SkillDescription3", 3),
+                    SkillItem("SkillTitle4", "SkillDescription4", 4),
+                    SkillItem("SkillTitle5", "SkillDescription5", 5)
+                )
+            )
+        }
     }
 
     private fun observe() {
         viewModel.isUserOnline.observe(viewLifecycleOwner, { user ->
+            // User logged in
+            binding.bLogout.isVisible = user != null
+            binding.bSaveSkill.isVisible = user != null
+            binding.rvUserSkills.isVisible = user != null
+
+            // User not logged in
             binding.bLogin.isVisible = user == null
             binding.bRegister.isVisible = user == null
-            binding.bLogout.isVisible = user != null
+            binding.tietAccountName.isVisible = user == null
+            binding.tilPassword.isVisible = user == null
 
             if (user != null) {
                 // What is user.displayName?
                 binding.tvLogin.text = getString(R.string.profile_login_logged_in, user.email)
-                binding.tietAccountName.visibility = View.GONE
-                binding.tilPassword.visibility = View.GONE
-                viewModel.fetchUserSkills(user)
+                viewModel.fetchUserSkills()
             } else {
                 binding.tvLogin.text = getString(R.string.profile_login_logged_out)
-                binding.tietAccountName.visibility = View.VISIBLE
-                binding.tilPassword.visibility = View.VISIBLE
-                binding.rvUserSkills.visibility = View.GONE
             }
         })
 
@@ -146,7 +161,10 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
         return drawable
     }
 
-    private fun hideProgressButton(button: ExtendedFloatingActionButton, drawable: CircularProgressDrawable) {
+    private fun hideProgressButton(
+        button: ExtendedFloatingActionButton,
+        drawable: CircularProgressDrawable
+    ) {
         button.icon = null
         drawable.stop()
     }

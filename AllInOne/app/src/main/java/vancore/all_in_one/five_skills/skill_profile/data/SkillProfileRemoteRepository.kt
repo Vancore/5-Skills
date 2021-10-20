@@ -1,50 +1,30 @@
 package vancore.all_in_one.five_skills.skill_profile.data
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
+import vancore.all_in_one.five_skills.skill_profile.extensions.getSkillListFromUser
+import vancore.all_in_one.five_skills.skill_profile.extensions.toSkillItem
+import vancore.all_in_one.five_skills.skill_profile.extensions.toSkillItemList
 import vancore.all_in_one.shared.models.SkillItem
 
 class SkillProfileRemoteRepository {
     private val db = Firebase.firestore
 
-    fun getSkillsForProfile(user: FirebaseUser?): List<SkillItem> {
-        var listOfSkills = mutableListOf<SkillItem>()
+    private val _listOfSkills: MutableLiveData<List<SkillItem>> = MutableLiveData()
+    val listOfSkills: LiveData<List<SkillItem>>
+        get() = _listOfSkills
 
-        val docRef = db.collection(USER_LIST)
-            .document("ID:${user?.uid}, Name:${user?.displayName}")
-
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    val fiveSkillsList = (document.data?.get(FIVE_SKILLS) as Iterable<*>).toList()
-                    for (skill in fiveSkillsList) {
-                        listOfSkills.add(
-                            SkillItem(
-                                skillTitle = (skill as HashMap<*, *>)["skillTitle"].toString(),
-                                skillDescription = skill["skillDescription"].toString(),
-                                skillLevel = skill["skillLevel"].toString().toInt()
-                            )
-                        )
-                    }
-                    Log.d("TAG", "DocumentSnapshot data: ${document.data}")
-                } else {
-                    Log.d("TAG", "No such document")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d("TAG", "get failed with ", exception)
-            }
-
-
-        return listOf(
-            SkillItem("SkillTitle1", "SkillDescription1", 1),
-            SkillItem("SkillTitle2", "SkillDescription2", 2),
-            SkillItem("SkillTitle3", "SkillDescription3", 3),
-            SkillItem("SkillTitle4", "SkillDescription4", 4),
-            SkillItem("SkillTitle5", "SkillDescription5", 5)
-        )
+    suspend fun getSkillsOfUser(user: FirebaseUser?): List<SkillItem> {
+        return db.collection(USER_LIST)
+            .document("${user?.uid}")
+            .get()
+            .await()
+            .getSkillListFromUser()
     }
 
     // Merge both methods
@@ -55,9 +35,9 @@ class SkillProfileRemoteRepository {
         val data1 = hashMapOf(
             "name" to user?.displayName,
             "e-mail" to user?.email,
-            "5 Skills" to skills
+            FIVE_SKILLS to skills
         )
-        skillsDB.document("ID:${user?.uid}, Name:${user?.displayName}").set(data1)
+        skillsDB.document("${user?.uid}").set(data1)
     }
 
     fun saveSkill(skill: SkillItem) {

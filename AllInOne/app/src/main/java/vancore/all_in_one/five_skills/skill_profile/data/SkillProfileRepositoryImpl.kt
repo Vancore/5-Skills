@@ -11,8 +11,8 @@ class SkillProfileRepositoryImpl @Inject constructor(
     private val localRepository: SkillProfileLocalRepository
 ) : SkillProfileRepository {
 
-    override fun getSkillsForProfile(user: FirebaseUser?): List<SkillItem> {
-        return remoteRepository.getSkillsForProfile(user)
+    override suspend fun getSkillsForProfile(user: FirebaseUser?): List<SkillItem> {
+        return remoteRepository.getSkillsOfUser(user)
     }
 
     override fun saveSkill(skill: SkillItem) {

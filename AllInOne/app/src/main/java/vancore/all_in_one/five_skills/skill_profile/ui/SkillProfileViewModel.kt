@@ -3,8 +3,10 @@ package vancore.all_in_one.five_skills.skill_profile.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.launch
 import vancore.all_in_one.five_skills.skill_profile.data.SkillProfileRepository
 import vancore.all_in_one.five_skills.skill_profile.data.models.LoginValidation
 import vancore.all_in_one.shared.models.SkillItem
@@ -79,7 +81,9 @@ class SkillProfileViewModel @Inject constructor(
     }
 
     fun fetchUserSkills() {
-        val skillList = profileRepository.getSkillsForProfile(currentUser)
-        _userSkills.postValue(skillList)
+        viewModelScope.launch {
+            val skillList = profileRepository.getSkillsForProfile(currentUser)
+            _userSkills.postValue(skillList)
+        }
     }
 }

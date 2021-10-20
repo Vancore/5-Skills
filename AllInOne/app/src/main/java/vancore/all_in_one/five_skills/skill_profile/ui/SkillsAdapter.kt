@@ -20,17 +20,22 @@ class SkillsAdapter(
 
     override fun onBindViewHolder(holder: SkillViewHolder, position: Int) {
         with(holder){
-            val skillItem = skillItems[position]
-            with(skillItem) {
-                binding.tvBrowserTitle.text = skillTitle
-                binding.tvBrowserDescription.text = skillDescription
-            }
+            if(skillItems.isNotEmpty()) {
+                val skillItem = skillItems[position]
+                with(skillItem) {
+                    binding.tvBrowserTitle.text = skillTitle
+                    binding.tvBrowserDescription.text = skillDescription
+                }
 
-            itemView.setOnClickListener {
-                Toast.makeText(holder.itemView.context, "click on position: ${position + 1}, ${skillItem.skillTitle}", Toast.LENGTH_SHORT).show()
-                skillItemClickListener.onSkillItemClicked(skillItem)
+                itemView.setOnClickListener {
+                    Toast.makeText(
+                        holder.itemView.context,
+                        "click on position: ${position + 1}, ${skillItem.skillTitle}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    skillItemClickListener.onSkillItemClicked(skillItem)
+                }
             }
-
         }
     }
 

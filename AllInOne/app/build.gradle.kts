@@ -65,25 +65,24 @@ android {
 dependencies {
     implementation(Deps.androidCore)
 
-    /// Android Layout/Design
+    // Android Layout/Design
     implementation(Deps.appCompat)
     implementation(Deps.material)
     implementation(Deps.constraintLayout)
     implementation(Deps.swipeRefreshLayout)
 
-    /// Navigation
+    // Navigation
     implementation(Deps.navigationUi)
     implementation(Deps.navigationRuntime)
     implementation(Deps.navigationFragment)
 
-    /// Paging
+    // Paging
     implementation(Deps.pagingRuntime)
     implementation(Deps.pagingCommon) // alternatively - without Android dependencies for testing
     implementation(Deps.pagingRxJava)
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
     implementation("androidx.legacy:legacy-support-v4:1.0.0") // optional - RxJava support
 
-    /// Room
+    // Room
     kapt (Deps.roomCompiler)
     implementation(Deps.roomRuntime)
     implementation(Deps.roomKtx) // optional - Kotlin Extensions and Coroutines support for Room
@@ -112,10 +111,14 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx:21.0.1")
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")
     implementation("com.google.android.gms:play-services-auth:19.0.0")
-    // No versionen needed because of BoM
+    // No versioning needed because of BoM
     implementation("com.google.firebase:firebase-auth")
 
-    /// Testing
+    // KotlinX
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
+
+    // Testing
     testImplementation(Deps.jUnit)
     testImplementation(Deps.jUnitAndroidX)
     testImplementation(Deps.espressoCore)

@@ -153,9 +153,9 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
 
     private fun showProgressOnButton(button: ExtendedFloatingActionButton): CircularProgressDrawable {
         val drawable = CircularProgressDrawable(requireContext())
-        // With normal MaterialButton currently not working, because it does not redraw
+        // With normal MaterialButton it's currently not working, because it does not redraw
         // https://github.com/material-components/material-components-android/issues/1209
-        //binding.bLogin.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+        // binding.bLogin.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         button.icon = drawable
         drawable.start()
         return drawable
@@ -244,7 +244,4 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
         _binding = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }

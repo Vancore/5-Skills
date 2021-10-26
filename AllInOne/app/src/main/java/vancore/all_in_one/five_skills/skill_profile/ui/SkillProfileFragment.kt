@@ -1,5 +1,6 @@
 package vancore.all_in_one.five_skills.skill_profile.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import vancore.all_in_one.five_skills.extensions.hideKeyboard
+import vancore.all_in_one.five_skills.skill_detail.ui.SkillDetailActivity
 import vancore.all_in_one.five_skills.skill_profile.data.models.LoginValidation
 import vancore.all_in_one.shared.models.SkillItem
 import vancore.all_in_one.shared.view.CircularProgressDrawable
@@ -115,9 +117,7 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
 
     override fun onStart() {
         super.onStart()
-        viewModel.doSomething()
         viewModel.checkIfUserIsOnline(auth)
-
     }
 
     private fun signIn(email: String, password: String) {
@@ -237,6 +237,8 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
 
     override fun onSkillItemClicked(item: SkillItem) {
         showSnackBar("SkillItem clicked: ${item.skillTitle}")
+        val intent = Intent(requireContext(), SkillDetailActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {

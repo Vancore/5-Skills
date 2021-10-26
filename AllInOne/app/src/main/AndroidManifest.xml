@@ -20,6 +20,8 @@
 
         <activity android:name="vancore.all_in_one.five_skills.FiveSkillsActivity" />
 
+        <activity android:name="vancore.all_in_one.five_skills.skill_detail.ui.SkillDetailActivity" />
+
     </application>
 
 </manifest>

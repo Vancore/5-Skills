@@ -30,9 +30,6 @@ class SkillProfileViewModel @Inject constructor(
     val userSkills: LiveData<List<SkillItem>>
         get() = _userSkills
 
-    fun doSomething() {
-    }
-
     fun checkIfUserIsOnline(auth: FirebaseAuth) {
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = auth.currentUser

@@ -76,7 +76,4 @@ class FiveSkillsActivity : AppCompatActivity() {
         this.title = navigationBarTitle
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }

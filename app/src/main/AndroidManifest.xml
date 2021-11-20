@@ -3,14 +3,15 @@
     package="com.example.all_in_one">
 
     <application
-        android:name="vancore.all_in_one.VancoreApplication"
+        android:name="five_skills.VancoreApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AllInOne">
-        <activity android:name="vancore.all_in_one.content.ui.ContentActivity">
+        <activity android:name="five_skills.FiveSkillsActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,9 +19,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="vancore.all_in_one.five_skills.FiveSkillsActivity" />
-
-        <activity android:name="vancore.all_in_one.five_skills.skill_detail.ui.SkillDetailActivity" />
+        <activity android:name="five_skills.skill_detail.ui.SkillDetailActivity" />
 
     </application>
 

@@ -3,7 +3,7 @@
     package="com.example.all_in_one">
 
     <application
-        android:name="five_skills.VancoreApplication"
+        android:name="five_skills.FiveSkillsApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

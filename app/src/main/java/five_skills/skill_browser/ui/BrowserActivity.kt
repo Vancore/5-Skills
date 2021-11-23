@@ -1,35 +1,26 @@
 package five_skills.skill_browser.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.example.all_in_one.databinding.FragmentBrowserBinding
+import androidx.appcompat.app.AppCompatActivity
+import com.example.all_in_one.databinding.ActivityBrowserBinding
 import dagger.hilt.android.AndroidEntryPoint
 import shared.models.SkillItem
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BrowserFragment : Fragment(), BrowserItemClickListener {
+class BrowserActivity : AppCompatActivity(), BrowserItemClickListener {
 
-    private var _binding: FragmentBrowserBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: ActivityBrowserBinding
 
     @Inject
     lateinit var browserViewModel: BrowserViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentBrowserBinding.inflate(layoutInflater)
-        return binding.root
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding = ActivityBrowserBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
     }
 
     override fun onStart() {
@@ -61,15 +52,6 @@ class BrowserFragment : Fragment(), BrowserItemClickListener {
 
     override fun onBrowserItemClicked(item: SkillItem) {
         // do some stuff
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
 }

@@ -3,20 +3,17 @@ package five_skills.skill_profile.ui
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import com.example.all_in_one.R
-import com.example.all_in_one.databinding.FragmentSkillProfileBinding
+import com.example.all_in_one.databinding.ActivitySkillProfileBinding
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import five_skills.extensions.hideKeyboard
 import five_skills.skill_detail.ui.SkillDetailActivity
@@ -27,10 +24,9 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class SkillProfileFragment : Fragment(), SkillItemClickListener {
+class SkillProfileActivity : AppCompatActivity(), SkillItemClickListener {
 
-    private var _binding: FragmentSkillProfileBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: ActivitySkillProfileBinding
 
     private var currentSnackbar: Snackbar? = null
 
@@ -39,27 +35,18 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
     @Inject
     lateinit var viewModel: SkillProfileViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSkillProfileBinding.inflate(layoutInflater)
-        return binding.root
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        auth = Firebase.auth
-
-        observe()
-        setupClickListeners()
+        binding = ActivitySkillProfileBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
     }
 
     private fun setupClickListeners() {
         binding.bLogin.setOnClickListener {
             signIn(binding.tietAccountName.text.toString(), binding.tietPassword.text.toString())
-            requireActivity().hideKeyboard()
+            hideKeyboard()
         }
 
         binding.bLogout.setOnClickListener {
@@ -88,7 +75,7 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
     }
 
     private fun observe() {
-        viewModel.isUserOnline.observe(viewLifecycleOwner, { user ->
+        viewModel.isUserOnline.observe(this, { user ->
             // User logged in
             binding.bLogout.isVisible = user != null
             binding.bSaveSkill.isVisible = user != null
@@ -109,7 +96,7 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
             }
         })
 
-        viewModel.userSkills.observe(viewLifecycleOwner, { list ->
+        viewModel.userSkills.observe(this, { list ->
             binding.rvUserSkills.adapter = SkillsAdapter(list, this)
             binding.rvUserSkills.visibility = View.VISIBLE
         })
@@ -121,12 +108,13 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
     }
 
     private fun signIn(email: String, password: String) {
+        val tag = "SkillProfileActivity"
         val drawable = showProgressOnButton(binding.bLogin)
         viewModel.validateInput(email, password)
-        viewModel.inputValidation.observe(viewLifecycleOwner, { validation ->
+        viewModel.inputValidation.observe(this, { validation ->
             if (validation == LoginValidation.Valid) {
                 auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(requireActivity()) { task ->
+                    .addOnCompleteListener(this) { task ->
                         hideProgressButton(binding.bLogin, drawable)
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
@@ -152,7 +140,7 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
     }
 
     private fun showProgressOnButton(button: ExtendedFloatingActionButton): CircularProgressDrawable {
-        val drawable = CircularProgressDrawable(requireContext())
+        val drawable = CircularProgressDrawable(this)
         // With normal MaterialButton it's currently not working, because it does not redraw
         // https://github.com/material-components/material-components-android/issues/1209
         // binding.bLogin.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
@@ -183,10 +171,10 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
     private fun createUserWithMailAndPassword(email: String, password: String) {
         val drawable = showProgressOnButton(binding.bRegister)
         viewModel.validateInput(email, password)
-        viewModel.inputValidation.observe(viewLifecycleOwner, { validation ->
+        viewModel.inputValidation.observe(this, { validation ->
             if (validation == LoginValidation.Valid) {
                 auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(requireActivity()) { task ->
+                    .addOnCompleteListener(this) { task ->
                         hideProgressButton(binding.bRegister, drawable)
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
@@ -211,11 +199,12 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
 
     private fun showSnackBar(text: String?) {
         dismissCurrentErrorSnackbar()
-        (view?.findViewById(R.id.snackbar_container) ?: view)?.let { container ->
+
+        findViewById<CoordinatorLayout>(R.id.snackbar_container).let { container ->
             val backgroundColor = ResourcesCompat.getColor(
                 resources,
                 R.color.snackbar_error,
-                context?.theme
+                theme
             )
             val snackbar = Snackbar.make(container, text ?: "Error", Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(backgroundColor)
@@ -237,13 +226,8 @@ class SkillProfileFragment : Fragment(), SkillItemClickListener {
 
     override fun onSkillItemClicked(item: SkillItem) {
         showSnackBar("SkillItem clicked: ${item.skillTitle}")
-        val intent = Intent(requireContext(), SkillDetailActivity::class.java)
+        val intent = Intent(this, SkillDetailActivity::class.java)
         startActivity(intent)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 }

@@ -116,7 +116,7 @@ dependencies {
 
     // KotlinX
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
 
     // Testing
     testImplementation(Dependencies.jUnit)

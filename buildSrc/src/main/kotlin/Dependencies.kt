@@ -39,6 +39,7 @@ object Versions {
 
 object Plugins {
   const val buildGradle = "com.android.tools.build:gradle:${Versions.gradlePlugin}"
+  const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
   const val googleService = "com.google.gms:google-services:${Versions.googleServicePlugin}"
   const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:${Versions.firebaseCrashlyticsPlugin}"
   const val navigationSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"

@@ -1,8 +1,0 @@
-/Users/marnon/Workspace/PersonalPlayground/AllInOne/hearthstone_card_browser/src/main/java/com/example/hearthstone_card_browser/data/BrowserRepository.kt
-/Users/marnon/Workspace/PersonalPlayground/AllInOne/hearthstone_card_browser/src/main/java/com/example/hearthstone_card_browser/di/BrowserModule.kt
-/Users/marnon/Workspace/PersonalPlayground/AllInOne/hearthstone_card_browser/src/main/java/com/example/hearthstone_card_browser/ui/BrowserActivity.kt
-/Users/marnon/Workspace/PersonalPlayground/AllInOne/hearthstone_card_browser/src/main/java/com/example/hearthstone_card_browser/data/BrowserLocalRepository.kt
-/Users/marnon/Workspace/PersonalPlayground/AllInOne/hearthstone_card_browser/src/main/java/com/example/hearthstone_card_browser/VancoreApplication.kt
-/Users/marnon/Workspace/PersonalPlayground/AllInOne/hearthstone_card_browser/src/main/java/com/example/hearthstone_card_browser/data/BrowserRepositoryImpl.kt
-/Users/marnon/Workspace/PersonalPlayground/AllInOne/hearthstone_card_browser/src/main/java/com/example/hearthstone_card_browser/data/BrowserRemoteRepository.kt
-/Users/marnon/Workspace/PersonalPlayground/AllInOne/hearthstone_card_browser/src/main/java/com/example/hearthstone_card_browser/ui/BrowserViewModel.kt

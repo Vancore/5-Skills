@@ -105,18 +105,40 @@ dependencies {
     implementation(Dependencies.hiltCompiler)
 
     // Firebase
-    implementation("com.google.firebase:firebase-bom:28.2.1")
+    implementation("com.google.firebase:firebase-bom:29.0.0")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-auth-ktx:21.0.1")
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")
-    implementation("com.google.android.gms:play-services-auth:19.0.0")
+    implementation("com.google.android.gms:play-services-auth:19.2.0")
     // No versioning needed because of BoM
     implementation("com.google.firebase:firebase-auth")
 
     // KotlinX
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
+
+    // Jetpack Compose
+    implementation("androidx.compose.ui:ui:1.0.5")
+    // Tooling support (Previews, etc.)
+    implementation("androidx.compose.ui:ui-tooling:1.0.5")
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation("androidx.compose.foundation:foundation:1.0.5")
+    // Material Design
+    implementation("androidx.compose.material:material:1.0.5")
+    // Material design icons
+    implementation("androidx.compose.material:material-icons-core:1.0.5")
+    implementation("androidx.compose.material:material-icons-extended:1.0.5")
+    // Integration with activities
+    implementation("androidx.activity:activity-compose:1.4.0")
+    // Integration with ViewModels
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
+    // Integration with observables
+    implementation("androidx.compose.runtime:runtime-livedata:1.0.5")
+    implementation("androidx.compose.runtime:runtime-rxjava2:1.0.5")
+
+    // UI Tests
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.5")
 
     // Testing
     testImplementation(Dependencies.jUnit)

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "253471104963",
+    "firebase_url": "https://five-skills-a3a1f-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "five-skills-a3a1f",
     "storage_bucket": "five-skills-a3a1f.appspot.com"
   },
@@ -10,6 +11,43 @@
         "mobilesdk_app_id": "1:253471104963:android:cc1925cf339974aaece776",
         "android_client_info": {
           "package_name": "vancore.all_in_one"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253471104963-vmgkqtnurme4m19vfqe7hfckefl768en.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vancore.all_in_one",
+            "certificate_hash": "353a54ee891f0c368fab29766c86d4971765c427"
+          }
+        },
+        {
+          "client_id": "253471104963-8kk6fosl45oevbusi0sb27timp5cd8mp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtwl-RaVazqfJnoehPdmeWBiENu42__J0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253471104963-8kk6fosl45oevbusi0sb27timp5cd8mp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253471104963:android:05b40bd1fb1b93aeece776",
+        "android_client_info": {
+          "package_name": "vancore.five_skills"
         }
       },
       "oauth_client": [

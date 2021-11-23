@@ -9,7 +9,7 @@ object Versions {
   const val kotlin = "1.4.32"
   const val gradlePlugin = "4.1.3"
   const val firebaseCrashlyticsPlugin = "2.3.0"
-  const val googleServicePlugin = "4.3.4"
+  const val googleServicePlugin = "4.3.10"
   // endregion
 
   // region app dependencies
@@ -46,7 +46,7 @@ object Plugins {
   const val hilt = "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
 }
 
-object Deps {
+object Dependencies {
 
   const val androidCore = "androidx.core:core-ktx:${Versions.androidCoreKtx}"
 

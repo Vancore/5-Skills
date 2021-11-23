@@ -17,7 +17,7 @@ android {
     buildToolsVersion(Versions.buildToolsVersion)
 
     defaultConfig {
-        applicationId = "vancore.all_in_one"
+        applicationId = "vancore.five_skills"
         minSdkVersion(Versions.minSdkVersion)
         targetSdkVersion(Versions.targetSdkVersion)
         versionCode = appVersionCode
@@ -63,46 +63,46 @@ android {
 }
 
 dependencies {
-    implementation(Deps.androidCore)
+    implementation(Dependencies.androidCore)
 
     // Android Layout/Design
-    implementation(Deps.appCompat)
-    implementation(Deps.material)
-    implementation(Deps.constraintLayout)
-    implementation(Deps.swipeRefreshLayout)
+    implementation(Dependencies.appCompat)
+    implementation(Dependencies.material)
+    implementation(Dependencies.constraintLayout)
+    implementation(Dependencies.swipeRefreshLayout)
 
     // Navigation
-    implementation(Deps.navigationUi)
-    implementation(Deps.navigationRuntime)
-    implementation(Deps.navigationFragment)
+    implementation(Dependencies.navigationUi)
+    implementation(Dependencies.navigationRuntime)
+    implementation(Dependencies.navigationFragment)
 
     // Paging
-    implementation(Deps.pagingRuntime)
-    implementation(Deps.pagingCommon) // alternatively - without Android dependencies for testing
-    implementation(Deps.pagingRxJava)
+    implementation(Dependencies.pagingRuntime)
+    implementation(Dependencies.pagingCommon) // alternatively - without Android dependencies for testing
+    implementation(Dependencies.pagingRxJava)
     implementation("androidx.legacy:legacy-support-v4:1.0.0") // optional - RxJava support
 
     // Room
-    kapt (Deps.roomCompiler)
-    implementation(Deps.roomRuntime)
-    implementation(Deps.roomKtx) // optional - Kotlin Extensions and Coroutines support for Room
-    implementation(Deps.roomTesting) // optional - Test helpers
+    kapt (Dependencies.roomCompiler)
+    implementation(Dependencies.roomRuntime)
+    implementation(Dependencies.roomKtx) // optional - Kotlin Extensions and Coroutines support for Room
+    implementation(Dependencies.roomTesting) // optional - Test helpers
 
     // ViewModel and LifeCycle
-    implementation(Deps.lifecycleRuntime)
-    implementation(Deps.lifecycleViewModel)
-    implementation(Deps.lifecycleLiveData)
-    implementation(Deps.lifecycleExtensions)
+    implementation(Dependencies.lifecycleRuntime)
+    implementation(Dependencies.lifecycleViewModel)
+    implementation(Dependencies.lifecycleLiveData)
+    implementation(Dependencies.lifecycleExtensions)
 
     // Retrofit
-    implementation(Deps.retrofit)
-    implementation(Deps.retrofitGsonConverter)
-    implementation(Deps.retrofitLoggingInterceptor)
-    implementation(Deps.okHttp)
+    implementation(Dependencies.retrofit)
+    implementation(Dependencies.retrofitGsonConverter)
+    implementation(Dependencies.retrofitLoggingInterceptor)
+    implementation(Dependencies.okHttp)
 
     // Hilt DI
-    implementation(Deps.hiltAndroid)
-    implementation(Deps.hiltCompiler)
+    implementation(Dependencies.hiltAndroid)
+    implementation(Dependencies.hiltCompiler)
 
     // Firebase
     implementation("com.google.firebase:firebase-bom:28.2.1")
@@ -119,7 +119,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
 
     // Testing
-    testImplementation(Deps.jUnit)
-    testImplementation(Deps.jUnitAndroidX)
-    testImplementation(Deps.espressoCore)
+    testImplementation(Dependencies.jUnit)
+    testImplementation(Dependencies.jUnitAndroidX)
+    testImplementation(Dependencies.espressoCore)
 }

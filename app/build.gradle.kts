@@ -1,9 +1,8 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-kapt")
-    id("kotlin-android-extensions")
-    id("dagger.hilt.android.plugin")
+    kotlin("android")
+    kotlin("android.extensions")
+    kotlin("kapt")
     id("com.google.gms.google-services")
 }
 
@@ -13,8 +12,8 @@ val appVersionCode: Int
     } else 596700 + Env.numberOfCommits
 
 android {
-    compileSdkVersion(Versions.compileSdkVersion)
-    buildToolsVersion(Versions.buildToolsVersion)
+
+    compileSdkVersion(31)
 
     defaultConfig {
         applicationId = "vancore.five_skills"
@@ -83,7 +82,7 @@ dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0") // optional - RxJava support
 
     // Room
-    kapt (Dependencies.roomCompiler)
+    annotationProcessor(Dependencies.roomCompiler)
     implementation(Dependencies.roomRuntime)
     implementation(Dependencies.roomKtx) // optional - Kotlin Extensions and Coroutines support for Room
     implementation(Dependencies.roomTesting) // optional - Test helpers
@@ -116,7 +115,7 @@ dependencies {
 
     // KotlinX
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")
 
     // Jetpack Compose
     implementation("androidx.compose.ui:ui:1.0.5")

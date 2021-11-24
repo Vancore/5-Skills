@@ -2,26 +2,21 @@
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
 buildscript {
-    ext {
-        kotlin_version = '1.4.32'
-    }
     repositories {
         google()
-        jcenter()
         mavenCentral()
     }
     dependencies {
         classpath(Plugins.buildGradle)
-        classpath(Plugins.kotlinGradle)
         classpath(Plugins.googleService)
         classpath(Plugins.navigationSafeArgs)
         classpath(Plugins.hilt)
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath(Plugins.kotlin)
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts.kts files
     }

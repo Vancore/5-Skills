@@ -3,9 +3,5 @@ plugins {
 }
 
 repositories {
-    jcenter()
-}
-
-dependencies {
-    implementation(gradleApi())
+    mavenCentral()
 }

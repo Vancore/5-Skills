@@ -6,18 +6,18 @@ object Versions {
   const val buildToolsVersion = "30.0.3"
   const val appVersion = "0.1"
 
-  const val kotlin = "1.4.32"
-  const val gradlePlugin = "4.1.3"
+  const val kotlin = "1.5.21"
+  const val gradlePlugin = "7.0.3"
   const val firebaseCrashlyticsPlugin = "2.3.0"
   const val googleServicePlugin = "4.3.10"
   // endregion
 
   // region app dependencies
   const val paging = "3.0.0-beta02"
-  const val room = "2.3.0-rc01"
+  const val room = "2.3.0"
   const val liveCycle = "2.3.1"
   const val liveCycleExtensions = "2.2.0"
-  const val hilt = "2.33-beta"
+  const val hilt = "2.38"
   const val retrofitGson = "2.9.0"
   const val retrofitLoggingInterceptor = "3.14.9"
   const val okHttp = "4.7.2"
@@ -39,11 +39,11 @@ object Versions {
 
 object Plugins {
   const val buildGradle = "com.android.tools.build:gradle:${Versions.gradlePlugin}"
-  const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
   const val googleService = "com.google.gms:google-services:${Versions.googleServicePlugin}"
   const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:${Versions.firebaseCrashlyticsPlugin}"
   const val navigationSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
   const val hilt = "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
+  const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 }
 
 object Dependencies {

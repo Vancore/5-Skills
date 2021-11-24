@@ -7,7 +7,7 @@ object Versions {
   const val appVersion = "0.1"
 
   const val kotlin = "1.4.32"
-  const val gradlePlugin = "7.0.3"
+  const val gradlePlugin = "7.0.0"
   const val firebaseCrashlyticsPlugin = "2.3.0"
   const val googleServicePlugin = "4.3.10"
   // endregion
@@ -17,7 +17,7 @@ object Versions {
   const val room = "2.3.0"
   const val liveCycle = "2.3.1"
   const val liveCycleExtensions = "2.2.0"
-  const val hilt = "2.38"
+  const val hilt = "2.38.1"
   const val retrofitGson = "2.9.0"
   const val retrofitLoggingInterceptor = "3.14.9"
   const val okHttp = "4.7.2"

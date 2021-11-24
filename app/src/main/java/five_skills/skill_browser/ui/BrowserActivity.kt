@@ -52,7 +52,6 @@ class BrowserActivity : AppCompatActivity(), BrowserItemClickListener {
     override fun onStart() {
         super.onStart()
         browserViewModel.doSomething()
-
     }
 
     override fun onBrowserItemClicked(item: SkillItem) {

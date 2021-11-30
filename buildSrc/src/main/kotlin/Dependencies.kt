@@ -6,7 +6,7 @@ object Versions {
   const val buildToolsVersion = "30.0.3"
   const val appVersion = "0.1"
 
-  const val kotlin = "1.4.32"
+  const val kotlin = "1.5.31"
   const val gradlePlugin = "7.0.0"
   const val firebaseCrashlyticsPlugin = "2.3.0"
   const val googleServicePlugin = "4.3.10"

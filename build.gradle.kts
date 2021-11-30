@@ -22,6 +22,8 @@ buildscript {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks {
+    val clean by registering(Delete::class) {
+        delete(buildDir)
+    }
 }

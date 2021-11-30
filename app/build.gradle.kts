@@ -39,18 +39,18 @@ android {
     }
 
     packagingOptions {
-        exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/license.txt")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/NOTICE.txt")
-        exclude("META-INF/notice.txt")
-        exclude("META-INF/NOTICE")
-        exclude("META-INF/ASL2.0")
-        exclude("META-INF/rxjava.properties")
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/*.kotlin_module")
-        exclude("META-INF/proguard/androidx-annotations.pro")
-        exclude("META-INF/gradle/incremental.annotation.processors")
+        resources.excludes.add("META-INF/LICENSE.txt")
+        resources.excludes.add("META-INF/license.txt")
+        resources.excludes.add("META-INF/LICENSE")
+        resources.excludes.add("META-INF/NOTICE.txt")
+        resources.excludes.add("META-INF/notice.txt")
+        resources.excludes.add("META-INF/NOTICE")
+        resources.excludes.add("META-INF/ASL2.0")
+        resources.excludes.add("META-INF/rxjava.properties")
+        resources.excludes.add("META-INF/DEPENDENCIES")
+        resources.excludes.add("META-INF/*.kotlin_module")
+        resources.excludes.add("META-INF/proguard/androidx-annotations.pro")
+        resources.excludes.add("META-INF/gradle/incremental.annotation.processors")
     }
 
     kotlinOptions {
@@ -60,6 +60,10 @@ android {
     buildFeatures {
         viewBinding = true
         compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.0.3"
     }
 }
 

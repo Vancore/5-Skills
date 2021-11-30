@@ -5,6 +5,7 @@ plugins {
     kotlin("kapt")
     id("com.google.gms.google-services")
     id("dagger.hilt.android.plugin")
+    id("kotlin-android-extensions")
 }
 
 val appVersionCode: Int
@@ -14,12 +15,12 @@ val appVersionCode: Int
 
 android {
 
-    compileSdkVersion(31)
+    compileSdk = 31
 
     defaultConfig {
         applicationId = "vancore.five_skills"
-        minSdkVersion(Versions.minSdkVersion)
-        targetSdkVersion(Versions.targetSdkVersion)
+        minSdk = Versions.minSdkVersion
+        targetSdk = Versions.targetSdkVersion
         versionCode = appVersionCode
         versionName = Versions.appVersion
 
@@ -63,7 +64,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.3"
+        kotlinCompilerExtensionVersion = "1.0.5"
     }
 }
 

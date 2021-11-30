@@ -15,7 +15,7 @@ val appVersionCode: Int
 
 android {
 
-    compileSdk = 31
+    compileSdk = Versions.compileSdkVersion
 
     defaultConfig {
         applicationId = "vancore.five_skills"
@@ -39,21 +39,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    packagingOptions {
-        resources.excludes.add("META-INF/LICENSE.txt")
-        resources.excludes.add("META-INF/license.txt")
-        resources.excludes.add("META-INF/LICENSE")
-        resources.excludes.add("META-INF/NOTICE.txt")
-        resources.excludes.add("META-INF/notice.txt")
-        resources.excludes.add("META-INF/NOTICE")
-        resources.excludes.add("META-INF/ASL2.0")
-        resources.excludes.add("META-INF/rxjava.properties")
-        resources.excludes.add("META-INF/DEPENDENCIES")
-        resources.excludes.add("META-INF/*.kotlin_module")
-        resources.excludes.add("META-INF/proguard/androidx-annotations.pro")
-        resources.excludes.add("META-INF/gradle/incremental.annotation.processors")
-    }
-
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -64,7 +49,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.5"
+        kotlinCompilerExtensionVersion = Versions.composeKotlinCompiler
     }
 }
 
@@ -86,7 +71,7 @@ dependencies {
     implementation(Dependencies.pagingRuntime)
     implementation(Dependencies.pagingCommon) // alternatively - without Android dependencies for testing
     implementation(Dependencies.pagingRxJava)
-    implementation("androidx.legacy:legacy-support-v4:1.0.0") // optional - RxJava support
+    implementation(Dependencies.pagingLegacySupport) // optional - RxJava support
 
     // Room
     annotationProcessor(Dependencies.roomCompiler)
@@ -111,40 +96,40 @@ dependencies {
     kapt(Dependencies.hiltCompiler)
 
     // Firebase
-    implementation("com.google.firebase:firebase-bom:29.0.0")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-auth-ktx:21.0.1")
-    implementation("com.firebaseui:firebase-ui-auth:7.2.0")
-    implementation("com.google.android.gms:play-services-auth:19.2.0")
+    implementation(Dependencies.firebaseBom)
+    implementation(Dependencies.firebaseFirestore)
+    implementation(Dependencies.firebaseAnalytics)
+    implementation(Dependencies.firebaseAuthKTX)
+    implementation(Dependencies.firebaseUIAuth)
+    implementation(Dependencies.firebasePlayServices)
     // No versioning needed because of BoM
-    implementation("com.google.firebase:firebase-auth")
+    implementation(Dependencies.firebaseAuth)
 
     // KotlinX
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")
+    implementation(Dependencies.kotlinXCoroutinesPlayServices)
+    implementation(Dependencies.kotlinXStdLib)
 
     // Jetpack Compose
-    implementation("androidx.compose.ui:ui:1.0.5")
+    implementation(Dependencies.composeUI)
     // Tooling support (Previews, etc.)
-    implementation("androidx.compose.ui:ui-tooling:1.0.5")
+    implementation(Dependencies.composeUITooling)
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation("androidx.compose.foundation:foundation:1.0.5")
+    implementation(Dependencies.composeFoundation)
     // Material Design
-    implementation("androidx.compose.material:material:1.0.5")
+    implementation(Dependencies.composeMaterialDesign)
     // Material design icons
-    implementation("androidx.compose.material:material-icons-core:1.0.5")
-    implementation("androidx.compose.material:material-icons-extended:1.0.5")
+    implementation(Dependencies.composeMaterialDesignIcons)
+    implementation(Dependencies.composeMaterialDesignIconsExtended)
     // Integration with activities
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation(Dependencies.composeActivities)
     // Integration with ViewModels
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
+    implementation(Dependencies.composeViewModels)
     // Integration with observables
-    implementation("androidx.compose.runtime:runtime-livedata:1.0.5")
-    implementation("androidx.compose.runtime:runtime-rxjava2:1.0.5")
+    implementation(Dependencies.composeRuntimeLiveData)
+    implementation(Dependencies.composeRuntimeRxJava)
 
     // UI Tests
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.5")
+    androidTestImplementation(Dependencies.composeUITesting)
 
     // Testing
     testImplementation(Dependencies.jUnit)

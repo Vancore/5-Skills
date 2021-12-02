@@ -77,7 +77,9 @@ class BrowserActivity : AppCompatActivity(), BrowserItemClickListener {
 
 @Composable
 fun SkillList(list: List<SkillItem>) {
-    LazyColumn {
+    LazyColumn(
+      contentPadding = PaddingValues(horizontal = 8.dp, vertical = 24.dp),
+    ) {
         items(list) { skillEntry ->
           SkillEntry(skillItem = skillEntry)
         }

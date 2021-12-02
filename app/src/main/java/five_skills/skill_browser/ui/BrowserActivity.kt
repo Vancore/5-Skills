@@ -77,29 +77,41 @@ class BrowserActivity : AppCompatActivity(), BrowserItemClickListener {
 
 @Composable
 fun SkillList(list: List<SkillItem>) {
-    LazyColumn(
-      contentPadding = PaddingValues(horizontal = 8.dp, vertical = 24.dp),
-    ) {
-        items(list) { skillEntry ->
-          SkillEntry(skillItem = skillEntry)
-        }
+  LazyColumn(
+    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+    verticalArrangement = Arrangement.spacedBy(space = 8.dp),
+    modifier = Modifier.fillMaxWidth()
+  ) {
+    items(list) { skillEntry ->
+      SkillEntry(skillItem = skillEntry)
     }
+  }
 }
 
 @Composable
 fun SkillEntry(skillItem: SkillItem) {
-  Surface(shape = MaterialTheme.shapes.medium, elevation = 4.dp) {
+
+  // can be used for expanding
+  // -> e.g. in Text, maxLines = if (isClicked ...)
+  var isClicked by remember { mutableStateOf(false) }
+
+  Surface(
+    shape = MaterialTheme.shapes.medium,
+    elevation = 4.dp,
+    modifier = Modifier
+      .clickable { isClicked = !isClicked }
+  ) {
 
     Row(
-      modifier = Modifier.padding(8.dp),
-      verticalAlignment = Alignment.CenterVertically
+      modifier = Modifier
+        .padding(8.dp)
+        .fillMaxWidth(),
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-      // can be used for expanding
-      // -> e.g. in Text, maxLines = if (isClicked ...)
-      var isClicked by remember { mutableStateOf(false) }
 
-      Column(modifier = Modifier.clickable { isClicked = !isClicked }) {
+      Column {
         Text(
           text = skillItem.skillTitle,
           color = MaterialTheme.colors.secondary,

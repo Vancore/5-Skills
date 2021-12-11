@@ -2,7 +2,7 @@ package five_skills.categories.data
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import five_skills.five_skills.browse_categories.extensions.getCategoryItems
+import five_skills.categories.extensions.getCategoryItems
 import five_skills.shared.models.CategoryItem
 import kotlinx.coroutines.tasks.await
 
@@ -18,6 +18,6 @@ class CategoriesRemoteRepository {
   }
 
   companion object {
-    const val CATEGORIES = "CATEGORIES"
+    const val CATEGORIES = "Categories"
   }
 }

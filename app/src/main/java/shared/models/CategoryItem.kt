@@ -1,7 +1,7 @@
 package five_skills.shared.models
 
 data class CategoryItem(
-  val id: String,
+  val id: Int,
   val name: String
   // list of subcategories
 )

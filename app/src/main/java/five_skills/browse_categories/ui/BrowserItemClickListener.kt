@@ -1,4 +1,4 @@
-package five_skills.skill_browser.ui
+package five_skills.browse_categories.ui
 
 import shared.models.SkillItem
 

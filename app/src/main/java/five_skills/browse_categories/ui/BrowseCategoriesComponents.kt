@@ -1,9 +1,6 @@
-package five_skills.skill_browser.ui
+package five_skills.five_skills.browse_categories.ui
 
 import android.content.res.Configuration
-import android.os.Bundle
-import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,61 +19,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.all_in_one.R
-import dagger.hilt.android.AndroidEntryPoint
+import five_skills.browse_categories.ui.BrowseCategoriesViewModel
 import five_skills.five_skills.ui.theme.FiveSkillsComposeTheme
 import shared.models.SkillItem
-import javax.inject.Inject
 
-@AndroidEntryPoint
-class BrowserActivity : AppCompatActivity(), BrowserItemClickListener {
-
-  private val skillList = listOf(
-    SkillItem("Skill Title 1", "Skill Description 1", 1),
-    SkillItem("Skill Title 2", "Skill Description 1", 1),
-    SkillItem("Skill Title 3", "Skill Description 1", 1),
-    SkillItem("Skill Title 4", "Skill Description 1", 1),
-    SkillItem("Skill Title 5", "Skill Description 1", 1),
-    SkillItem("Skill Title 6", "Skill Description 1", 1),
-    SkillItem("Skill Title 7", "Skill Description 1", 1),
-    SkillItem("Skill Title 8", "Skill Description 1", 1),
-    SkillItem("Skill Title 9", "Skill Description 1", 1),
-    SkillItem("Skill Title 10", "Skill Description 1", 1),
-    SkillItem("Skill Title 11", "Skill Description 1", 1),
-    SkillItem("Skill Title 12", "Skill Description 1", 1),
-    SkillItem("Skill Title 13", "Skill Description 1", 1),
-    SkillItem("Skill Title 14", "Skill Description 1", 1),
-    SkillItem("Skill Title 15", "Skill Description 1", 1),
-    SkillItem("Skill Title 16", "Skill Description 1", 1),
-    SkillItem("Skill Title 17", "Skill Description 1", 1),
-  )
-
-  @Inject
-  lateinit var browserViewModel: BrowserViewModel
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-
-    setContent {
-      FiveSkillsComposeTheme {
-        Text("Hello")
-        SkillList(skillList)
-      }
-    }
-  }
-
-  override fun onStart() {
-    super.onStart()
-    browserViewModel.doSomething()
-  }
-
-  override fun onBrowserItemClicked(item: SkillItem) {
-    // do some stuff
-  }
-
-}
 
 @Composable
 fun SkillList(list: List<SkillItem>) {
+
+
+  //viewModel.loadCategories() // then start LazyColumn or display empty screen
+
   LazyColumn(
     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
     verticalArrangement = Arrangement.spacedBy(space = 8.dp),

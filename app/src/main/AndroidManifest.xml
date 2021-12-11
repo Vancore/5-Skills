@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AllInOne">
-        <activity android:name="five_skills.skill_browser.ui.BrowserActivity"
+        <activity android:name="five_skills.browse_categories.ui.BrowseCategoriesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

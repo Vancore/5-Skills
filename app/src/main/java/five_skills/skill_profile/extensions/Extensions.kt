@@ -2,8 +2,8 @@ package five_skills.skill_profile.extensions
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
+import five_skills.shared.models.SkillItem
 import five_skills.skill_profile.data.SkillProfileRemoteRepository.Companion.FIVE_SKILLS
-import shared.models.SkillItem
 
 fun DocumentSnapshot.toSkillItem(): SkillItem {
     return this.toObject(SkillItem::class.java)!!.also {

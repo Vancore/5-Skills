@@ -1,4 +1,4 @@
-package shared.models
+package five_skills.shared.models
 
 data class SkillItem(
     val skillTitle: String,

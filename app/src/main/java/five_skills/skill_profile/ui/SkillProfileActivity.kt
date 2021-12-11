@@ -16,9 +16,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import five_skills.extensions.hideKeyboard
+import five_skills.shared.models.SkillItem
 import five_skills.skill_detail.ui.SkillDetailActivity
 import five_skills.skill_profile.data.models.LoginValidation
-import shared.models.SkillItem
 import shared.view.CircularProgressDrawable
 import javax.inject.Inject
 

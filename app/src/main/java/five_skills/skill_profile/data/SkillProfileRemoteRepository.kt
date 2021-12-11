@@ -3,9 +3,9 @@ package five_skills.skill_profile.data
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import five_skills.shared.models.SkillItem
 import kotlinx.coroutines.tasks.await
 import five_skills.skill_profile.extensions.getSkillListFromUser
-import shared.models.SkillItem
 
 class SkillProfileRemoteRepository {
     private val db = Firebase.firestore

@@ -1,4 +1,4 @@
-package five_skills.browse_categories.ui
+package five_skills.categories.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -6,11 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import five_skills.five_skills.browse_categories.ui.SkillList
 import five_skills.five_skills.ui.theme.FiveSkillsComposeTheme
-import shared.models.SkillItem
+import five_skills.shared.models.SkillItem
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BrowseCategoriesActivity : AppCompatActivity(), BrowserItemClickListener {
+class CategoriesActivity : AppCompatActivity() {
 
   private val skillList = listOf(
     SkillItem("Skill Title 1", "Skill Description 1", 1),
@@ -33,7 +33,7 @@ class BrowseCategoriesActivity : AppCompatActivity(), BrowserItemClickListener {
   )
 
   @Inject
-  lateinit var browseCategoriesViewModel: BrowseCategoriesViewModel
+  lateinit var categoriesViewModel: CategoriesViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -47,11 +47,7 @@ class BrowseCategoriesActivity : AppCompatActivity(), BrowserItemClickListener {
 
   override fun onStart() {
     super.onStart()
-    browseCategoriesViewModel.loadCategories()
-  }
-
-  override fun onBrowserItemClicked(item: SkillItem) {
-    // do some stuff
+    categoriesViewModel.loadCategories()
   }
 
 }

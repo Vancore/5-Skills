@@ -19,9 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.all_in_one.R
-import five_skills.browse_categories.ui.BrowseCategoriesViewModel
 import five_skills.five_skills.ui.theme.FiveSkillsComposeTheme
-import shared.models.SkillItem
+import five_skills.shared.models.SkillItem
 
 
 @Composable

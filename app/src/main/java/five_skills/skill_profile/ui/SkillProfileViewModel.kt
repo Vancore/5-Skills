@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import five_skills.shared.models.SkillItem
 import kotlinx.coroutines.launch
 import five_skills.skill_profile.data.SkillProfileRepository
 import five_skills.skill_profile.data.models.LoginValidation
-import shared.models.SkillItem
 import javax.inject.Inject
 
 class SkillProfileViewModel @Inject constructor(

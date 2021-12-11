@@ -1,7 +1,7 @@
 package five_skills.skill_profile.data
 
 import com.google.firebase.auth.FirebaseUser
-import shared.models.SkillItem
+import five_skills.shared.models.SkillItem
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.all_in_one.databinding.ListitemSkillBinding
-import shared.models.SkillItem
+import five_skills.shared.models.SkillItem
 import five_skills.shared.view.SkillViewHolder
 
 class SkillsAdapter(

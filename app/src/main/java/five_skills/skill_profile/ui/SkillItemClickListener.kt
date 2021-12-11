@@ -1,6 +1,7 @@
 package five_skills.skill_profile.ui
 
-import shared.models.SkillItem
+import five_skills.shared.models.SkillItem
+
 
 interface SkillItemClickListener {
     fun onSkillItemClicked(item: SkillItem)

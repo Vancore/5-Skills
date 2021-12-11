@@ -9,10 +9,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,12 +26,14 @@ import five_skills.shared.models.CategoryItem
 
 @Composable
 fun CategoriesScreen(list: List<CategoryItem>) {
-
   Column {
-    TopBar()
-
-    CategoriesList(list = list)
-
+    //TopBar()
+    Scaffold(
+      topBar = { TopBar() },
+      backgroundColor = Color.Black
+    ) {
+      CategoriesList(list = list)
+    }
   }
 }
 
@@ -36,12 +41,12 @@ fun CategoriesScreen(list: List<CategoryItem>) {
 fun TopBar() {
   Column {
     Row {
-      Text(text = "Categories")
+      Text(text = "Categories", modifier = Modifier.weight(1f), color = Color.White)
       IconButton(onClick = { /*TODO*/ }) {
-
+        Icon(painter = painterResource(R.drawable.ic_person_outline_black_24dp), contentDescription = "Profile", tint = Color.White)
       }
       IconButton(onClick = { /*TODO*/ }) {
-
+        Icon(painter = painterResource(R.drawable.ic_cog_outline), contentDescription = "Settings", tint = Color.White)
       }
     }
     Divider(color = Grey200, thickness = 1.dp)

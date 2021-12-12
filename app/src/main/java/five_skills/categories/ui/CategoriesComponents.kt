@@ -9,25 +9,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.all_in_one.R
 import five_skills.five_skills.ui.theme.FiveSkillsComposeTheme
-import five_skills.five_skills.ui.theme.Grey200
+import five_skills.five_skills.ui.theme.TextGrey
 import five_skills.shared.models.CategoryItem
 
 @Composable
 fun CategoriesScreen(list: List<CategoryItem>) {
   Column {
-    //TopBar()
     Scaffold(
       topBar = { TopBar() },
       backgroundColor = Color.Black
@@ -40,66 +38,70 @@ fun CategoriesScreen(list: List<CategoryItem>) {
 @Composable
 fun TopBar() {
   Column {
-    Row {
-      Text(text = "Categories", modifier = Modifier.weight(1f), color = Color.White)
+    Row(verticalAlignment = Alignment.CenterVertically) {
+      Text(
+        text = stringResource(R.string.categories_title),
+        style = MaterialTheme.typography.body2,
+        modifier = Modifier
+          .weight(1f)
+          .padding(8.dp),
+        color = Color.White
+      )
       IconButton(onClick = { /*TODO*/ }) {
-        Icon(painter = painterResource(R.drawable.ic_person_outline_black_24dp), contentDescription = "Profile", tint = Color.White)
+        Icon(
+          painter = painterResource(R.drawable.ic_person_outline_black_24dp),
+          contentDescription = "Profile",
+          tint = Color.White
+        )
       }
       IconButton(onClick = { /*TODO*/ }) {
-        Icon(painter = painterResource(R.drawable.ic_cog_outline), contentDescription = "Settings", tint = Color.White)
+        Icon(
+          painter = painterResource(R.drawable.ic_cog_outline),
+          contentDescription = "Settings",
+          tint = Color.White
+        )
       }
     }
-    Divider(color = Grey200, thickness = 1.dp)
+    Divider(color = TextGrey, thickness = 1.dp)
   }
 }
 
 @Composable
 fun CategoriesList(list: List<CategoryItem>) {
-
-
-  //viewModel.loadCategories() // then start LazyColumn or display empty screen
-
   LazyColumn(
     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
     verticalArrangement = Arrangement.spacedBy(space = 8.dp),
     modifier = Modifier.fillMaxWidth()
   ) {
-    items(list) { skillEntry ->
-      SkillEntry(categoryItem = skillEntry)
+    items(list) { categoryItem ->
+      CategoryItem(categoryItem = categoryItem)
     }
   }
 }
 
 @Composable
-fun SkillEntry(categoryItem: CategoryItem) {
+fun CategoryItem(categoryItem: CategoryItem) {
 
   // can be used for expanding
   // -> e.g. in Text, maxLines = if (isClicked ...)
   var isClicked by remember { mutableStateOf(false) }
 
-  Surface(
-    shape = MaterialTheme.shapes.medium,
-    elevation = 4.dp,
-    modifier = Modifier
-      .clickable { isClicked = !isClicked }
+  Surface(modifier = Modifier
+    .padding(8.dp)
+    .clickable { isClicked = !isClicked }
   ) {
-
     Row(
       modifier = Modifier
-        .padding(8.dp)
         .fillMaxWidth(),
       verticalAlignment = Alignment.CenterVertically,
       horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-
-      Column {
-        Text(
-          text = categoryItem.name,
-          color = MaterialTheme.colors.secondary,
-          style = MaterialTheme.typography.subtitle2
-        )
-      }
+      Text(
+        text = categoryItem.name,
+        color = MaterialTheme.colors.secondary,
+        style = MaterialTheme.typography.subtitle2,
+      )
 
       Spacer(modifier = Modifier.width(8.dp))
 
@@ -116,6 +118,8 @@ fun SkillEntry(categoryItem: CategoryItem) {
     }
   }
 }
+
+/// Preview Section
 
 @Preview
 @Composable
@@ -134,6 +138,6 @@ fun CategoriesScreenPreview() {
 @Composable
 fun SkillEntryPreview() {
   FiveSkillsComposeTheme {
-    SkillEntry(CategoryItem(1, "Category 1"))
+    CategoryItem(CategoryItem(1, "Category 1"))
   }
 }

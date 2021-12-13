@@ -7,24 +7,21 @@ import five_skills.categories.data.CategoriesRepository
 import five_skills.shared.models.CategoryItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.system.measureTimeMillis
 
 class CategoriesViewModel @Inject constructor(
-  private val categoriesRepository: CategoriesRepository,
-//  private val savedStateHandle: SavedStateHandle
+  private val categoriesRepository: CategoriesRepository
 ) : ViewModel() {
 
   var categoriesList = mutableStateListOf<CategoryItem>()
     private set
 
   init {
-    this.viewModelScope.launch {
-      categoriesList.addAll(categoriesRepository.loadCategories())
+    val timeInMillis = measureTimeMillis {
+      this.viewModelScope.launch {
+        categoriesList.addAll(categoriesRepository.loadCategories())
+      }
     }
-  }
-
-  fun loadCategories() {
-    this.viewModelScope.launch {
-      categoriesList.addAll(categoriesRepository.loadCategories())
-    }
+    println("Firebase Loading time: $timeInMillis")
   }
 }

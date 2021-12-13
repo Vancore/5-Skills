@@ -29,12 +29,8 @@ fun CategoriesScreen(categoriesViewModel: CategoriesViewModel) {
   val list = categoriesViewModel.categoriesList
 
   Column {
-    Scaffold(
-      topBar = { TopBar() },
-      backgroundColor = Color.Black
-    ) {
-      CategoriesList(list = list)
-    }
+    TopBar()
+    CategoriesList(list = list)
   }
 }
 
@@ -127,9 +123,12 @@ fun CategoryItem(categoryItem: CategoryItem) {
 @Preview
 @Composable
 fun CategoriesScreenPreview() {
-  CategoriesList(
-    List(3) { CategoryItem(it, "Name for $it") }
-  )
+  Column {
+    TopBar()
+    CategoriesList(
+      List(3) { CategoryItem(it, "Name for $it") }
+    )
+  }
 }
 
 @Preview(name = "Light Mode")

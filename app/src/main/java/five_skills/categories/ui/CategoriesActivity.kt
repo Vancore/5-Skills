@@ -28,7 +28,6 @@ class CategoriesActivity : AppCompatActivity() {
 
 @Composable
 fun CategoriesActivityScreen(categoriesViewModel: CategoriesViewModel) {
-
   CategoriesScreen(categoriesViewModel = categoriesViewModel)
 }
 

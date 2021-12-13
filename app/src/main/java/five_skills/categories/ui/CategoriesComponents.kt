@@ -24,7 +24,10 @@ import five_skills.five_skills.ui.theme.TextGrey
 import five_skills.shared.models.CategoryItem
 
 @Composable
-fun CategoriesScreen(list: List<CategoryItem>) {
+fun CategoriesScreen(categoriesViewModel: CategoriesViewModel) {
+
+  val list = categoriesViewModel.categoriesList
+
   Column {
     Scaffold(
       topBar = { TopBar() },
@@ -124,7 +127,7 @@ fun CategoryItem(categoryItem: CategoryItem) {
 @Preview
 @Composable
 fun CategoriesScreenPreview() {
-  CategoriesScreen(
+  CategoriesList(
     List(3) { CategoryItem(it, "Name for $it") }
   )
 }

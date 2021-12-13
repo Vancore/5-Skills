@@ -24,16 +24,11 @@ class CategoriesActivity : AppCompatActivity() {
     }
   }
 
-  override fun onStart() {
-    super.onStart()
-    // Maybe not needed here .. definitely not
-    categoriesViewModel.loadCategories()
-  }
-
 }
 
 @Composable
 fun CategoriesActivityScreen(categoriesViewModel: CategoriesViewModel) {
-  CategoriesScreen(list = categoriesViewModel.categoriesList)
+
+  CategoriesScreen(categoriesViewModel = categoriesViewModel)
 }
 

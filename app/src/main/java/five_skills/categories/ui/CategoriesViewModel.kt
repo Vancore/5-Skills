@@ -16,6 +16,12 @@ class CategoriesViewModel @Inject constructor(
   var categoriesList = mutableStateListOf<CategoryItem>()
     private set
 
+  init {
+    this.viewModelScope.launch {
+      categoriesList.addAll(categoriesRepository.loadCategories())
+    }
+  }
+
   fun loadCategories() {
     this.viewModelScope.launch {
       categoriesList.addAll(categoriesRepository.loadCategories())

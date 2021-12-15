@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/browserFragment"
-        android:title="@string/menu_five_skills_browser"
-        android:icon="@drawable/ic_five_skills_browse" />
-    <item android:id="@+id/skillProfileFragment"
-        android:title="@string/menu_five_skills_profile"
-        android:icon="@drawable/ic_five_skills_profile" />
-</menu>

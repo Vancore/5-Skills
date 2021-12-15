@@ -4,6 +4,7 @@ object Dependencies {
     const val composeVersion = "1.1.0-beta03"
     const val composeActivitiesVersion = "1.4.0"
     const val composeViewModelsVersion = "2.4.0"
+    const val accompanistVersion = "0.20.3"
 
     const val composeUI = "androidx.compose.ui:ui:$composeVersion"
     // Tooling support (Previews, etc.)
@@ -24,6 +25,9 @@ object Dependencies {
     const val composeRuntimeRxJava = "androidx.compose.runtime:runtime-rxjava2:$composeVersion"
     // UI Tests
     const val composeUITesting = "androidx.compose.ui:ui-test-junit4:$composeVersion"
+
+    /// Accompanist
+    const val accompanistSystemUIController = "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
 
     /// Hilt DI
     const val hiltVersion = "2.38.1"

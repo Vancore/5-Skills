@@ -18,6 +18,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,7 +47,7 @@ fun TopBar() {
                 style = MaterialTheme.typography.h6,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(16.dp),
+                    .padding(24.dp),
                 color = MaterialTheme.colors.onPrimary
             )
             IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(8.dp)) {
@@ -56,7 +57,7 @@ fun TopBar() {
                     tint = MaterialTheme.colors.onPrimary
                 )
             }
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 16.dp)) {
                 Icon(
                     painter = painterResource(R.drawable.ic_cog_outline),
                     contentDescription = "Settings",
@@ -67,7 +68,7 @@ fun TopBar() {
         Divider(
             color = MaterialTheme.colors.onPrimary,
             thickness = 0.5.dp,
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp).alpha(0.5f)
         )
     }
 }
@@ -95,7 +96,7 @@ fun CategoryItem(categoryItem: CategoryItem) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable { isClicked = !isClicked }
-            .padding(vertical = 28.dp, horizontal = 16.dp),
+            .padding(vertical = 28.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -112,10 +113,10 @@ fun CategoryItem(categoryItem: CategoryItem) {
             painter = painterResource(id = R.drawable.barbell),
             contentDescription = "Skill Icon",
             modifier = Modifier
-                .size(48.dp)
+                .size(44.dp)
                 // Clip image to be shaped as a circle, same for border
                 .clip(CircleShape)
-                .border(2.dp, MaterialTheme.colors.secondary, CircleShape)
+                .border(2.dp, MaterialTheme.colors.onPrimary, CircleShape)
         )
     }
 

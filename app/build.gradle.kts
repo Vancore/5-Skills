@@ -74,6 +74,9 @@ dependencies {
     implementation(Dependencies.composeRuntimeLiveData)
     implementation(Dependencies.composeRuntimeRxJava)
 
+    // Accompanist
+    implementation(Dependencies.accompanistSystemUIController)
+
     // Hilt DI
     implementation(Dependencies.hiltAndroid)
     kapt(Dependencies.hiltCompiler)

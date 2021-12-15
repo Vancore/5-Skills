@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 /// Dark
 val Grey200 = Color(0xFFC5CEDE)
+val Grey400 = Color(0xFF6C6B70)
 
 val Primary_Dark = Color(0xFF050A1D)
 val Primary = Color(0xFF181F37)

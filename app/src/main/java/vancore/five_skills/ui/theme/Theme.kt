@@ -1,25 +1,26 @@
 package vancore.five_skills.ui.theme
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
-@SuppressLint("ConflictingOnColor")
 private val DarkColorPalette = darkColors(
     primary = Primary,
     primaryVariant = Primary_Dark,
     secondary = Accent_Primary,
-    background = Primary_Dark,
-    onPrimary = Grey200
+    onPrimary = Grey200,
+    onBackground = Grey200,
+    background = Primary_Dark
 )
 
 private val LightColorPalette = lightColors(
-    primary = Primary,
-    primaryVariant = Primary_Dark,
-    secondary = Accent_Primary
+    primary = Grey200,
+    primaryVariant = Rose200,
+    secondary = Accent_Secondary,
+    onBackground = Primary_Dark,
+    onPrimary = Primary_Dark
 
     /* Other default colors to override
     background = Color.White,

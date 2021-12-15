@@ -5,6 +5,8 @@ import vancore.five_skills.shared.CategoryItem
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 
 import android.content.res.Configuration
+import android.graphics.drawable.shapes.Shape
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,31 +22,34 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlin.system.measureTimeMillis
 
 @Composable
 fun CategoryScreen(categoryViewModel: CategoryViewModel) {
 
     val list = categoryViewModel.categoriesList
 
-    Column {
-        TopBar()
+    Scaffold(topBar = { TopBar() }) {
         CategoriesList(list = list)
     }
 }
 
 @Composable
 fun TopBar() {
-    Column(modifier = Modifier.padding(vertical = 8.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+    Column {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = 8.dp)
+        ) {
             Text(
                 text = "Categories",
                 style = MaterialTheme.typography.h6,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(8.dp),
+                    .padding(16.dp),
                 color = MaterialTheme.colors.onPrimary
             )
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(8.dp)) {
                 Icon(
                     painter = painterResource(R.drawable.ic_person_outline_black),
                     contentDescription = "Profile",
@@ -59,15 +64,17 @@ fun TopBar() {
                 )
             }
         }
-        Divider(color = MaterialTheme.colors.onPrimary, thickness = 0.5.dp, modifier = Modifier.padding(top = 12.dp))
+        Divider(
+            color = MaterialTheme.colors.onPrimary,
+            thickness = 0.5.dp,
+            modifier = Modifier.padding(top = 8.dp)
+        )
     }
 }
 
 @Composable
 fun CategoriesList(list: List<CategoryItem>) {
     LazyColumn(
-        contentPadding = PaddingValues(vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(space = 8.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
         items(list) { categoryItem ->
@@ -87,8 +94,8 @@ fun CategoryItem(categoryItem: CategoryItem) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 8.dp)
-            .clickable { isClicked = !isClicked },
+            .clickable { isClicked = !isClicked }
+            .padding(vertical = 28.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -96,7 +103,7 @@ fun CategoryItem(categoryItem: CategoryItem) {
         Text(
             text = categoryItem.name,
             color = MaterialTheme.colors.onPrimary,
-            style = MaterialTheme.typography.subtitle2,
+            style = MaterialTheme.typography.h6,
         )
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -105,8 +112,7 @@ fun CategoryItem(categoryItem: CategoryItem) {
             painter = painterResource(id = R.drawable.barbell),
             contentDescription = "Skill Icon",
             modifier = Modifier
-                // Set image size to 40 dp
-                .size(40.dp)
+                .size(48.dp)
                 // Clip image to be shaped as a circle, same for border
                 .clip(CircleShape)
                 .border(2.dp, MaterialTheme.colors.secondary, CircleShape)
@@ -124,15 +130,20 @@ fun CategoryItem(categoryItem: CategoryItem) {
 )
 @Composable
 fun CategoriesScreenPreview() {
-    Column {
-        TopBar()
-        CategoriesList(
-            List(3) { CategoryItem(it, "Name for $it") }
-        )
+    FiveSkillsTheme {
+        Scaffold(topBar = { TopBar() }) {
+            CategoriesList(
+                List(3) { CategoryItem(it, "Name for $it") }
+            )
+        }
     }
 }
 
-@Preview(name = "Light Mode")
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true
+)
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true,

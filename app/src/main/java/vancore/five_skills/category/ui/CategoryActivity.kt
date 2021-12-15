@@ -1,6 +1,7 @@
 package vancore.five_skills.category.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import dagger.hilt.android.AndroidEntryPoint
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 import javax.inject.Inject
+import kotlin.system.measureTimeMillis
 
 @AndroidEntryPoint
 class CategoryActivity : ComponentActivity() {
@@ -20,10 +22,7 @@ class CategoryActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FiveSkillsTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    CategoryActivityScreen(categoryViewModel)
-                }
+                CategoryActivityScreen(categoryViewModel)
             }
         }
     }

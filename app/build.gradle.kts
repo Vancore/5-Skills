@@ -77,6 +77,9 @@ dependencies {
     // Accompanist
     implementation(Dependencies.accompanistSystemUIController)
 
+    // Jetpack Navigation
+    implementation(Dependencies.navigation)
+
     // Hilt DI
     implementation(Dependencies.hiltAndroid)
     kapt(Dependencies.hiltCompiler)

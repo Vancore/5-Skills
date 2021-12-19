@@ -6,28 +6,25 @@ object Dependencies {
     const val composeViewModelsVersion = "2.4.0"
     const val accompanistVersion = "0.20.3"
 
-    const val composeUI = "androidx.compose.ui:ui:$composeVersion"
-    // Tooling support (Previews, etc.)
+    const val composeUI = "androidx.compose.ui:ui:$composeVersion" // Tooling support (Previews, etc.)
     const val composeUITooling = "androidx.compose.ui:ui-tooling:$composeVersion"
-    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    const val composeFoundation = "androidx.compose.foundation:foundation:$composeVersion"
-    // Material Design
-    const val composeMaterialDesign = "androidx.compose.material:material:$composeVersion"
-    // Material design icons
-    const val composeMaterialDesignIcons = "androidx.compose.material:material-icons-core:$composeVersion"
+    const val composeFoundation = "androidx.compose.foundation:foundation:$composeVersion" // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    const val composeMaterialDesign = "androidx.compose.material:material:$composeVersion" // Material Design
+    const val composeMaterialDesignIcons = "androidx.compose.material:material-icons-core:$composeVersion" // Material design icons
     const val composeMaterialDesignIconsExtended = "androidx.compose.material:material-icons-extended:$composeVersion"
-    // Integration with activities
-    const val composeActivities = "androidx.activity:activity-compose:$composeActivitiesVersion"
-    // Integration with ViewModels
-    const val composeViewModels = "androidx.lifecycle:lifecycle-viewmodel-compose:$composeViewModelsVersion"
-    // Integration with observables
-    const val composeRuntimeLiveData = "androidx.compose.runtime:runtime-livedata:$composeVersion"
+    const val composeActivities = "androidx.activity:activity-compose:$composeActivitiesVersion" // Integration with activities
+    const val composeViewModels = "androidx.lifecycle:lifecycle-viewmodel-compose:$composeViewModelsVersion" // Integration with ViewModels
+    const val composeRuntimeLiveData = "androidx.compose.runtime:runtime-livedata:$composeVersion" // Integration with observables
     const val composeRuntimeRxJava = "androidx.compose.runtime:runtime-rxjava2:$composeVersion"
-    // UI Tests
-    const val composeUITesting = "androidx.compose.ui:ui-test-junit4:$composeVersion"
+    const val composeUITesting = "androidx.compose.ui:ui-test-junit4:$composeVersion" // UI Tests
 
     /// Accompanist
     const val accompanistSystemUIController = "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
+
+    /// Navigation
+    const val navigationVersion = "2.4.0-beta02"
+
+    const val navigation = "androidx.navigation:navigation-compose:$navigationVersion"
 
     /// Hilt DI
     const val hiltVersion = "2.38.1"
@@ -46,6 +43,5 @@ object Dependencies {
     const val firebaseAuthKTX = "com.google.firebase:firebase-auth-ktx:21.0.1"
     const val firebaseUIAuth = "com.firebaseui:firebase-ui-auth:7.2.0"
     const val firebasePlayServices = "com.google.android.gms:play-services-auth:19.2.0"
-    // No versioning needed because of BoM
-    const val firebaseAuth = "com.google.firebase:firebase-auth"
+    const val firebaseAuth = "com.google.firebase:firebase-auth" // No versioning needed because of BoM
 }

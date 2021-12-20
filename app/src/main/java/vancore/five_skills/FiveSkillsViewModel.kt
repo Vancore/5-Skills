@@ -4,19 +4,19 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import vancore.five_skills.data.CategoryListRepository
-import vancore.five_skills.components.CategoryItem
-import vancore.five_skills.components.SubCategoryItem
+import vancore.five_skills.data.FiveSkillsRepository
+import vancore.five_skills.data.models.CategoryItem
+import vancore.five_skills.data.models.SubcategoryItem
 import javax.inject.Inject
 
 class FiveSkillsViewModel @Inject constructor(
-    private val categoriesRepository: CategoryListRepository
+    private val categoriesRepository: FiveSkillsRepository
 ) : ViewModel() {
 
     var categoriesList = mutableStateListOf<CategoryItem>()
         private set
 
-    var subCategoriesList = mutableStateListOf<SubCategoryItem>()
+    var subcategoriesList = mutableStateListOf<SubcategoryItem>()
         private set
 
     init {
@@ -25,10 +25,10 @@ class FiveSkillsViewModel @Inject constructor(
         }
     }
 
-    fun fetchSubcategoriesFor(category: String) {
+    fun fetchSubcategoriesFor(categoryID: String) {
         viewModelScope.launch {
-            // Todo: Load subcategories
-            //subCategoriesList.addAll(categoriesRepository.loadS())
+            subcategoriesList.clear()
+            subcategoriesList.addAll(categoriesRepository.loadSubcategories(categoryId = categoryID))
         }
     }
 }

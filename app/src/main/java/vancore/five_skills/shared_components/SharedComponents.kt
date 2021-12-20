@@ -1,4 +1,4 @@
-package vancore.five_skills.components
+package vancore.five_skills.shared_components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border

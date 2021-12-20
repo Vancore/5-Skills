@@ -9,9 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import vancore.five_skills.FiveSkillsViewModel
-import vancore.five_skills.components.CategoryItem
-import vancore.five_skills.components.CategoryListEntry
-import vancore.five_skills.components.TopBar
+import vancore.five_skills.data.models.CategoryItem
+import vancore.five_skills.shared_components.CategoryListEntry
+import vancore.five_skills.shared_components.TopBar
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 
 @Composable

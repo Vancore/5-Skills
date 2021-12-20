@@ -6,24 +6,23 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import vancore.five_skills.FiveSkillsViewModel
-import vancore.five_skills.components.CategoryListEntry
-import vancore.five_skills.components.SubCategoryItem
+import vancore.five_skills.shared_components.CategoryListEntry
+import vancore.five_skills.data.models.SubcategoryItem
 
 @Composable
 fun SubcategoryScreen(
-    categoryID: String,
+    categoryName: String,
     fiveSkillsViewModel: FiveSkillsViewModel,
     onSubcategorySelected: (String) -> Unit = {}
 ) {
 
-    fiveSkillsViewModel.fetchSubcategoriesFor(categoryID)
-    val list = fiveSkillsViewModel.subCategoriesList
+    val list = fiveSkillsViewModel.subcategoriesList
 
     SubCategoriesList(list = list) { onSubcategorySelected(it) }
 }
 
 @Composable
-fun SubCategoriesList(list: List<SubCategoryItem>, onSubcategorySelected: (String) -> Unit = {}) {
+fun SubCategoriesList(list: List<SubcategoryItem>, onSubcategorySelected: (String) -> Unit = {}) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {

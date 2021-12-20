@@ -6,10 +6,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import vancore.five_skills.data.CategoryListRepository
-import vancore.five_skills.data.CategoryListRepositoryImpl
-import vancore.five_skills.data.CategoryListLocalRepository
-import vancore.five_skills.data.CategoryListRemoteRepository
+import vancore.five_skills.data.FiveSkillsRepository
+import vancore.five_skills.data.FiveSkillsRepositoryImpl
+import vancore.five_skills.data.FiveSkillsLocalRepository
+import vancore.five_skills.data.FiveSkillsRemoteRepository
 import javax.inject.Singleton
 
 @Module
@@ -18,22 +18,22 @@ object CategoryListModule {
 
     @Provides
     @Singleton
-    fun provideRemoteDatabase(@ApplicationContext appContext: Context): CategoryListRemoteRepository {
-        return CategoryListRemoteRepository() //impl
+    fun provideRemoteDatabase(@ApplicationContext appContext: Context): FiveSkillsRemoteRepository {
+        return FiveSkillsRemoteRepository() //impl
     }
 
     @Provides
     @Singleton
-    fun provideLocalDatabase(@ApplicationContext appContext: Context): CategoryListLocalRepository {
-        return CategoryListLocalRepository() // impl
+    fun provideLocalDatabase(@ApplicationContext appContext: Context): FiveSkillsLocalRepository {
+        return FiveSkillsLocalRepository() // impl
     }
 
     // @ApplicationContext in den Parameter, ist default binding
     @Provides
     fun providesCategoryListRepository(
-        listRemoteRepository: CategoryListRemoteRepository,
-        listLocalRepository: CategoryListLocalRepository
-    ): CategoryListRepository {
-        return CategoryListRepositoryImpl(listRemoteRepository, listLocalRepository)
+        listRemoteRepository: FiveSkillsRemoteRepository,
+        listLocalRepository: FiveSkillsLocalRepository
+    ): FiveSkillsRepository {
+        return FiveSkillsRepositoryImpl(listRemoteRepository, listLocalRepository)
     }
 }

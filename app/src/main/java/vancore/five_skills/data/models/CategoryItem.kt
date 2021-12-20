@@ -1,4 +1,4 @@
-package vancore.five_skills.components
+package vancore.five_skills.data.models
 
 data class CategoryItem(
     val id: Int,

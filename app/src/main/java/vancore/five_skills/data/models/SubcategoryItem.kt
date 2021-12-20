@@ -1,6 +1,6 @@
-package vancore.five_skills.components
+package vancore.five_skills.data.models
 
-data class SubCategoryItem(
+data class SubcategoryItem(
     val id: Int,
     val firebaseId: String,
     val name: String

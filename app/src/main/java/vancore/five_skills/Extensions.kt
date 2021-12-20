@@ -1,8 +1,8 @@
 package vancore.five_skills
 
 import com.google.firebase.firestore.QuerySnapshot
-import vancore.five_skills.components.CategoryItem
-import vancore.five_skills.components.SubCategoryItem
+import vancore.five_skills.data.models.CategoryItem
+import vancore.five_skills.data.models.SubcategoryItem
 
 fun QuerySnapshot.getCategoryItems(): List<CategoryItem> {
     val listOfSkills = mutableListOf<CategoryItem>()
@@ -18,11 +18,11 @@ fun QuerySnapshot.getCategoryItems(): List<CategoryItem> {
     return listOfSkills
 }
 
-fun QuerySnapshot.getSubCategoryItems(): List<SubCategoryItem> {
-    val listOfSubCategories = mutableListOf<SubCategoryItem>()
+fun QuerySnapshot.getSubCategoryItems(): List<SubcategoryItem> {
+    val listOfSubCategories = mutableListOf<SubcategoryItem>()
     for (category in this.documents) {
         listOfSubCategories.add(
-            SubCategoryItem(
+            SubcategoryItem(
                 id = category["id"].toString().toInt(),
                 firebaseId = category.id,
                 name = category["name"].toString()

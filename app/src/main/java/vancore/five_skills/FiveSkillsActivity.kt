@@ -15,6 +15,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
+import vancore.five_skills.NavArguments.CATEGORY_ID
 import vancore.five_skills.category.CategoryScreen
 import vancore.five_skills.components.TopBar
 import vancore.five_skills.subcategory.SubcategoryScreen
@@ -83,9 +84,9 @@ fun FiveSkillsNavHost(
 
         }
 
-        val skillsName = FiveSkillsScreen.Skill.name
+        val singleSkillRoute = FiveSkillsScreen.Skill.name
         composable(
-            route = "$skillsName/{id}",
+            route = "$singleSkillRoute/{id}",
             arguments = listOf(
                 navArgument("data") {
                     type = NavType.StringType
@@ -99,18 +100,38 @@ fun FiveSkillsNavHost(
                 navigateToSubCategory(navHostController, categoryId)
             }
         }
-        composable(FiveSkillsScreen.Subcategories.name) {
-            SubcategoryScreen(fiveSkillsViewModel = viewModel) { subcategoryId ->
-                //navigateToSkillList
+
+        val subcategoryRoute = FiveSkillsScreen.Subcategories.name
+        composable(
+            route = "$subcategoryRoute/{$CATEGORY_ID}",
+            arguments = listOf(
+                navArgument(CATEGORY_ID) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getString(CATEGORY_ID)?.let { categoryId ->
+                SubcategoryScreen(
+                    categoryID = categoryId,
+                    fiveSkillsViewModel = viewModel
+                ) { subcategoryId ->
+                    //navigateToSkillList
+                }
+
             }
         }
     }
 }
 
-private fun navigateToSubCategory(navController: NavHostController, subCategoryId: String) {
-    navController.navigate("${FiveSkillsScreen.Subcategories.name}")
+private fun navigateToSubCategory(navController: NavHostController, categoryId: String) {
+    navController.navigate("${FiveSkillsScreen.Subcategories.name}/$categoryId")
 }
 
 private fun navigateToSingleSkill(navController: NavHostController, skillId: String) {
     navController.navigate("${FiveSkillsScreen.Skill.name}/$skillId")
+}
+
+object NavArguments {
+    const val CATEGORY_ID = "categoryID"
+    const val SUBCATEGORY_ID = "subcategoryID"
 }

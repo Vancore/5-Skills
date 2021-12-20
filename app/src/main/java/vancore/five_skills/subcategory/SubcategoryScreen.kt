@@ -11,10 +11,12 @@ import vancore.five_skills.components.SubCategoryItem
 
 @Composable
 fun SubcategoryScreen(
+    categoryID: String,
     fiveSkillsViewModel: FiveSkillsViewModel,
     onSubcategorySelected: (String) -> Unit = {}
 ) {
 
+    fiveSkillsViewModel.fetchSubcategoriesFor(categoryID)
     val list = fiveSkillsViewModel.subCategoriesList
 
     SubCategoriesList(list = list) { onSubcategorySelected(it) }

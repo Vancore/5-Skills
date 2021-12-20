@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 data class AuthenticationState(
     val currentUser: FirebaseUser? = null,
     val loadingState: LoginState = LoginState.LoggedOut,
-    val errorMessage: String = "Error-kun"
+    val errorMessage: String = ""
 )
 
 class AuthenticationUseCase {

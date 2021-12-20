@@ -31,8 +31,18 @@ fun ProfileScreen(fiveSkillsViewModel: FiveSkillsViewModel) {
     val authenticationState by fiveSkillsViewModel.authenticationState.collectAsState()
 
     authenticationState.currentUser
-    Scaffold(topBar = { ProfileLoginTitle(titleText = "Login") }) {
+    var currentPasswordInput = ""
+    var currentUserInput = ""
 
+    Scaffold(topBar = { ProfileLoginTitle(titleText = "Login") }) {
+        LoginInputs(
+            onPasswordChanged = { currentPasswordInput = it },
+            onUserNameChanged = { currentUserInput = it }
+        )
+
+        if (authenticationState.errorMessage.isNotEmpty()) {
+            FiveSkillsErrorText(errorText = authenticationState.errorMessage)
+        }
     }
 }
 

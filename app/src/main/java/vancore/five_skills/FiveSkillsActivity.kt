@@ -17,6 +17,7 @@ import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import vancore.five_skills.NavArguments.CATEGORY_NAME
 import vancore.five_skills.category.CategoryScreen
+import vancore.five_skills.profile.ProfileScreen
 import vancore.five_skills.shared_components.TopBar
 import vancore.five_skills.subcategory.SubcategoryScreen
 import vancore.five_skills.ui.theme.FiveSkillsTheme
@@ -77,11 +78,13 @@ fun FiveSkillsNavHost(
         startDestination = FiveSkillsScreen.Categories.name,
         modifier = modifier
     ) {
+
         composable(FiveSkillsScreen.FiveSkillsSettings.name) {
 
         }
-        composable(FiveSkillsScreen.Profile.name) {
 
+        composable(FiveSkillsScreen.Profile.name) {
+            ProfileScreen(fiveSkillsViewModel = viewModel)
         }
 
         val singleSkillRoute = FiveSkillsScreen.Skill.name
@@ -95,6 +98,7 @@ fun FiveSkillsNavHost(
         ) {
 
         }
+
         composable(FiveSkillsScreen.Categories.name) {
             CategoryScreen(fiveSkillsViewModel = viewModel) { categoryID ->
                 viewModel.fetchSubcategoriesFor(categoryID)
@@ -118,7 +122,6 @@ fun FiveSkillsNavHost(
                 ) { subcategoryId ->
                     //navigateToSkillList
                 }
-
             }
         }
     }

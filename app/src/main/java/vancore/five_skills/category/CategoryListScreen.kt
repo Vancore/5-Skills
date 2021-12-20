@@ -17,7 +17,7 @@ import vancore.five_skills.ui.theme.FiveSkillsTheme
 @Composable
 fun CategoryScreen(
     fiveSkillsViewModel: FiveSkillsViewModel,
-    categorySelected: (String) -> Unit = {}
+    categorySelected: (String) -> Unit = {},
 ) {
 
     val list = fiveSkillsViewModel.categoriesList

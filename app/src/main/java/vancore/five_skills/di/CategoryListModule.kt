@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import vancore.five_skills.authentication.AuthenticationUseCase
 import vancore.five_skills.data.FiveSkillsRepository
 import vancore.five_skills.data.FiveSkillsRepositoryImpl
 import vancore.five_skills.data.FiveSkillsLocalRepository
@@ -30,10 +31,15 @@ object CategoryListModule {
 
     // @ApplicationContext in den Parameter, ist default binding
     @Provides
-    fun providesCategoryListRepository(
-        listRemoteRepository: FiveSkillsRemoteRepository,
-        listLocalRepository: FiveSkillsLocalRepository
+    fun providesFiveSkillsRepository(
+        remoteRepository: FiveSkillsRemoteRepository,
+        localRepository: FiveSkillsLocalRepository
     ): FiveSkillsRepository {
-        return FiveSkillsRepositoryImpl(listRemoteRepository, listLocalRepository)
+        return FiveSkillsRepositoryImpl(remoteRepository, localRepository)
+    }
+
+    @Provides
+    fun providesAuthenticationUseCase(): AuthenticationUseCase{
+        return AuthenticationUseCase()
     }
 }

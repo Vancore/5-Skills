@@ -6,13 +6,18 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -109,21 +114,28 @@ fun TopBar(
     }
 }
 
+@ExperimentalComposeUiApi
 @Composable
 fun FiveSkillsTextInput(
+    modifier: Modifier = Modifier,
+    text: String,
+    onTextChange: (String) -> Unit = {},
+    onImeAction: () -> Unit= {},
+    keyboardOption: KeyboardOptions,
     placeHolder: String,
     label: String,
-    value: String,
-    onValueChange: (String) -> Unit = {}
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     TextField(
+        value = text,
+        onValueChange = onTextChange,
         placeholder = { Text(text = placeHolder) },
-        label = { Text(label) },
-        value = value,
-        onValueChange = onValueChange,
-        modifier = Modifier
-            .padding(vertical = 16.dp, horizontal = 24.dp)
-            .fillMaxWidth()
+        keyboardOptions = keyboardOption,
+        keyboardActions = KeyboardActions(onDone = {
+            onImeAction()
+            keyboardController?.hide()
+        }),
+        modifier = modifier
     )
 }
 

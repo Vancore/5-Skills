@@ -78,7 +78,7 @@ dependencies {
     implementation(Dependencies.accompanistSystemUIController)
 
     // Jetpack Navigation
-    implementation(Dependencies.navigation)
+    implementation(Dependencies.navigationCompose)
 
     // Hilt DI
     implementation(Dependencies.hiltAndroid)

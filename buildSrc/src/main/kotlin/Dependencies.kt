@@ -22,9 +22,9 @@ object Dependencies {
     const val accompanistSystemUIController = "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
 
     /// Navigation
-    const val navigationVersion = "2.4.0-beta02"
+    const val navigationComposeVersion = "2.4.0-rc01"
 
-    const val navigation = "androidx.navigation:navigation-compose:$navigationVersion"
+    const val navigationCompose = "androidx.navigation:navigation-compose:$navigationComposeVersion"
 
     /// Hilt DI
     const val hiltVersion = "2.38.1"

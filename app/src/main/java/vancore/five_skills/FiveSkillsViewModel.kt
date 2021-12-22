@@ -4,10 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import vancore.five_skills.authentication.AuthenticationState
 import vancore.five_skills.authentication.AuthenticationUseCase
 import vancore.five_skills.data.FiveSkillsRepository
 import vancore.five_skills.data.models.CategoryItem
@@ -41,6 +38,18 @@ class FiveSkillsViewModel @Inject constructor(
             subcategoriesList.clear()
             subcategoriesList.addAll(categoriesRepository.loadSubcategories(categoryId = categoryID))
         }
+    }
+
+    fun loginClicked(user: String, password: String) {
+        authenticationUseCase.login(email = user, password = password)
+    }
+
+    fun registerClicked(email: String, password: String) {
+        authenticationUseCase.register(email = email, password = password)
+    }
+
+    fun logoutClicked() {
+        authenticationUseCase.logout()
     }
 
 }

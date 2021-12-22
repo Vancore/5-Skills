@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -29,6 +30,7 @@ class FiveSkillsActivity : ComponentActivity() {
     @Inject
     lateinit var fiveSkillsViewModel: FiveSkillsViewModel
 
+    @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -37,6 +39,8 @@ class FiveSkillsActivity : ComponentActivity() {
     }
 }
 
+
+@ExperimentalComposeUiApi
 @Composable
 fun FiveSkillsApp(fiveSkillsViewModel: FiveSkillsViewModel) {
     FiveSkillsTheme {
@@ -67,6 +71,7 @@ fun FiveSkillsApp(fiveSkillsViewModel: FiveSkillsViewModel) {
     }
 }
 
+@ExperimentalComposeUiApi
 @Composable
 fun FiveSkillsNavHost(
     navHostController: NavHostController,

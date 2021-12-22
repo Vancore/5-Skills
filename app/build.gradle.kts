@@ -56,23 +56,17 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
 
     // Jetpack Compose
-    implementation(Dependencies.composeUI)
-    // Tooling support (Previews, etc.)
-    implementation(Dependencies.composeUITooling)
-    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation(Dependencies.composeFoundation)
-    // Material Design
-    implementation(Dependencies.composeMaterialDesign)
-    // Material design icons
+    implementation(Dependencies.composeUI) // Tooling support (Previews, etc.)
+    implementation(Dependencies.composeUITooling) // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation(Dependencies.composeFoundation) // Material Design
+    implementation(Dependencies.composeMaterialDesign) // Material design icons
     implementation(Dependencies.composeMaterialDesignIcons)
-    implementation(Dependencies.composeMaterialDesignIconsExtended)
-    // Integration with activities
-    implementation(Dependencies.composeActivities)
-    // Integration with ViewModels
-    implementation(Dependencies.composeViewModels)
-    // Integration with observables
+    implementation(Dependencies.composeMaterialDesignIconsExtended) // Integration with activities
+    implementation(Dependencies.composeActivities) // Integration with ViewModels
+    implementation(Dependencies.composeViewModels) // Integration with observables
     implementation(Dependencies.composeRuntimeLiveData)
     implementation(Dependencies.composeRuntimeRxJava)
+    implementation(Dependencies.composeConstraintLayout)
 
     // Accompanist
     implementation(Dependencies.accompanistSystemUIController)

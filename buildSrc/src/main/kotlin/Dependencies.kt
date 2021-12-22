@@ -2,6 +2,7 @@ object Dependencies {
 
     /// Compose
     const val composeVersion = "1.1.0-beta03"
+    const val composeConstraintLayoutVersion = "1.0.0-rc02"
     const val composeActivitiesVersion = "1.4.0"
     const val composeViewModelsVersion = "2.4.0"
     const val accompanistVersion = "0.20.3"
@@ -16,6 +17,7 @@ object Dependencies {
     const val composeViewModels = "androidx.lifecycle:lifecycle-viewmodel-compose:$composeViewModelsVersion" // Integration with ViewModels
     const val composeRuntimeLiveData = "androidx.compose.runtime:runtime-livedata:$composeVersion" // Integration with observables
     const val composeRuntimeRxJava = "androidx.compose.runtime:runtime-rxjava2:$composeVersion"
+    const val composeConstraintLayout = "androidx.constraintlayout:constraintlayout-compose:$composeConstraintLayoutVersion"
     const val composeUITesting = "androidx.compose.ui:ui-test-junit4:$composeVersion" // UI Tests
 
     /// Accompanist
@@ -38,8 +40,8 @@ object Dependencies {
 
     /// Firebase
     const val firebaseBom = "com.google.firebase:firebase-bom:29.0.0"
-    const val firebaseFirestore= "com.google.firebase:firebase-firestore-ktx"
-    const val firebaseAnalytics = "com.google.firebase:firebase-analytics-ktx"
+    const val firebaseFirestore= "com.google.firebase:firebase-firestore-ktx:24.0.0"
+    const val firebaseAnalytics = "com.google.firebase:firebase-analytics-ktx:20.0.2"
     const val firebaseAuthKTX = "com.google.firebase:firebase-auth-ktx:21.0.1"
     const val firebaseUIAuth = "com.firebaseui:firebase-ui-auth:7.2.0"
     const val firebasePlayServices = "com.google.android.gms:play-services-auth:19.2.0"

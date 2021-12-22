@@ -4,6 +4,8 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import vancore.five_skills.FiveSkillsViewModel
+import vancore.five_skills.shared_components.FiveSkillsDivider
 import vancore.five_skills.shared_components.FiveSkillsErrorText
 import vancore.five_skills.shared_components.FiveSkillsTextInput
 import vancore.five_skills.ui.theme.FiveSkillsTheme
@@ -28,6 +31,7 @@ import vancore.five_skills.ui.theme.FiveSkillsTheme
 fun ProfileScreen(fiveSkillsViewModel: FiveSkillsViewModel) {
     val authenticationState by fiveSkillsViewModel.authenticationState.collectAsState()
 
+    // Safe current input to Database
     if (authenticationState.currentUser == null) {
 
         val (currentUserInput, userChange) = remember { mutableStateOf("") }
@@ -55,9 +59,14 @@ fun ProfileScreen(fiveSkillsViewModel: FiveSkillsViewModel) {
             )
         }
     } else {
-        Text(text = "Hello ${authenticationState.currentUser?.email}")
-        Button(onClick = { fiveSkillsViewModel.logoutClicked() }) {
-            Text(text = "Logout")
+        Scaffold(topBar = {
+            ProfileTopBar(
+                userEmailText = authenticationState.currentUser?.email ?: "Your.Email@gmail.com"
+            ) {
+                fiveSkillsViewModel.logoutClicked()
+            }
+        }) {
+                Text(text = "Hier könnte ihre Werbung stehen!", modifier = Modifier.padding(all = 16.dp))
         }
     }
 }
@@ -140,6 +149,75 @@ fun LoginInputs(
 }
 
 @Composable
+fun ProfileTopBar(
+    userEmailText: String,
+    onLogoutClicked: () -> Unit = {}
+) {
+    Column(modifier = Modifier.padding(top = 40.dp)) {
+        val styledText = buildAnnotatedString {
+            append("Logged in as")
+            append(
+                AnnotatedString(
+                    text = ":",
+                    spanStyle = SpanStyle(MaterialTheme.colors.secondary)
+                )
+            )
+        }
+        Text(
+            text = styledText,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp),
+            textAlign = TextAlign.Start,
+            style = MaterialTheme.typography.body1,
+            fontSize = 12.sp,
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            val listOfSymbolIndices = arrayListOf<Int>()
+            userEmailText.toCharArray().forEachIndexed { index, char ->
+                if (!char.toString().matches(Regex("\\w+"))) {
+                    listOfSymbolIndices.add(index)
+                }
+            }
+            val styledEmail = buildAnnotatedString {
+                var stringIndex = 0
+                for (index in listOfSymbolIndices) {
+                    append("${userEmailText.subSequence(stringIndex, index)}")
+                    append(
+                        AnnotatedString(
+                            text = "${userEmailText.subSequence(index, index + 1)}",
+                            spanStyle = SpanStyle(MaterialTheme.colors.secondary)
+                        )
+                    )
+                    stringIndex = index + 1
+                }
+                append("${userEmailText.subSequence(stringIndex, userEmailText.length)}")
+            }
+            Text(
+                text = styledEmail,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp, end = 16.dp),
+                textAlign = TextAlign.Start,
+                style = MaterialTheme.typography.body1,
+                fontSize = 16.sp
+            )
+            IconButton(onClick = onLogoutClicked, modifier = Modifier.padding(end = 16.dp)) {
+                Icon(
+                    imageVector = Icons.Filled.Logout,
+                    contentDescription = "LogoutButton",
+                    tint = MaterialTheme.colors.secondary
+                )
+            }
+        }
+        FiveSkillsDivider()
+    }
+}
+
+@Composable
 fun LoginButtons(
     onLoginClicked: () -> Unit = {},
     onRegisterClicked: () -> Unit = {},
@@ -158,19 +236,44 @@ fun LoginButtons(
     }
 }
 
+
 @ExperimentalComposeUiApi
 @Preview(
-    name = "Dark Mode",
+    name = "Profile - Dark Mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true,
 )
 @Preview(
-    name = "Light Mode",
+    name = "Profile - Light Mode",
     uiMode = Configuration.UI_MODE_NIGHT_NO,
     showBackground = true
 )
 @Composable
 fun ProfileScreen() {
+    FiveSkillsTheme {
+        Scaffold(topBar = {
+            ProfileTopBar(
+                userEmailText = "Your.Email@gmail.com"
+            )
+        }) {
+            Text(text = "Hier könnte ihre Werbung stehen!", modifier = Modifier.padding(all = 16.dp))
+        }
+    }
+}
+
+@ExperimentalComposeUiApi
+@Preview(
+    name = "Login - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+)
+@Preview(
+    name = "Login - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true
+)
+@Composable
+fun ProfileScreenLogin() {
     FiveSkillsTheme {
         Scaffold(topBar = { ProfileLoginTitle(titleText = "Login") }) {
             LoginInputs(userNameText = "Username", passwordText = "Password", errorText = "")

@@ -104,14 +104,17 @@ fun TopBar(
                 )
             }
         }
-        Divider(
-            color = MaterialTheme.colors.onPrimary,
-            thickness = 0.5.dp,
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .alpha(0.5f)
-        )
+        FiveSkillsDivider()
     }
+}
+
+@Composable
+fun FiveSkillsDivider() {
+    Divider(
+        color = MaterialTheme.colors.onPrimary,
+        thickness = 0.5.dp,
+        modifier = Modifier.alpha(0.7f)
+    )
 }
 
 @ExperimentalComposeUiApi
@@ -169,6 +172,23 @@ fun FiveSkillsErrorText(
 fun FiveSkillsErrorText() {
     FiveSkillsTheme {
         FiveSkillsErrorText(errorText = "This is some error text.")
+    }
+}
+
+@Preview(
+    name = "Top Bar - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+)
+@Preview(
+    name = "Top Bar - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true
+)
+@Composable
+fun FiveSkillsTopBar() {
+    FiveSkillsTheme {
+        TopBar()
     }
 }
 

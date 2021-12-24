@@ -2,10 +2,12 @@ package vancore.five_skills.shared_components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -17,12 +19,14 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import vancore.five_skills.FiveSkillsScreen
 import vancore.five_skills.R
+import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 
 @Composable
@@ -123,7 +127,7 @@ fun FiveSkillsTextInput(
     modifier: Modifier = Modifier,
     text: String,
     onTextChange: (String) -> Unit = {},
-    onImeAction: () -> Unit= {},
+    onImeAction: () -> Unit = {},
     keyboardOption: KeyboardOptions,
     placeHolder: String,
     label: String,
@@ -155,8 +159,127 @@ fun FiveSkillsErrorText(
     )
 }
 
+@Composable
+fun SkillListItem(
+    skillItem: SkillItem,
+    isSelected: Boolean,
+    onSkillClicked: (SkillItem) -> Unit
+) {
+    // Accompanist FlowRow maybe, to not need to set 52 DP fixed
+    Row(
+        modifier = Modifier
+            .height(52.dp)
+            .fillMaxWidth()
+            .clickable { onSkillClicked(skillItem) },
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(2.dp)
+                .background(
+                    color = if (isSelected) {
+                        MaterialTheme.colors.onPrimary
+                    } else {
+                        MaterialTheme.colors.secondary
+                    }
+                )
+                .alpha(0.7f)
+                .padding(start = 16.dp, end = 8.dp)
+                .clip(RoundedCornerShape(2.dp))
+        )
+        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+        Text(
+            text = skillItem.title, maxLines = 1, textAlign = TextAlign.Start,
+            style = MaterialTheme.typography.body1,
+            fontSize = 16.sp,
+            color = MaterialTheme.colors.onBackground,
+            modifier = Modifier.weight(1f)
+        )
+
+        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text(
+                text = "Self-Rating",
+                style = MaterialTheme.typography.body1,
+                fontSize = 12.sp,
+                color = MaterialTheme.colors.onBackground
+            )
+            Text(
+                text = skillItem.selfRating.toString(),
+                style = MaterialTheme.typography.body1,
+                fontSize = 16.sp,
+                color = MaterialTheme.colors.onBackground
+            )
+        }
+
+        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(start = 8.dp, end = 16.dp)
+        ) {
+            Text(
+                text = "Ranking",
+                style = MaterialTheme.typography.body1,
+                fontSize = 12.sp,
+                color = MaterialTheme.colors.onBackground
+            )
+            Text(
+                text = skillItem.ranking.toString(),
+                style = MaterialTheme.typography.body1,
+                fontSize = 16.sp,
+                color = MaterialTheme.colors.onBackground
+            )
+        }
+    }
+}
 
 //region: Preview
+
+
+@Preview(
+    name = "Skill Item - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+)
+@Preview(
+    name = "Skill Item - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true
+)
+@Composable
+fun SkillListItem() {
+    FiveSkillsTheme {
+        val skillItem = SkillItem(
+            userId = "something",
+            title = "Skill Item Title",
+            selfRating = 4.0,
+            ranking = 1
+        )
+        SkillListItem(skillItem = skillItem, isSelected = false) {}
+    }
+}
+
+/*
+@Preview(
+    name = "Top Bar - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+)
+@Preview(
+    name = "Top Bar - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true
+)
+@Composable
+fun FiveSkillsTopBar() {
+    FiveSkillsTheme {
+        TopBar()
+    }
+}*/
 
 @Preview(
     name = "Error Text - Dark Mode",
@@ -172,23 +295,6 @@ fun FiveSkillsErrorText(
 fun FiveSkillsErrorText() {
     FiveSkillsTheme {
         FiveSkillsErrorText(errorText = "This is some error text.")
-    }
-}
-
-@Preview(
-    name = "Top Bar - Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
-)
-@Preview(
-    name = "Top Bar - Light Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showBackground = true
-)
-@Composable
-fun FiveSkillsTopBar() {
-    FiveSkillsTheme {
-        TopBar()
     }
 }
 

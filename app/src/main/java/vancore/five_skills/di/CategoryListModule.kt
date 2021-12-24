@@ -6,11 +6,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import vancore.five_skills.authentication.AuthenticationUseCase
+import vancore.five_skills.usecases.AuthenticationUseCase
 import vancore.five_skills.data.FiveSkillsRepository
 import vancore.five_skills.data.FiveSkillsRepositoryImpl
 import vancore.five_skills.data.FiveSkillsLocalRepository
 import vancore.five_skills.data.FiveSkillsRemoteRepository
+import vancore.five_skills.usecases.ProfileSkillListUseCase
 import javax.inject.Singleton
 
 @Module
@@ -39,7 +40,14 @@ object CategoryListModule {
     }
 
     @Provides
-    fun providesAuthenticationUseCase(): AuthenticationUseCase{
+    fun providesAuthenticationUseCase(): AuthenticationUseCase {
         return AuthenticationUseCase()
+    }
+
+    @Provides
+    fun providesProfileSkillListUseCase(
+        repository: FiveSkillsRepository
+    ): ProfileSkillListUseCase {
+        return ProfileSkillListUseCase(repository = repository)
     }
 }

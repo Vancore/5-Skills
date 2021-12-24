@@ -1,7 +1,9 @@
 package vancore.five_skills
 
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import vancore.five_skills.data.models.CategoryItem
+import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.data.models.SubcategoryItem
 
 fun QuerySnapshot.getCategoryItems(): List<CategoryItem> {
@@ -30,4 +32,21 @@ fun QuerySnapshot.getSubCategoryItems(): List<SubcategoryItem> {
         )
     }
     return listOfSubCategories
+}
+
+fun DocumentSnapshot.getSkillListFromUser(): ArrayList<SkillItem> {
+    val listOfSkills = arrayListOf<SkillItem>()
+    val fireBaseDocumentList = (this.data?.get("5 Skills") as Iterable<*>).toList()
+    // ToDo: Adjust Firebase objects to SkillItem
+    for (skill in fireBaseDocumentList) {
+        listOfSkills.add(
+            SkillItem(
+                userId = this.id,
+                title = (skill as HashMap<*, *>)["skillTitle"].toString(),
+                selfRating = skill["skillLevel"].toString().toDouble(),
+                ranking = skill["skillLevel"].toString().toInt()
+            )
+        )
+    }
+    return listOfSkills
 }

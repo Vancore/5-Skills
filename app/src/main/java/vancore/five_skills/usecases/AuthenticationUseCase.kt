@@ -1,4 +1,4 @@
-package vancore.five_skills.authentication
+package vancore.five_skills.usecases
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

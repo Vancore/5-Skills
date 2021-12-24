@@ -21,15 +21,18 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import vancore.five_skills.FiveSkillsViewModel
+import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.shared_components.FiveSkillsDivider
 import vancore.five_skills.shared_components.FiveSkillsErrorText
 import vancore.five_skills.shared_components.FiveSkillsTextInput
+import vancore.five_skills.shared_components.SkillListItem
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 
 @ExperimentalComposeUiApi
 @Composable
 fun ProfileScreen(fiveSkillsViewModel: FiveSkillsViewModel) {
     val authenticationState by fiveSkillsViewModel.authenticationState.collectAsState()
+    val profileSkillListState by fiveSkillsViewModel.profileSkillListState.collectAsState()
 
     // Safe current input to Database
     if (authenticationState.currentUser == null) {
@@ -59,6 +62,7 @@ fun ProfileScreen(fiveSkillsViewModel: FiveSkillsViewModel) {
             )
         }
     } else {
+        fiveSkillsViewModel.fetchSkillsForUser(authenticationState.currentUser!!.uid)
         Scaffold(topBar = {
             ProfileTopBar(
                 userEmailText = authenticationState.currentUser?.email ?: "Your.Email@gmail.com"
@@ -66,7 +70,7 @@ fun ProfileScreen(fiveSkillsViewModel: FiveSkillsViewModel) {
                 fiveSkillsViewModel.logoutClicked()
             }
         }) {
-                Text(text = "Hier könnte ihre Werbung stehen!", modifier = Modifier.padding(all = 16.dp))
+            SkillList(skillItemList = profileSkillListState.currentList, onSkillClicked = {})
         }
     }
 }
@@ -170,7 +174,7 @@ fun ProfileTopBar(
                 .padding(start = 16.dp, end = 16.dp),
             textAlign = TextAlign.Start,
             style = MaterialTheme.typography.body1,
-            fontSize = 12.sp,
+            fontSize = 14.sp,
         )
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -236,6 +240,44 @@ fun LoginButtons(
     }
 }
 
+@Composable
+fun SkillList(
+    onSkillClicked: (SkillItem) -> Unit = {},
+    skillItemList: ArrayList<SkillItem>
+) {
+    Column {
+        val styledText = buildAnnotatedString {
+            append("Your 5 best skills")
+            append(
+                AnnotatedString(
+                    text = ":",
+                    spanStyle = SpanStyle(MaterialTheme.colors.secondary)
+                )
+            )
+        }
+        Text(
+            text = styledText,
+            modifier = Modifier.padding(all = 16.dp),
+            fontSize = 14.sp
+        )
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+        ) {
+            for (skill in skillItemList) {
+                SkillListItem(skillItem = skill, isSelected = false) {
+                    onSkillClicked(it)
+                }
+            }
+        }
+
+        if (skillItemList.size < 5) {
+            // show add button
+        }
+    }
+}
+
 
 @ExperimentalComposeUiApi
 @Preview(
@@ -256,7 +298,14 @@ fun ProfileScreen() {
                 userEmailText = "Your.Email@gmail.com"
             )
         }) {
-            Text(text = "Hier könnte ihre Werbung stehen!", modifier = Modifier.padding(all = 16.dp))
+            val skillList = arrayListOf(
+                SkillItem("userId", "title 1", selfRating = 1.0, ranking = 5),
+                SkillItem("userId", "title 2", selfRating = 2.0, ranking = 4),
+                SkillItem("userId", "title 3", selfRating = 3.0, ranking = 3),
+                SkillItem("userId", "title 4", selfRating = 4.0, ranking = 2),
+                SkillItem("userId", "title 5", selfRating = 5.0, ranking = 1),
+            )
+            SkillList(skillItemList = skillList, onSkillClicked = {})
         }
     }
 }

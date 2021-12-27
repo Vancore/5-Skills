@@ -1,15 +1,21 @@
 package vancore.five_skills.profile
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -22,10 +28,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import vancore.five_skills.FiveSkillsViewModel
 import vancore.five_skills.data.models.SkillItem
-import vancore.five_skills.shared_components.FiveSkillsDivider
-import vancore.five_skills.shared_components.FiveSkillsErrorText
-import vancore.five_skills.shared_components.FiveSkillsTextInput
-import vancore.five_skills.shared_components.SkillListItem
+import vancore.five_skills.shared_components.*
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 
 @ExperimentalComposeUiApi
@@ -70,7 +73,11 @@ fun ProfileScreen(fiveSkillsViewModel: FiveSkillsViewModel) {
                 fiveSkillsViewModel.logoutClicked()
             }
         }) {
-            SkillList(skillItemList = profileSkillListState.currentList, onSkillClicked = {})
+            SkillList(
+                skillItemList = profileSkillListState.currentList,
+                onSkillClicked = {},
+                onAddSkillClicked = {}
+            )
         }
     }
 }
@@ -243,11 +250,12 @@ fun LoginButtons(
 @Composable
 fun SkillList(
     onSkillClicked: (SkillItem) -> Unit = {},
+    onAddSkillClicked: () -> Unit = {},
     skillItemList: ArrayList<SkillItem>
 ) {
     Column {
         val styledText = buildAnnotatedString {
-            append("Your 5 best skills")
+            append("Your ${skillItemList.size} best skills")
             append(
                 AnnotatedString(
                     text = ":",
@@ -272,9 +280,16 @@ fun SkillList(
             }
         }
 
-        if (skillItemList.size < 5) {
+        //if (skillItemList.size < 5) {
             // show add button
-        }
+            Row(modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(12.dp)
+            ) {
+                AddSkillButton(onAddSkillClicked)
+            }
+        //}
+        FiveSkillsDivider()
     }
 }
 
@@ -303,9 +318,9 @@ fun ProfileScreen() {
                 SkillItem("userId", "title 2", selfRating = 2.0, ranking = 4),
                 SkillItem("userId", "title 3", selfRating = 3.0, ranking = 3),
                 SkillItem("userId", "title 4", selfRating = 4.0, ranking = 2),
-                SkillItem("userId", "title 5", selfRating = 5.0, ranking = 1),
+                //SkillItem("userId", "title 5", selfRating = 5.0, ranking = 1),
             )
-            SkillList(skillItemList = skillList, onSkillClicked = {})
+            SkillList(skillItemList = skillList)
         }
     }
 }

@@ -11,6 +11,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -179,9 +181,9 @@ fun SkillListItem(
                 .width(2.dp)
                 .background(
                     color = if (isSelected) {
-                        MaterialTheme.colors.onPrimary
-                    } else {
                         MaterialTheme.colors.secondary
+                    } else {
+                        MaterialTheme.colors.onPrimary
                     }
                 )
                 .alpha(0.7f)
@@ -237,6 +239,29 @@ fun SkillListItem(
     }
 }
 
+@Composable
+fun AddSkillButton(
+    onAddSkillClicked: () -> Unit = {}
+) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(10.dp))
+            .background(color = MaterialTheme.colors.primary)
+            .height(52.dp)
+            .width(52.dp)
+            .clickable { onAddSkillClicked }
+    ) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = "Add Skill",
+            modifier = Modifier.align(
+                Alignment.Center
+            ),
+            tint = MaterialTheme.colors.secondary
+        )
+    }
+}
+
 //region: Preview
 
 
@@ -251,7 +276,7 @@ fun SkillListItem(
     showBackground = true
 )
 @Composable
-fun SkillListItem() {
+fun SkillListItemPreview() {
     FiveSkillsTheme {
         val skillItem = SkillItem(
             userId = "something",
@@ -263,7 +288,7 @@ fun SkillListItem() {
     }
 }
 
-/*
+
 @Preview(
     name = "Top Bar - Dark Mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
@@ -279,7 +304,7 @@ fun FiveSkillsTopBar() {
     FiveSkillsTheme {
         TopBar()
     }
-}*/
+}
 
 @Preview(
     name = "Error Text - Dark Mode",
@@ -295,6 +320,23 @@ fun FiveSkillsTopBar() {
 fun FiveSkillsErrorText() {
     FiveSkillsTheme {
         FiveSkillsErrorText(errorText = "This is some error text.")
+    }
+}
+
+@Preview(
+    name = "Add Skill Button - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+)
+@Preview(
+    name = "AddSkillButton - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true
+)
+@Composable
+fun AddSkillButtonPreview() {
+    FiveSkillsTheme {
+        AddSkillButton()
     }
 }
 

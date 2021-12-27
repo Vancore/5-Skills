@@ -8,4 +8,5 @@ interface FiveSkillsRepository {
     suspend fun loadCategories(): List<CategoryItem>
     suspend fun loadSubcategories(categoryId: String): List<SubcategoryItem>
     suspend fun fetchSkillListFromUser(firebaseUserId: String): ArrayList<SkillItem>
+    suspend fun addSkillForUser(firebaseUserId: String, skillItem: SkillItem)
 }

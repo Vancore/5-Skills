@@ -19,8 +19,12 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -249,7 +253,7 @@ fun AddSkillButton(
             .background(color = MaterialTheme.colors.primary)
             .height(52.dp)
             .width(52.dp)
-            .clickable { onAddSkillClicked }
+            .clickable { onAddSkillClicked() }
     ) {
         Icon(
             imageVector = Icons.Default.Add,
@@ -262,8 +266,80 @@ fun AddSkillButton(
     }
 }
 
+@Composable
+fun FiveSkillsTitleText(titleText: String) {
+    val styledText = buildAnnotatedString {
+        append(titleText)
+        append(AnnotatedString(text = ".", spanStyle = SpanStyle(MaterialTheme.colors.secondary)))
+    }
+    Text(
+        text = styledText,
+        modifier = Modifier
+            .padding(top = 40.dp, bottom = 24.dp)
+            .fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.h1,
+        fontSize = 40.sp,
+        color = MaterialTheme.colors.onPrimary
+    )
+}
+
+@Composable
+fun FiveSkillsFullStopText(titleText: String, modifier: Modifier) {
+    val styledText = buildAnnotatedString {
+        append(titleText)
+        append(AnnotatedString(text = ".", spanStyle = SpanStyle(MaterialTheme.colors.secondary)))
+    }
+    Text(
+        text = styledText,
+        textAlign = TextAlign.Start,
+        style = MaterialTheme.typography.body1,
+        fontSize = 16.sp,
+        color = MaterialTheme.colors.onBackground,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun FiveSkillsBodyText(titleText: String) {
+    Text(
+        text = titleText,
+        textAlign = TextAlign.Start,
+        style = MaterialTheme.typography.body1,
+        fontSize = 16.sp,
+        color = MaterialTheme.colors.onBackground,
+    )
+}
+
+@Composable
+fun FiveSkillsBodyCenter(titleText: String) {
+    Text(
+        text = titleText,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.body1,
+        fontSize = 16.sp,
+        color = MaterialTheme.colors.onBackground,
+    )
+}
+
 //region: Preview
 
+@Preview(
+    name = "Title Text - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+)
+@Preview(
+    name = "Title Text - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true
+)
+@Composable
+fun TitleTextPreview() {
+    FiveSkillsTheme {
+        FiveSkillsTitleText("Five Skills")
+    }
+}
 
 @Preview(
     name = "Skill Item - Dark Mode",
@@ -325,13 +401,11 @@ fun FiveSkillsErrorText() {
 
 @Preview(
     name = "Add Skill Button - Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Preview(
     name = "AddSkillButton - Light Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showBackground = true
+    uiMode = Configuration.UI_MODE_NIGHT_NO
 )
 @Composable
 fun AddSkillButtonPreview() {

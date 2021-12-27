@@ -11,6 +11,7 @@ import vancore.five_skills.data.FiveSkillsRepository
 import vancore.five_skills.data.FiveSkillsRepositoryImpl
 import vancore.five_skills.data.FiveSkillsLocalRepository
 import vancore.five_skills.data.FiveSkillsRemoteRepository
+import vancore.five_skills.usecases.AddSkillUseCase
 import vancore.five_skills.usecases.ProfileSkillListUseCase
 import javax.inject.Singleton
 
@@ -49,5 +50,12 @@ object CategoryListModule {
         repository: FiveSkillsRepository
     ): ProfileSkillListUseCase {
         return ProfileSkillListUseCase(repository = repository)
+    }
+
+    @Provides
+    fun providesAddSkillListUseCase(
+        repository: FiveSkillsRepository
+    ): AddSkillUseCase {
+        return AddSkillUseCase(repository = repository)
     }
 }

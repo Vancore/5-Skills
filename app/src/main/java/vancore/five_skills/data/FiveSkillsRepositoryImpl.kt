@@ -1,6 +1,5 @@
 package vancore.five_skills.data
 
-import com.google.firebase.auth.FirebaseUser
 import vancore.five_skills.data.models.CategoryItem
 import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.data.models.SubcategoryItem
@@ -9,19 +8,23 @@ import javax.inject.Singleton
 
 @Singleton
 class FiveSkillsRepositoryImpl @Inject constructor(
-    private val listRemoteRepository: FiveSkillsRemoteRepository,
-    private val listLocalRepository: FiveSkillsLocalRepository
+    private val remoteRepository: FiveSkillsRemoteRepository,
+    private val localRepository: FiveSkillsLocalRepository
 ) : FiveSkillsRepository {
 
     override suspend fun loadCategories(): List<CategoryItem> {
-        return listRemoteRepository.loadCategories()
+        return remoteRepository.loadCategories()
     }
 
     override suspend fun loadSubcategories(categoryId: String): List<SubcategoryItem> {
-        return listRemoteRepository.loadSubCategories(categoryId = categoryId)
+        return remoteRepository.loadSubCategories(categoryId = categoryId)
     }
 
     override suspend fun fetchSkillListFromUser(firebaseUserId: String): ArrayList<SkillItem> {
-        return listRemoteRepository.fetchUserSkillList(firebaseUserId = firebaseUserId)
+        return remoteRepository.fetchUserSkillList(firebaseUserId = firebaseUserId)
+    }
+
+    override suspend fun addSkillForUser(firebaseUserId: String, skillItem: SkillItem) {
+        remoteRepository.addSkillForUser(firebaseUserId, skillItem)
     }
 }

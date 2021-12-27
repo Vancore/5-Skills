@@ -16,6 +16,9 @@ enum class FiveSkillsScreen(
     Skill(
         icon = Icons.Filled.Skateboarding,
     ),
+    AddSkill(
+        icon = Icons.Filled.Save,
+    ),
     Categories(
         icon = Icons.Filled.AttachMoney,
     ),
@@ -29,6 +32,7 @@ enum class FiveSkillsScreen(
                 FiveSkillsSettings.name -> FiveSkillsSettings
                 Profile.name -> Profile
                 Skill.name -> Skill
+                AddSkill.name -> AddSkill
                 Categories.name -> Categories
                 Subcategories.name -> Subcategories
                 null -> Categories

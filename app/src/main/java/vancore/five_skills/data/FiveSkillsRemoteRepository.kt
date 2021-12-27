@@ -37,6 +37,14 @@ class FiveSkillsRemoteRepository {
             .getSkillListFromUser()
     }
 
+    suspend fun addSkillForUser(firebaseUserId: String, skillItem: SkillItem) {
+        db.collection(USER_LIST)
+            .document(firebaseUserId)
+            .get()
+            .await()
+            .getSkillListFromUser()
+    }
+
     companion object {
         const val CATEGORIES = "Categories"
         const val SUBCATEGORIES = "Subcategories"

@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import vancore.five_skills.NavArguments.CATEGORY_NAME
+import vancore.five_skills.add_skill.AddSkillScreen
 import vancore.five_skills.category.CategoryScreen
 import vancore.five_skills.profile.ProfileScreen
 import vancore.five_skills.shared_components.TopBar
@@ -88,8 +89,14 @@ fun FiveSkillsNavHost(
 
         }
 
+        composable(FiveSkillsScreen.AddSkill.name) {
+            AddSkillScreen(viewModel = viewModel)
+        }
+
         composable(FiveSkillsScreen.Profile.name) {
-            ProfileScreen(fiveSkillsViewModel = viewModel)
+            ProfileScreen(fiveSkillsViewModel = viewModel) {
+                navigateToAddSkill(navHostController)
+            }
         }
 
         val singleSkillRoute = FiveSkillsScreen.Skill.name
@@ -138,6 +145,10 @@ private fun navigateToSubCategory(navController: NavHostController, categoryName
 
 private fun navigateToSingleSkill(navController: NavHostController, skillId: String) {
     navController.navigate("${FiveSkillsScreen.Skill.name}/$skillId")
+}
+
+private fun navigateToAddSkill(navController: NavHostController){
+    navController.navigate(FiveSkillsScreen.AddSkill.name)
 }
 
 object NavArguments {

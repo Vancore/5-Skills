@@ -1,9 +1,7 @@
 package vancore.five_skills
 
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -11,13 +9,15 @@ import vancore.five_skills.usecases.AuthenticationUseCase
 import vancore.five_skills.data.FiveSkillsRepository
 import vancore.five_skills.data.models.CategoryItem
 import vancore.five_skills.data.models.SubcategoryItem
+import vancore.five_skills.usecases.AddSkillUseCase
 import vancore.five_skills.usecases.ProfileSkillListUseCase
 import javax.inject.Inject
 
 class FiveSkillsViewModel @Inject constructor(
     private val categoriesRepository: FiveSkillsRepository,
     private val authenticationUseCase: AuthenticationUseCase,
-    private val profileSkillListUseCase: ProfileSkillListUseCase
+    private val profileSkillListUseCase: ProfileSkillListUseCase,
+    private val addSkillUseCase: AddSkillUseCase
 ) : ViewModel() {
 
     var categoriesList = mutableStateListOf<CategoryItem>()
@@ -31,6 +31,7 @@ class FiveSkillsViewModel @Inject constructor(
 
     var authenticationState = authenticationUseCase.authenticationState
     var profileSkillListState = profileSkillListUseCase.profileSkillListState
+    var addSkillState = addSkillUseCase.addSkillState
 
     init {
         viewModelScope.launch {
@@ -61,6 +62,20 @@ class FiveSkillsViewModel @Inject constructor(
 
     fun logoutClicked() {
         authenticationUseCase.logout()
+    }
+
+    fun addSkillStep1Finished(skillTitle: String, fireBaseUserId: String) {
+        addSkillUseCase.step1Finished(skillTitle = skillTitle, userId = fireBaseUserId)
+    }
+
+    fun addSkillStep2Finished(skillDescription: String, fireBaseUserId: String) {
+        addSkillUseCase.step2Finished(skillDescription = skillDescription, userId = fireBaseUserId)
+    }
+
+    fun addSkillStep3Finished(selfRating: Double, fireBaseUserId: String) {
+        viewModelScope.launch {
+            addSkillUseCase.step3Finished(selfRating = selfRating, userId = fireBaseUserId)
+        }
     }
 
 }

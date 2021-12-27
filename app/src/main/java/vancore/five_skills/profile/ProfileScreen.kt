@@ -1,21 +1,15 @@
 package vancore.five_skills.profile
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -33,7 +27,10 @@ import vancore.five_skills.ui.theme.FiveSkillsTheme
 
 @ExperimentalComposeUiApi
 @Composable
-fun ProfileScreen(fiveSkillsViewModel: FiveSkillsViewModel) {
+fun ProfileScreen(
+    fiveSkillsViewModel: FiveSkillsViewModel,
+    onAddSkillClicked: () -> Unit
+) {
     val authenticationState by fiveSkillsViewModel.authenticationState.collectAsState()
     val profileSkillListState by fiveSkillsViewModel.profileSkillListState.collectAsState()
 
@@ -43,7 +40,7 @@ fun ProfileScreen(fiveSkillsViewModel: FiveSkillsViewModel) {
         val (currentUserInput, userChange) = remember { mutableStateOf("") }
         val (currentPasswordInput, passwordChange) = remember { mutableStateOf("") }
 
-        Scaffold(topBar = { ProfileLoginTitle(titleText = "Login") }) {
+        Scaffold(topBar = { FiveSkillsTitleText(titleText = "Login") }) {
             LoginInputs(
                 userNameText = currentUserInput,
                 passwordText = currentPasswordInput,
@@ -76,27 +73,10 @@ fun ProfileScreen(fiveSkillsViewModel: FiveSkillsViewModel) {
             SkillList(
                 skillItemList = profileSkillListState.currentList,
                 onSkillClicked = {},
-                onAddSkillClicked = {}
+                onAddSkillClicked = onAddSkillClicked
             )
         }
     }
-}
-
-@Composable
-fun ProfileLoginTitle(titleText: String) {
-    val styledText = buildAnnotatedString {
-        append(titleText)
-        append(AnnotatedString(text = ".", spanStyle = SpanStyle(MaterialTheme.colors.secondary)))
-    }
-    Text(
-        text = styledText,
-        modifier = Modifier
-            .padding(top = 40.dp, bottom = 24.dp)
-            .fillMaxWidth(),
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.h1,
-        fontSize = 40.sp
-    )
 }
 
 @ExperimentalComposeUiApi
@@ -281,13 +261,14 @@ fun SkillList(
         }
 
         //if (skillItemList.size < 5) {
-            // show add button
-            Row(modifier = Modifier
+        // show add button
+        Row(
+            modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(12.dp)
-            ) {
-                AddSkillButton(onAddSkillClicked)
-            }
+        ) {
+            AddSkillButton(onAddSkillClicked)
+        }
         //}
         FiveSkillsDivider()
     }
@@ -339,7 +320,7 @@ fun ProfileScreen() {
 @Composable
 fun ProfileScreenLogin() {
     FiveSkillsTheme {
-        Scaffold(topBar = { ProfileLoginTitle(titleText = "Login") }) {
+        Scaffold(topBar = { FiveSkillsTitleText(titleText = "Login") }) {
             LoginInputs(userNameText = "Username", passwordText = "Password", errorText = "")
         }
     }

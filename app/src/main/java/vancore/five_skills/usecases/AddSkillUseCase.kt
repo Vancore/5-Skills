@@ -53,7 +53,7 @@ class AddSkillUseCase @Inject constructor(
                     description = it.itemToAdd.description,
                     selfRating = selfRating
                 ),
-                step = AddSkillStep.Finished
+                step = AddSkillStep.Step1
             )
         }
         addSkillForUser(userId, _addSkillState.value.itemToAdd)
@@ -90,6 +90,5 @@ enum class AddSkillStep(val title: String = "", val description: String = "") {
     Step3(
         "Give your skill a rating",
         "Give user an idea of your confidence.\n\nBe humble, be convincing."
-    ),
-    Finished
+    )
 }

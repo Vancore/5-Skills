@@ -1,6 +1,7 @@
 package vancore.five_skills.shared_components
 
 import android.content.res.Configuration
+import android.widget.RatingBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -136,7 +137,7 @@ fun FiveSkillsTextInput(
     onImeAction: () -> Unit = {},
     keyboardOption: KeyboardOptions,
     placeHolder: String,
-    label: String,
+    label: String = "",
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     TextField(
@@ -163,6 +164,11 @@ fun FiveSkillsErrorText(
         color = MaterialTheme.colors.error,
         modifier = Modifier.padding(vertical = paddingVertical, horizontal = paddingHorizontal)
     )
+}
+
+@Composable
+fun FiveSkillsRatingBar() {
+    //RatingBar()
 }
 
 @Composable

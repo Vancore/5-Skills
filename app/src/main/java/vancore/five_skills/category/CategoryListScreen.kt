@@ -18,11 +18,16 @@ import vancore.five_skills.ui.theme.FiveSkillsTheme
 fun CategoryScreen(
     fiveSkillsViewModel: FiveSkillsViewModel,
     categorySelected: (String) -> Unit = {},
+    menuItemClicked: (String) -> Unit
 ) {
 
     val list = fiveSkillsViewModel.categoriesList
 
-    CategoriesList(list = list, categorySelected = categorySelected)
+    Scaffold(topBar = {
+        TopBar(onOptionSelected = { screen -> menuItemClicked(screen.name) })
+    }) {
+        CategoriesList(list = list, categorySelected = categorySelected)
+    }
 
 }
 

@@ -50,24 +50,11 @@ fun FiveSkillsApp(fiveSkillsViewModel: FiveSkillsViewModel) {
         val backStackEntry = navController.currentBackStackEntryAsState()
         val currentScreen = FiveSkillsScreen.fromRoute(backStackEntry.value?.destination?.route)
 
-        Scaffold(
-            topBar = {
-                if (currentScreen == FiveSkillsScreen.Categories) {
-                    TopBar(
-                        onOptionSelected = { screen -> navController.navigate(screen.name) }
-                    )
-                } else {
-                    // ToDo : Either change here or put into different screens
-                }
-
-            } // here you can add a flexible tabbar
-        ) { innerPadding ->
-            FiveSkillsNavHost(
-                navHostController = navController,
-                modifier = Modifier.padding(innerPadding),
-                viewModel = fiveSkillsViewModel
-            )
-        }
+        FiveSkillsNavHost(
+            navHostController = navController,
+            //modifier = Modifier.padding(innerPadding),
+            viewModel = fiveSkillsViewModel
+        )
 
     }
 }
@@ -90,7 +77,10 @@ fun FiveSkillsNavHost(
         }
 
         composable(FiveSkillsScreen.AddSkill.name) {
-            AddSkillScreen(viewModel = viewModel)
+            AddSkillScreen(viewModel = viewModel) {
+                navHostController.popBackStack()
+                // ToDo: Pass SkillItem to ProfileScreen
+            }
         }
 
         composable(FiveSkillsScreen.Profile.name) {
@@ -112,10 +102,15 @@ fun FiveSkillsNavHost(
         }
 
         composable(FiveSkillsScreen.Categories.name) {
-            CategoryScreen(fiveSkillsViewModel = viewModel) { categoryID ->
-                viewModel.fetchSubcategoriesFor(categoryID)
-                navigateToSubCategory(navHostController, categoryID)
-            }
+            CategoryScreen(
+                fiveSkillsViewModel = viewModel,
+                categorySelected = { categoryID ->
+                    viewModel.fetchSubcategoriesFor(categoryID)
+                    navigateToSubCategory(navHostController, categoryID)
+                },
+                menuItemClicked = { screenName ->
+                    navHostController.navigate(screenName)
+                })
         }
 
         val subcategoryRoute = FiveSkillsScreen.Subcategories.name
@@ -147,7 +142,7 @@ private fun navigateToSingleSkill(navController: NavHostController, skillId: Str
     navController.navigate("${FiveSkillsScreen.Skill.name}/$skillId")
 }
 
-private fun navigateToAddSkill(navController: NavHostController){
+private fun navigateToAddSkill(navController: NavHostController) {
     navController.navigate(FiveSkillsScreen.AddSkill.name)
 }
 

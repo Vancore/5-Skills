@@ -1,11 +1,12 @@
 package vancore.five_skills.add_skill
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,13 +16,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import vancore.five_skills.FiveSkillsViewModel
+import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.shared_components.*
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 import vancore.five_skills.usecases.AddSkillStep
 
 @ExperimentalComposeUiApi
 @Composable
-fun AddSkillScreen(viewModel: FiveSkillsViewModel) {
+fun AddSkillScreen(viewModel: FiveSkillsViewModel, onFinishAddingSkill: (SkillItem) -> Unit) {
 
     // Todo: If user logs out in the middle of adding a skill, he will be redirected / current state saved
     val authenticationState by viewModel.authenticationState.collectAsState()
@@ -34,7 +36,10 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel) {
 
     if (currentUserId != null) {
 
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.background(MaterialTheme.colors.background)
+        ) {
             AddSkillPager(
                 addSkillStep = profileSkillListState.step,
                 titleText = currentTitleInput,
@@ -67,9 +72,9 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel) {
                                 currentRatingInput.toDouble(),
                                 currentUserId
                             )
+                            onFinishAddingSkill(profileSkillListState.itemToAdd)
                         }
                     }
-                    AddSkillStep.Finished -> {}
                 }
             }) {
                 Text(text = "Next")
@@ -93,31 +98,30 @@ fun AddSkillPager(
     val padding = 32.dp
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+        modifier = modifier,
     ) {
         FiveSkillsTitleText(titleText = "Add a Skill")
         FiveSkillsFullStopText(
             titleText = addSkillStep.title,
             modifier = Modifier.padding(bottom = padding)
         )
-        FiveSkillsTextInput(
-            text = when (addSkillStep) {
-                AddSkillStep.Step1 -> titleText
-                AddSkillStep.Step2 -> descriptionText
-                AddSkillStep.Step3 -> ratingInput
-                else -> ""
-            },
-            onTextChange = when (addSkillStep) {
-                AddSkillStep.Step1 -> titleChange
-                AddSkillStep.Step2 -> descriptionTextChange
-                AddSkillStep.Step3 -> ratingInputChange
-                else -> { _ -> }
-            },
-            keyboardOption = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-            placeHolder = "Name",
-            label = "",
-            modifier = Modifier.padding(bottom = padding)
-        )
+        when (addSkillStep) {
+            AddSkillStep.Step1 -> FiveSkillsTextInput(
+                text = titleText,
+                onTextChange = titleChange,
+                keyboardOption = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                placeHolder = "Name",
+                modifier = Modifier.padding(bottom = padding)
+            )
+            AddSkillStep.Step2 -> FiveSkillsTextInput(
+                text = descriptionText,
+                onTextChange = descriptionTextChange,
+                keyboardOption = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                placeHolder = "Description",
+                modifier = Modifier.padding(bottom = padding)
+            )
+            AddSkillStep.Step3 -> FiveSkillsRatingBar()
+        }
         FiveSkillsBodyCenter(titleText = addSkillStep.description)
     }
 }
@@ -137,7 +141,10 @@ fun AddSkillPager(
 @Composable
 fun AddSkillScreenPreview() {
     FiveSkillsTheme {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.background(MaterialTheme.colors.background)
+        ) {
             AddSkillPager(
                 AddSkillStep.Step1,
                 titleText = "",
@@ -145,7 +152,7 @@ fun AddSkillScreenPreview() {
                 ratingInput = "",
                 modifier = Modifier.weight(1f)
             )
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = {}) {
 
             }
         }

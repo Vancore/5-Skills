@@ -34,11 +34,6 @@ fun ProfileScreen(
 ) {
     val authenticationState by fiveSkillsViewModel.authenticationState.collectAsState()
     val profileSkillListState by fiveSkillsViewModel.profileSkillListState.collectAsState()
-    val addSkillState by fiveSkillsViewModel.addSkillState.collectAsState()
-
-    val shouldAddItem = addSkillState.itemToAdd.description.isNotEmpty() &&
-            addSkillState.itemToAdd.title.isNotEmpty() &&
-            addSkillState.itemToAdd.ranking != 0
 
     // Safe current input to Database
     if (authenticationState.currentUser == null) {

@@ -41,8 +41,10 @@ object CategoryListModule {
     }
 
     @Provides
-    fun providesAuthenticationUseCase(): AuthenticationUseCase {
-        return AuthenticationUseCase()
+    fun providesAuthenticationUseCase(
+        repository: FiveSkillsRepository
+    ): AuthenticationUseCase {
+        return AuthenticationUseCase(repository = repository)
     }
 
     @Provides

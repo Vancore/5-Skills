@@ -6,14 +6,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import vancore.five_skills.data.FiveSkillsRepository
+import javax.inject.Inject
 
 data class AuthenticationState(
     val currentUser: FirebaseUser? = null,
     val loadingState: LoginState = LoginState.LoggedOut,
+    val registrationState: RegistrationState = RegistrationState.Idle,
     val errorMessage: String = ""
 )
 
-class AuthenticationUseCase {
+class AuthenticationUseCase @Inject constructor(
+    val repository: FiveSkillsRepository
+) {
     private var auth = FirebaseAuth.getInstance()
 
     private val _authenticationState = MutableStateFlow(AuthenticationState())
@@ -60,7 +65,11 @@ class AuthenticationUseCase {
         // Can the logout fail?
         auth.signOut()
         _authenticationState.update {
-            it.copy(currentUser = null, loadingState = LoginState.LoggedOut)
+            it.copy(
+                currentUser = null,
+                loadingState = LoginState.LoggedOut,
+                registrationState = RegistrationState.Idle
+            )
         }
     }
 
@@ -74,22 +83,34 @@ class AuthenticationUseCase {
     }
 
     fun register(email: String, password: String) {
-        _authenticationState.update { it.copy(loadingState = LoginState.RegistrationStarted) }
+        _authenticationState.update { it.copy(registrationState = RegistrationState.RegistrationStarted) }
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener() { task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     _authenticationState.update {
-                        it.copy(currentUser = auth.currentUser, loadingState = LoginState.LoggedIn)
+                        it.copy(
+                            currentUser = auth.currentUser,
+                            registrationState = RegistrationState.RegistrationSuccess,
+                            loadingState = LoginState.LoggedIn
+                        )
                     }
                 } else {
                     // If sign in fails, display a message to the user.
                     _authenticationState.update { state ->
                         val errorMessage = task.exception?.localizedMessage ?: "Registration Error"
-                        state.copy(loadingState = LoginState.Error, errorMessage = errorMessage)
+                        state.copy(
+                            loadingState = LoginState.Error,
+                            registrationState = RegistrationState.RegistrationFailed,
+                            errorMessage = errorMessage
+                        )
                     }
                 }
             }
+    }
+
+    fun addUserToDatabase(firebaseUserId: String, email: String) {
+        repository.addFirebaseUser(firebaseUserId = firebaseUserId, email = email)
     }
 
 }
@@ -105,7 +126,12 @@ enum class LoginState {
     LoggedOut,
     LoggedIn,
     LoggingIn,
-    RegistrationStarted,
-    RegistrationFailed,
     Error
+}
+
+enum class RegistrationState {
+    RegistrationStarted,
+    RegistrationSuccess,
+    RegistrationFailed,
+    Idle
 }

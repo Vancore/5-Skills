@@ -1,6 +1,6 @@
 package vancore.five_skills.data
 
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -37,18 +37,29 @@ class FiveSkillsRemoteRepository {
             .getSkillListFromUser()
     }
 
-    suspend fun addSkillForUser(firebaseUserId: String, skillItem: SkillItem) {
+    fun addSkillForUser(firebaseUserId: String, skillItem: SkillItem) {
+        val skillItemData = hashMapOf(
+            "title" to skillItem.title,
+            "description" to skillItem.description,
+            "ranking" to skillItem.ranking,
+            "rating" to skillItem.selfRating
+        )
         db.collection(USER_LIST)
             .document(firebaseUserId)
-            .get()
-            .await()
-            .getSkillListFromUser()
+            .update(FIVE_SKILLS, FieldValue.arrayUnion(skillItemData))
+    }
+
+    fun addFirebaseUser(firebaseUserId: String, email: String) {
+        val emailData = hashMapOf("email" to email)
+        db.collection(USER_LIST)
+            .document(firebaseUserId)
+            .set(emailData)
     }
 
     companion object {
         const val CATEGORIES = "Categories"
         const val SUBCATEGORIES = "Subcategories"
         const val USER_LIST = "User List"
-        const val FIVE_SKILLS = "5 List"
+        const val FIVE_SKILLS = "5 Skills"
     }
 }

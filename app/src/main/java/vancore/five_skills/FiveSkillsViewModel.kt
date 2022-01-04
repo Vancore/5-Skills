@@ -26,9 +26,6 @@ class FiveSkillsViewModel @Inject constructor(
     var subcategoriesList = mutableStateListOf<SubcategoryItem>()
         private set
 
-    var isUserOnline = mutableStateOf(false)
-        private set
-
     var authenticationState = authenticationUseCase.authenticationState
     var profileSkillListState = profileSkillListUseCase.profileSkillListState
     var addSkillState = addSkillUseCase.addSkillState
@@ -76,6 +73,10 @@ class FiveSkillsViewModel @Inject constructor(
         viewModelScope.launch {
             addSkillUseCase.step3Finished(selfRating = selfRating, userId = fireBaseUserId)
         }
+    }
+
+    fun createUserInFirebase(firebaseUserId: String, email: String) {
+        authenticationUseCase.addUserToDatabase(firebaseUserId, email = email)
     }
 
 }

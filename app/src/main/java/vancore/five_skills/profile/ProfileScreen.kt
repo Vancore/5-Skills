@@ -24,15 +24,21 @@ import vancore.five_skills.FiveSkillsViewModel
 import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.shared_components.*
 import vancore.five_skills.ui.theme.FiveSkillsTheme
+import vancore.five_skills.usecases.RegistrationState
 
 @ExperimentalComposeUiApi
 @Composable
 fun ProfileScreen(
     fiveSkillsViewModel: FiveSkillsViewModel,
-    onAddSkillClicked: () -> Unit
+    onAddSkillClicked: () -> Unit,
 ) {
     val authenticationState by fiveSkillsViewModel.authenticationState.collectAsState()
     val profileSkillListState by fiveSkillsViewModel.profileSkillListState.collectAsState()
+    val addSkillState by fiveSkillsViewModel.addSkillState.collectAsState()
+
+    val shouldAddItem = addSkillState.itemToAdd.description.isNotEmpty() &&
+            addSkillState.itemToAdd.title.isNotEmpty() &&
+            addSkillState.itemToAdd.ranking != 0
 
     // Safe current input to Database
     if (authenticationState.currentUser == null) {
@@ -62,7 +68,16 @@ fun ProfileScreen(
             )
         }
     } else {
-        fiveSkillsViewModel.fetchSkillsForUser(authenticationState.currentUser!!.uid)
+        val firebaseUserId = authenticationState.currentUser!!.uid
+        if (authenticationState.registrationState == RegistrationState.Idle) {
+            fiveSkillsViewModel.fetchSkillsForUser(firebaseUserId)
+        } else {
+            fiveSkillsViewModel.createUserInFirebase(
+                firebaseUserId,
+                authenticationState.currentUser?.email!!
+            )
+        }
+
         Scaffold(topBar = {
             ProfileTopBar(
                 userEmailText = authenticationState.currentUser?.email ?: "Your.Email@gmail.com"
@@ -70,6 +85,7 @@ fun ProfileScreen(
                 fiveSkillsViewModel.logoutClicked()
             }
         }) {
+            // ToDo: Empty List Screen?
             SkillList(
                 skillItemList = profileSkillListState.currentList,
                 onSkillClicked = {},
@@ -260,16 +276,16 @@ fun SkillList(
             }
         }
 
-        //if (skillItemList.size < 5) {
-        // show add button
-        Row(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(12.dp)
-        ) {
-            AddSkillButton(onAddSkillClicked)
+        if (skillItemList.size < 5) {
+            // show add button
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(12.dp)
+            ) {
+                AddSkillButton(onAddSkillClicked)
+            }
         }
-        //}
         FiveSkillsDivider()
     }
 }

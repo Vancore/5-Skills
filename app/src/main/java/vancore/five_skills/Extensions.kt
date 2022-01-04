@@ -36,17 +36,22 @@ fun QuerySnapshot.getSubCategoryItems(): List<SubcategoryItem> {
 
 fun DocumentSnapshot.getSkillListFromUser(): ArrayList<SkillItem> {
     val listOfSkills = arrayListOf<SkillItem>()
-    val fireBaseDocumentList = (this.data?.get("5 Skills") as Iterable<*>).toList()
-    // ToDo: Adjust Firebase objects to SkillItem
-    for (skill in fireBaseDocumentList) {
-        listOfSkills.add(
-            SkillItem(
-                userId = this.id,
-                title = (skill as HashMap<*, *>)["skillTitle"].toString(),
-                selfRating = skill["skillLevel"].toString().toDouble(),
-                ranking = skill["skillLevel"].toString().toInt()
+    val skillList = this.data?.get("5 Skills")
+    skillList?.let {
+        val fireBaseDocumentList = (it as Iterable<*>).toList()
+        // ToDo: Adjust Firebase objects to SkillItem
+        for (skill in fireBaseDocumentList) {
+            val skillHashMap = skill as HashMap<*, *>
+            listOfSkills.add(
+                SkillItem(
+                    userId = this.id,
+                    title = skillHashMap["title"].toString(),
+                    description = skillHashMap["description"].toString(),
+                    selfRating = skillHashMap["rating"].toString().toDouble(),
+                    ranking = skillHashMap["ranking"].toString().toInt()
+                )
             )
-        )
+        }
     }
     return listOfSkills
 }

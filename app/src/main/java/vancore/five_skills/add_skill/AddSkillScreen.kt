@@ -27,21 +27,23 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel, onFinishAddingSkill: (SkillIt
 
     // Todo: If user logs out in the middle of adding a skill, he will be redirected / current state saved
     val authenticationState by viewModel.authenticationState.collectAsState()
-    val profileSkillListState by viewModel.addSkillState.collectAsState()
+    val addSkillState by viewModel.addSkillState.collectAsState()
 
     val currentUserId = authenticationState.currentUser?.uid
     val (currentTitleInput, titleChange) = remember { mutableStateOf("") }
     val (currentDescriptionInput, descriptionChange) = remember { mutableStateOf("") }
-    val (currentRatingInput, ratingChange) = remember { mutableStateOf("") }
+    val (currentRatingInput, ratingChange) = remember { mutableStateOf("3") }
 
     if (currentUserId != null) {
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.background(MaterialTheme.colors.background)
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(horizontal = 32.dp)
         ) {
             AddSkillPager(
-                addSkillStep = profileSkillListState.step,
+                addSkillStep = addSkillState.step,
                 titleText = currentTitleInput,
                 titleChange = titleChange,
                 descriptionText = currentDescriptionInput,
@@ -52,7 +54,7 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel, onFinishAddingSkill: (SkillIt
             )
 
             Button(onClick = {
-                when (profileSkillListState.step) {
+                when (addSkillState.step) {
                     AddSkillStep.Step1 -> {
                         viewModel.addSkillStep1Finished(
                             currentTitleInput,
@@ -66,14 +68,11 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel, onFinishAddingSkill: (SkillIt
                         )
                     }
                     AddSkillStep.Step3 -> {
-                        // Todo: Check for empty input
-                        if (currentRatingInput.isNotEmpty()) {
-                            viewModel.addSkillStep3Finished(
-                                currentRatingInput.toDouble(),
-                                currentUserId
-                            )
-                            onFinishAddingSkill(profileSkillListState.itemToAdd)
-                        }
+                        viewModel.addSkillStep3Finished(
+                            currentRatingInput.toDouble(),
+                            currentUserId
+                        )
+                        onFinishAddingSkill(addSkillState.itemToAdd)
                     }
                 }
             }) {
@@ -92,7 +91,7 @@ fun AddSkillPager(
     descriptionText: String,
     descriptionTextChange: (String) -> Unit = {},
     ratingInput: String,
-    ratingInputChange: (String) -> Unit = {}, // ToDo Change to rating bar
+    ratingInputChange: (String) -> Unit = {},
     modifier: Modifier
 ) {
     val padding = 32.dp
@@ -120,7 +119,11 @@ fun AddSkillPager(
                 placeHolder = "Description",
                 modifier = Modifier.padding(bottom = padding)
             )
-            AddSkillStep.Step3 -> FiveSkillsRatingBar()
+            AddSkillStep.Step3 -> FiveSkillsRatingBar(
+                rating = 3,
+                modifier = Modifier.padding(bottom = padding),
+                onRatingSelected = ratingInputChange
+            )
         }
         FiveSkillsBodyCenter(titleText = addSkillStep.description)
     }
@@ -146,9 +149,9 @@ fun AddSkillScreenPreview() {
             modifier = Modifier.background(MaterialTheme.colors.background)
         ) {
             AddSkillPager(
-                AddSkillStep.Step1,
-                titleText = "",
-                descriptionText = "",
+                AddSkillStep.Step3,
+                titleText = "Title Text",
+                descriptionText = "Description Text",
                 ratingInput = "",
                 modifier = Modifier.weight(1f)
             )

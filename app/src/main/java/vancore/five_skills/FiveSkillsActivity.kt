@@ -16,9 +16,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
+import vancore.five_skills.NavArguments.ADD_SKILL_FOR_PROFILE
 import vancore.five_skills.NavArguments.CATEGORY_NAME
 import vancore.five_skills.add_skill.AddSkillScreen
 import vancore.five_skills.category.CategoryScreen
+import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.profile.ProfileScreen
 import vancore.five_skills.shared_components.TopBar
 import vancore.five_skills.subcategory.SubcategoryScreen
@@ -79,14 +81,13 @@ fun FiveSkillsNavHost(
         composable(FiveSkillsScreen.AddSkill.name) {
             AddSkillScreen(viewModel = viewModel) {
                 navHostController.popBackStack()
-                // ToDo: Pass SkillItem to ProfileScreen
             }
         }
 
         composable(FiveSkillsScreen.Profile.name) {
-            ProfileScreen(fiveSkillsViewModel = viewModel) {
+            ProfileScreen(fiveSkillsViewModel = viewModel, onAddSkillClicked = {
                 navigateToAddSkill(navHostController)
-            }
+            })
         }
 
         val singleSkillRoute = FiveSkillsScreen.Skill.name
@@ -150,4 +151,5 @@ object NavArguments {
     const val CATEGORY_ID = "categoryID"
     const val CATEGORY_NAME = "categoryName"
     const val SUBCATEGORY_ID = "subcategoryID"
+    const val ADD_SKILL_FOR_PROFILE = "addSkillForProfile"
 }

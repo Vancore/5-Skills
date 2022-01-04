@@ -32,6 +32,7 @@ class FiveSkillsRemoteRepository {
     suspend fun fetchUserSkillList(firebaseUserId: String): ArrayList<SkillItem> {
         return db.collection(USER_LIST)
             .document(firebaseUserId)
+            .collection(FIVE_SKILLS)
             .get()
             .await()
             .getSkillListFromUser()
@@ -46,7 +47,8 @@ class FiveSkillsRemoteRepository {
         )
         db.collection(USER_LIST)
             .document(firebaseUserId)
-            .update(FIVE_SKILLS, FieldValue.arrayUnion(skillItemData))
+            .collection(FIVE_SKILLS)
+            .add(skillItemData)
     }
 
     fun addFirebaseUser(firebaseUserId: String, email: String) {

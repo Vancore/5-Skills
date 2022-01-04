@@ -1,5 +1,6 @@
 package vancore.five_skills
 
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import vancore.five_skills.data.models.CategoryItem
@@ -34,24 +35,20 @@ fun QuerySnapshot.getSubCategoryItems(): List<SubcategoryItem> {
     return listOfSubCategories
 }
 
-fun DocumentSnapshot.getSkillListFromUser(): ArrayList<SkillItem> {
+fun QuerySnapshot.getSkillListFromUser(): ArrayList<SkillItem> {
     val listOfSkills = arrayListOf<SkillItem>()
-    val skillList = this.data?.get("5 Skills")
-    skillList?.let {
-        val fireBaseDocumentList = (it as Iterable<*>).toList()
-        // ToDo: Adjust Firebase objects to SkillItem
-        for (skill in fireBaseDocumentList) {
-            val skillHashMap = skill as HashMap<*, *>
-            listOfSkills.add(
-                SkillItem(
-                    userId = this.id,
-                    title = skillHashMap["title"].toString(),
-                    description = skillHashMap["description"].toString(),
-                    selfRating = skillHashMap["rating"].toString().toDouble(),
-                    ranking = skillHashMap["ranking"].toString().toInt()
-                )
+    for (skill in this.documents) {
+        val toString = if (skill["selfRating"] != null) skill["selfRating"].toString().toDouble() else 0.0
+        listOfSkills.add(
+            SkillItem(
+                userId = (this.query as CollectionReference).parent?.id ?: "userID not found",
+                skillId = skill.id,
+                title = skill["title"].toString(),
+                description = skill["description"].toString(),
+                selfRating = toString,
+                ranking = skill["ranking"].toString().toInt()
             )
-        }
+        )
     }
     return listOfSkills
 }

@@ -276,7 +276,7 @@ fun SkillList(
             Row(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(12.dp)
+                    .padding(top = 12.dp)
             ) {
                 AddSkillButton(onAddSkillClicked)
             }

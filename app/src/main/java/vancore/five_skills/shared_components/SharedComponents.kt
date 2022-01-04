@@ -18,7 +18,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.PersonOutline
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -56,7 +59,7 @@ fun CategoryListEntry(descriptionText: String, id: String, itemClicked: (String)
                 isClicked = !isClicked
                 itemClicked(id)
             }
-            .padding(vertical = 28.dp, horizontal = 24.dp),
+            .padding(vertical = 20.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -64,7 +67,7 @@ fun CategoryListEntry(descriptionText: String, id: String, itemClicked: (String)
         Text(
             text = descriptionText,
             color = MaterialTheme.colors.onPrimary,
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.subtitle1,
         )
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -73,7 +76,7 @@ fun CategoryListEntry(descriptionText: String, id: String, itemClicked: (String)
             painter = painterResource(id = R.drawable.barbell),
             contentDescription = "Skill Icon",
             modifier = Modifier
-                .size(44.dp)
+                .size(40.dp)
                 // Clip image to be shaped as a circle, same for border
                 .clip(CircleShape)
                 .border(2.dp, MaterialTheme.colors.onPrimary, CircleShape)
@@ -89,23 +92,24 @@ fun TopBar(
     Column {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 16.dp)
         ) {
             Text(
                 text = "Categories",
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(24.dp),
+                    .padding(start = 24.dp),
                 color = MaterialTheme.colors.onPrimary
             )
 
             IconButton(
                 onClick = { onOptionSelected(FiveSkillsScreen.Profile) },
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(end = 8.dp)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_person_outline_black),
+
+                    imageVector = Icons.Default.PersonOutline,
                     contentDescription = FiveSkillsScreen.Profile.name,
                     tint = MaterialTheme.colors.onPrimary
                 )
@@ -115,7 +119,7 @@ fun TopBar(
                 modifier = Modifier.padding(end = 16.dp)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_cog_outline),
+                    imageVector = Icons.Outlined.Settings,
                     contentDescription = FiveSkillsScreen.FiveSkillsSettings.name,
                     tint = MaterialTheme.colors.onPrimary
                 )
@@ -130,7 +134,7 @@ fun FiveSkillsDivider() {
     Divider(
         color = MaterialTheme.colors.onPrimary,
         thickness = 0.5.dp,
-        modifier = Modifier.alpha(0.7f)
+        modifier = Modifier.alpha(0.7f).padding(vertical = 16.dp)
     )
 }
 

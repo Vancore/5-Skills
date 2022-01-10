@@ -38,7 +38,11 @@ fun CategoriesList(list: List<CategoryItem>, categorySelected: (String) -> Unit)
         modifier = Modifier.fillMaxWidth()
     ) {
         items(list) { categoryItem ->
-            CategoryListEntry(descriptionText = categoryItem.name, categoryItem.firebaseId) {
+            CategoryListEntry(
+                descriptionText = categoryItem.name,
+                id = categoryItem.firebaseId,
+                iconURL = categoryItem.iconURL
+            ) {
                 categorySelected(categoryItem.firebaseId)
             }
         }
@@ -57,7 +61,14 @@ fun CategoriesScreenPreview() {
     FiveSkillsTheme {
         Scaffold(topBar = { TopBar(onOptionSelected = {}) }) {
             CategoriesList(
-                List(3) { CategoryItem(it, "FireBaseId", "Name for $it") }
+                List(3) {
+                    CategoryItem(
+                        id = it,
+                        firebaseId = "FireBaseId",
+                        name = "Name for $it",
+                        iconURL = "https://firebasestorage.googleapis.com/v0/b/five-skills-a3a1f.appspot.com/o/6313.jpeg?alt=media&token=3758f9cd-5e47-4cd0-b3f4-289a6f10bf8f"
+                    )
+                }
             )
             {}
         }
@@ -77,6 +88,10 @@ fun CategoriesScreenPreview() {
 @Composable
 fun SkillEntryPreview() {
     FiveSkillsTheme {
-        CategoryListEntry("Category 1", "1") {}
+        CategoryListEntry(
+            descriptionText = "Category 1",
+            id = "1",
+            iconURL = "https://firebasestorage.googleapis.com/v0/b/five-skills-a3a1f.appspot.com/o/6313.jpeg?alt=media&token=3758f9cd-5e47-4cd0-b3f4-289a6f10bf8f"
+        ) {}
     }
 }

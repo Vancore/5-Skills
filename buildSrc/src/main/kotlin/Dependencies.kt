@@ -6,6 +6,8 @@ object Dependencies {
     const val composeActivitiesVersion = "1.4.0"
     const val composeViewModelsVersion = "2.4.0"
     const val accompanistVersion = "0.20.3"
+    const val landscapistGlideVersion = "1.4.5"
+    const val landscapistCoilVersion = "1.4.5"
 
     const val composeUI = "androidx.compose.ui:ui:$composeVersion" // Tooling support (Previews, etc.)
     const val composeUITooling = "androidx.compose.ui:ui-tooling:$composeVersion"
@@ -22,6 +24,10 @@ object Dependencies {
 
     /// Accompanist
     const val accompanistSystemUIController = "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
+
+    /// Landscapist Glide
+    const val landscapistGlide = "com.github.skydoves:landscapist-glide:$landscapistGlideVersion"
+    //const val landscapistCoil = "com.github.skydoves:landscapist-coil:$landscapistCoilVersion" --> check for the differences with Glide
 
     /// Navigation
     const val navigationComposeVersion = "2.4.0-rc01"

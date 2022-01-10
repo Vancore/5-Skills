@@ -14,7 +14,8 @@ fun QuerySnapshot.getCategoryItems(): List<CategoryItem> {
             CategoryItem(
                 id = category["id"].toString().toInt(),
                 firebaseId = category.id,
-                name = category["name"].toString()
+                name = category["name"].toString(),
+                iconURL = category["iconURL"].toString()
             )
         )
     }

@@ -29,7 +29,8 @@ fun SubCategoriesList(list: List<SubcategoryItem>, onSubcategorySelected: (Strin
         items(list) { subCategoryItem ->
             CategoryListEntry(
                 descriptionText = subCategoryItem.name,
-                id = subCategoryItem.firebaseId
+                id = subCategoryItem.firebaseId,
+                iconURL = subCategoryItem.iconURL
             ) {
                 onSubcategorySelected(it)
             }

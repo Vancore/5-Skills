@@ -306,10 +306,10 @@ fun ProfileScreen() {
             )
         }) {
             val skillList = arrayListOf(
-                SkillItem("userId", "title 1", selfRating = 1.0, ranking = 5),
-                SkillItem("userId", "title 2", selfRating = 2.0, ranking = 4),
-                SkillItem("userId", "title 3", selfRating = 3.0, ranking = 3),
-                SkillItem("userId", "title 4", selfRating = 4.0, ranking = 2),
+                SkillItem("userId", title = "Skill Title 1", selfRating = 1.0, ranking = 5),
+                SkillItem("userId", title = "Skill Title 2", selfRating = 2.0, ranking = 4),
+                SkillItem("userId", title = "Skill Title 3", selfRating = 3.0, ranking = 3),
+                SkillItem("userId", title = "Skill Title 4", selfRating = 4.0, ranking = 2),
                 //SkillItem("userId", "title 5", selfRating = 5.0, ranking = 1),
             )
             SkillList(skillItemList = skillList)

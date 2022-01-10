@@ -17,4 +17,6 @@ val Rose400 = Color(0xFF907AD6)
 val Rose600 = Color(0xFF4F518C)
 val Rose800 = Color(0xFF2C2A4A)
 
+val TransparentBlack50 = Color(0x80000000)
+
 /// Light

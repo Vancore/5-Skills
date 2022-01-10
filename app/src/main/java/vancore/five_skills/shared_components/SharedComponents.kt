@@ -40,13 +40,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.NonDisposableHandle.parent
 import vancore.five_skills.FiveSkillsScreen
 import vancore.five_skills.R
 import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.ui.theme.FiveSkillsTheme
+import vancore.five_skills.ui.theme.Rose600
+import vancore.five_skills.ui.theme.TransparentBlack50
 
 @Composable
-fun CategoryListEntry(descriptionText: String, id: String, itemClicked: (String) -> Unit = {}) {
+fun CategoryListEntry(
+    descriptionText: String,
+    id: String,
+    iconURL: String,
+    itemClicked: (String) -> Unit = {}
+) {
 
     // can be used for expanding
     // -> e.g. in Text, maxLines = if (isClicked ...)
@@ -72,15 +82,43 @@ fun CategoryListEntry(descriptionText: String, id: String, itemClicked: (String)
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        Image(
-            painter = painterResource(id = R.drawable.barbell),
-            contentDescription = "Skill Icon",
+        GlideImage(
+            imageModel = iconURL,
             modifier = Modifier
                 .size(40.dp)
                 // Clip image to be shaped as a circle, same for border
                 .clip(CircleShape)
-                .border(2.dp, MaterialTheme.colors.onPrimary, CircleShape)
-        )
+                .border(2.dp, MaterialTheme.colors.onPrimary, CircleShape),
+            loading = {
+                ConstraintLayout(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    val indicator = createRef()
+                    CircularProgressIndicator(
+                        modifier = Modifier.constrainAs(indicator) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                    )
+                }
+            },
+            // shows an error text message when request failed.
+            failure = {
+                Text(text = "image request failed.")
+            })
+
+
+//        Image(
+//            painter = painterResource(id = R.drawable.barbell),
+//            contentDescription = "Skill Icon",
+//            modifier = Modifier
+//                .size(40.dp)
+//                // Clip image to be shaped as a circle, same for border
+//                .clip(CircleShape)
+//                .border(2.dp, MaterialTheme.colors.onPrimary, CircleShape)
+//        )
     }
 }
 
@@ -130,11 +168,51 @@ fun TopBar(
 }
 
 @Composable
+fun TopBarWithImage(
+    backgroundImageUrl: String = "",
+    profileImageUrl: String = "",
+    titleText: String = ""
+) {
+    if (backgroundImageUrl.isEmpty()) {
+
+    }
+    Box(
+        Modifier
+            .background(color = Rose600)
+            .height(160.dp)
+            .fillMaxWidth(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Box(
+            modifier = Modifier
+                .height(40.dp)
+                .background(color = TransparentBlack50)
+                .fillMaxWidth()
+        ) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text(text = titleText, modifier = Modifier.weight(1f))
+                Image(
+                    painter = painterResource(id = R.drawable.barbell),
+                    contentDescription = "Skill Icon",
+                    modifier = Modifier
+                        .size(40.dp)
+                        // Clip image to be shaped as a circle, same for border
+                        .clip(CircleShape)
+                        .border(2.dp, MaterialTheme.colors.onPrimary, CircleShape)
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun FiveSkillsDivider() {
     Divider(
         color = MaterialTheme.colors.onPrimary,
         thickness = 0.5.dp,
-        modifier = Modifier.alpha(0.7f).padding(vertical = 16.dp)
+        modifier = Modifier
+            .alpha(0.7f)
+            .padding(vertical = 16.dp)
     )
 }
 
@@ -471,6 +549,21 @@ fun FiveSkillsErrorText() {
 fun AddSkillButtonPreview() {
     FiveSkillsTheme {
         AddSkillButton()
+    }
+}
+
+@Preview(
+    name = "TopBar with image - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Preview(
+    name = "TopBar with image - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Composable
+fun TopBarWithImagePreview() {
+    FiveSkillsTheme {
+        TopBarWithImage(titleText = "Hello Moto")
     }
 }
 

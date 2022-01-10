@@ -71,6 +71,9 @@ dependencies {
     // Accompanist
     implementation(Dependencies.accompanistSystemUIController)
 
+    // Landscapist Glide - Image Loading
+    implementation(Dependencies.landscapistGlide)
+
     // Jetpack Navigation
     implementation(Dependencies.navigationCompose)
 

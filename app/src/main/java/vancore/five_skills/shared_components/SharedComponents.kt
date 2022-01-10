@@ -1,5 +1,6 @@
 package vancore.five_skills.shared_components
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.view.MotionEvent
 import androidx.compose.animation.core.Spring
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -151,7 +153,7 @@ fun TopBar(
     Column {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier.padding(top = 48.dp)
         ) {
             Text(
                 text = "Categories",
@@ -197,7 +199,7 @@ fun TopBarWithImage(
     Box(
         Modifier
             .background(color = Rose600)
-            .height(160.dp)
+            .height(240.dp)
             .fillMaxWidth(),
         contentAlignment = Alignment.BottomCenter
     ) {
@@ -321,6 +323,32 @@ fun FiveSkillsRatingBar(
                         true
                     },
                 tint = if (i <= ratingState) MaterialTheme.colors.secondary else MaterialTheme.colors.onPrimary
+            )
+        }
+    }
+}
+
+@ExperimentalComposeUiApi
+@Composable
+fun FiveSkillsRatingBarNoSelection(
+    modifierStars: Modifier = Modifier,
+    modifierView: Modifier = Modifier,
+    rating: Int
+) {
+    val size = 24.dp
+
+    Row(
+        modifier = modifierView.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start
+    ) {
+        for (i in 1..5) {
+            Icon(
+                imageVector = if (i <= rating) Icons.Default.Star else Icons.Default.StarBorder,
+                contentDescription = "star",
+                modifier = modifierStars
+                    .width(size)
+                    .height(size),
+                tint = if (i <= rating) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onPrimary
             )
         }
     }
@@ -462,18 +490,7 @@ fun FiveSkillsFullStopText(titleText: String, modifier: Modifier) {
 }
 
 @Composable
-fun FiveSkillsBodyText(titleText: String, alignment: TextAlign = TextAlign.Start) {
-    Text(
-        text = titleText,
-        textAlign = alignment,
-        style = MaterialTheme.typography.body1,
-        fontSize = 16.sp,
-        color = MaterialTheme.colors.onBackground,
-    )
-}
-
-@Composable
-fun FiveSkillsSubTitleText(
+fun FiveSkillsBodyText(
     titleText: String,
     alignment: TextAlign = TextAlign.Start,
     modifier: Modifier
@@ -482,15 +499,31 @@ fun FiveSkillsSubTitleText(
         text = titleText,
         textAlign = alignment,
         style = MaterialTheme.typography.body1,
-        fontSize = 20.sp,
+        fontSize = 16.sp,
         color = MaterialTheme.colors.onBackground,
-        modifier = modifier,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun FiveSkillsSubTitleText(
+    modifier: Modifier = Modifier,
+    titleText: String,
+    alignment: TextAlign = TextAlign.Start
+) {
+    Text(
+        text = titleText,
+        textAlign = alignment,
+        style = MaterialTheme.typography.body1,
+        fontSize = 20.sp,
+        color = MaterialTheme.colors.onSurface,
+        modifier = modifier
     )
 }
 
 @Composable
 fun FiveSkillsBodyCenter(titleText: String) {
-    FiveSkillsBodyText(titleText = titleText, alignment = TextAlign.Center)
+    FiveSkillsBodyText(titleText = titleText, alignment = TextAlign.Center, modifier = Modifier.padding())
 }
 
 //region: Preview
@@ -589,10 +622,30 @@ fun AddSkillButtonPreview() {
     name = "TopBar with image - Dark Mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
+@Preview(
+    name = "TopBar with image - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
 @Composable
 fun TopBarWithImagePreview() {
     FiveSkillsTheme {
         TopBarWithImage(titleText = "Hello Moto")
+    }
+}
+
+@ExperimentalComposeUiApi
+@Preview(
+    name = "RatingBar - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Preview(
+    name = "RatingBar - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Composable
+fun RatingBarNoSelectionPreview() {
+    FiveSkillsTheme {
+        FiveSkillsRatingBarNoSelection(rating = 4)
     }
 }
 

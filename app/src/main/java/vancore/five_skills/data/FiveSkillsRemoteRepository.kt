@@ -40,10 +40,11 @@ class FiveSkillsRemoteRepository {
 
     fun addSkillForUser(firebaseUserId: String, skillItem: SkillItem) {
         val skillItemData = hashMapOf(
+            "userId" to skillItem.userId,
             "title" to skillItem.title,
             "description" to skillItem.description,
-            "ranking" to skillItem.ranking,
-            "rating" to skillItem.selfRating
+            "selfRating" to skillItem.selfRating,
+            "ranking" to skillItem.ranking, // ToDo: Finish the flow with adding images and category/subcategory
         )
         db.collection(USER_LIST)
             .document(firebaseUserId)

@@ -17,7 +17,7 @@ import vancore.five_skills.ui.theme.FiveSkillsTheme
 @Composable
 fun CategoryScreen(
     fiveSkillsViewModel: FiveSkillsViewModel,
-    categorySelected: (String) -> Unit = {},
+    categorySelected: (String, String, String) -> Unit,
     menuItemClicked: (String) -> Unit
 ) {
 
@@ -33,7 +33,7 @@ fun CategoryScreen(
 
 
 @Composable
-fun CategoriesList(list: List<CategoryItem>, categorySelected: (String) -> Unit) {
+fun CategoriesList(list: List<CategoryItem>, categorySelected: (String, String, String) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -43,7 +43,7 @@ fun CategoriesList(list: List<CategoryItem>, categorySelected: (String) -> Unit)
                 id = categoryItem.firebaseId,
                 iconURL = categoryItem.iconURL
             ) {
-                categorySelected(categoryItem.firebaseId)
+                categorySelected(categoryItem.firebaseId, categoryItem.name, categoryItem.topBarImage)
             }
         }
     }
@@ -70,7 +70,7 @@ fun CategoriesScreenPreview() {
                     )
                 }
             )
-            {}
+            { fireBaseId: String, categoryName: String, backgroundImage -> }
         }
     }
 }

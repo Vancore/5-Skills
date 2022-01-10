@@ -14,15 +14,17 @@ import vancore.five_skills.shared_components.TopBarWithImage
 @Composable
 fun SubcategoryScreen(
     categoryName: String,
+    imageUrl: String,
     fiveSkillsViewModel: FiveSkillsViewModel,
     onSubcategorySelected: (String) -> Unit = {}
 ) {
 
     val list = fiveSkillsViewModel.subcategoriesList
 
-    Scaffold(topBar = { TopBarWithImage() }) {
+    Scaffold(topBar = { TopBarWithImage(titleText = categoryName, backgroundImageUrl = imageUrl) }) {
         SubCategoriesList(list = list) { onSubcategorySelected(it) }
     }
+
 }
 
 @Composable

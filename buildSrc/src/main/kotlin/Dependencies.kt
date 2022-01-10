@@ -6,6 +6,7 @@ object Dependencies {
     const val composeActivitiesVersion = "1.4.0"
     const val composeViewModelsVersion = "2.4.0"
     const val accompanistVersion = "0.20.3"
+    const val accompanistInsetsVersion = "0.22.0-rc"
     const val landscapistGlideVersion = "1.4.5"
     const val landscapistCoilVersion = "1.4.5"
 
@@ -24,6 +25,8 @@ object Dependencies {
 
     /// Accompanist
     const val accompanistSystemUIController = "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
+    const val accompanistInsets = "com.google.accompanist:accompanist-insets:$accompanistInsetsVersion"
+    const val accompanistInsetsUi = "com.google.accompanist:accompanist-insets-ui:$accompanistInsetsVersion"
 
     /// Landscapist Glide
     const val landscapistGlide = "com.github.skydoves:landscapist-glide:$landscapistGlideVersion"

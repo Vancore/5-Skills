@@ -70,6 +70,8 @@ dependencies {
 
     // Accompanist
     implementation(Dependencies.accompanistSystemUIController)
+    implementation(Dependencies.accompanistInsets)
+    implementation(Dependencies.accompanistInsetsUi)
 
     // Landscapist Glide - Image Loading
     implementation(Dependencies.landscapistGlide)

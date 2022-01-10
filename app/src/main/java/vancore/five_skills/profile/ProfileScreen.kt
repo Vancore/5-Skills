@@ -31,6 +31,7 @@ import vancore.five_skills.usecases.RegistrationState
 fun ProfileScreen(
     fiveSkillsViewModel: FiveSkillsViewModel,
     onAddSkillClicked: () -> Unit,
+    onSingleSkillClicked: (SkillItem) -> Unit,
 ) {
     val authenticationState by fiveSkillsViewModel.authenticationState.collectAsState()
     val profileSkillListState by fiveSkillsViewModel.profileSkillListState.collectAsState()
@@ -83,7 +84,7 @@ fun ProfileScreen(
             // ToDo: Empty List Screen?
             SkillList(
                 skillItemList = profileSkillListState.currentList,
-                onSkillClicked = {},
+                onSkillClicked = onSingleSkillClicked,
                 onAddSkillClicked = onAddSkillClicked
             )
         }

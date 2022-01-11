@@ -24,12 +24,14 @@ fun QuerySnapshot.getCategoryItems(): List<CategoryItem> {
 
 fun QuerySnapshot.getSubCategoryItems(): List<SubcategoryItem> {
     val listOfSubCategories = mutableListOf<SubcategoryItem>()
-    for (category in this.documents) {
+    for (subCategory in this.documents) {
         listOfSubCategories.add(
             SubcategoryItem(
-                id = category["id"].toString().toInt(),
-                firebaseId = category.id,
-                name = category["name"].toString()
+                id = subCategory["id"].toString().toInt(),
+                firebaseId = subCategory.id,
+                name = subCategory["name"].toString(),
+                iconURL = subCategory["name"].toString(),
+                backgroundURL = subCategory["name"].toString()
             )
         )
     }

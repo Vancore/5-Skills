@@ -1,11 +1,11 @@
 package vancore.five_skills.shared_components
 
-import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.view.MotionEvent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -87,35 +87,42 @@ fun CategoryListEntry(
 fun FiveSkillsGlideIcon(
     iconURL: String,
     iconSize: Dp = 40.dp,
-    iconBorderColor: Color = MaterialTheme.colors.onPrimary
+    iconBorderColor: Color = MaterialTheme.colors.onPrimary,
+    borderSize: Dp = 4.dp
 ) {
-    GlideImage(
-        imageModel = iconURL,
+    Box(
         modifier = Modifier
-            .size(iconSize)
-            // Clip image to be shaped as a circle, same for border
+            .size(iconSize + borderSize * 2)
             .clip(CircleShape)
-            .border(2.dp, iconBorderColor, CircleShape),
-        loading = {
-            ConstraintLayout(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                val indicator = createRef()
-                CircularProgressIndicator(
-                    modifier = Modifier.constrainAs(indicator) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-                )
-            }
-        },
-        previewPlaceholder = R.drawable.barbell,
-        // shows an error text message when request failed.
-        failure = {
-            Text(text = "image request failed.")
-        })
+            .border(BorderStroke(borderSize, iconBorderColor), CircleShape),
+        contentAlignment = Alignment.Center
+    ) {
+        GlideImage(
+            imageModel = iconURL,
+            modifier = Modifier
+                .size(iconSize)
+                .clip(CircleShape),
+            loading = {
+                ConstraintLayout(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    val indicator = createRef()
+                    CircularProgressIndicator(
+                        modifier = Modifier.constrainAs(indicator) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                    )
+                }
+            },
+            previewPlaceholder = R.drawable.barbell,
+            // shows an error text message when request failed.
+            failure = {
+                Text(text = "image request failed.")
+            })
+    }
 }
 
 @Composable
@@ -226,6 +233,33 @@ fun TopBarWithImage(
                     iconBorderColor = Color.Black
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun TopBarSubCategory(
+    categoryTitle: String = ""
+) {
+    Box(
+        Modifier
+            .background(color = Color.Transparent)
+            .height(200.dp)
+            .fillMaxWidth()
+            .padding(bottom = 16.dp),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Box(
+            modifier = Modifier
+                .size(120.dp)
+                .border(4.dp, MaterialTheme.colors.secondary, CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            FiveSkillsSubTitleText(
+                titleText = categoryTitle,
+                alignment = TextAlign.Center,
+                modifier = Modifier.padding(12.dp)
+            )
         }
     }
 }
@@ -493,6 +527,7 @@ fun FiveSkillsFullStopText(titleText: String, modifier: Modifier) {
 fun FiveSkillsBodyText(
     titleText: String,
     alignment: TextAlign = TextAlign.Start,
+    color: Color = MaterialTheme.colors.onBackground,
     modifier: Modifier
 ) {
     Text(
@@ -500,7 +535,7 @@ fun FiveSkillsBodyText(
         textAlign = alignment,
         style = MaterialTheme.typography.body1,
         fontSize = 16.sp,
-        color = MaterialTheme.colors.onBackground,
+        color = color,
         modifier = modifier
     )
 }
@@ -509,21 +544,27 @@ fun FiveSkillsBodyText(
 fun FiveSkillsSubTitleText(
     modifier: Modifier = Modifier,
     titleText: String,
-    alignment: TextAlign = TextAlign.Start
+    alignment: TextAlign = TextAlign.Start,
+    color: Color = MaterialTheme.colors.onBackground
 ) {
     Text(
         text = titleText,
         textAlign = alignment,
         style = MaterialTheme.typography.body1,
         fontSize = 20.sp,
-        color = MaterialTheme.colors.onSurface,
+        color = color,
         modifier = modifier
     )
 }
 
 @Composable
-fun FiveSkillsBodyCenter(titleText: String) {
-    FiveSkillsBodyText(titleText = titleText, alignment = TextAlign.Center, modifier = Modifier.padding())
+fun FiveSkillsBodyCenter(titleText: String, color: Color = MaterialTheme.colors.onBackground) {
+    FiveSkillsBodyText(
+        titleText = titleText,
+        alignment = TextAlign.Center,
+        modifier = Modifier.padding(),
+        color = color
+    )
 }
 
 //region: Preview
@@ -630,6 +671,21 @@ fun AddSkillButtonPreview() {
 fun TopBarWithImagePreview() {
     FiveSkillsTheme {
         TopBarWithImage(titleText = "Hello Moto")
+    }
+}
+
+@Preview(
+    name = "TopBar Subcategory - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Preview(
+    name = "TopBar Subcategory - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Composable
+fun TopBarSubcategoryPreview() {
+    FiveSkillsTheme {
+        Scaffold(topBar = { TopBarSubCategory(categoryTitle = "Very long Category Title") }) {}
     }
 }
 

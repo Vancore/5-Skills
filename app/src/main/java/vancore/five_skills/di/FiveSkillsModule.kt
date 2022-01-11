@@ -13,6 +13,7 @@ import vancore.five_skills.data.FiveSkillsLocalRepository
 import vancore.five_skills.data.FiveSkillsRemoteRepository
 import vancore.five_skills.usecases.AddSkillUseCase
 import vancore.five_skills.usecases.ProfileSkillListUseCase
+import vancore.five_skills.usecases.SearchSkillsUseCase
 import javax.inject.Singleton
 
 @Module
@@ -31,7 +32,7 @@ object FiveSkillsModule {
         return FiveSkillsLocalRepository() // impl
     }
 
-    // @ApplicationContext in den Parameter, ist default binding
+    // @ApplicationContext can be put as parameter, as it is default binding
     @Provides
     fun providesFiveSkillsRepository(
         remoteRepository: FiveSkillsRemoteRepository,
@@ -59,5 +60,12 @@ object FiveSkillsModule {
         repository: FiveSkillsRepository
     ): AddSkillUseCase {
         return AddSkillUseCase(repository = repository)
+    }
+
+    @Provides
+    fun providesSearchSkillsUseCase(
+        repository: FiveSkillsRepository
+    ): SearchSkillsUseCase {
+        return SearchSkillsUseCase(repository = repository)
     }
 }

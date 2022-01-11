@@ -1,6 +1,5 @@
 package vancore.five_skills.data
 
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -57,6 +56,12 @@ class FiveSkillsRemoteRepository {
         db.collection(USER_LIST)
             .document(firebaseUserId)
             .set(emailData)
+    }
+
+    fun fetchSkillsForSubcategory(subcategoryId: String): ArrayList<SkillItem> {
+        TODO("Not yet implemented")
+        db.collection(USER_LIST)
+        //for(user in db.collection(USER_LIST))
     }
 
     companion object {

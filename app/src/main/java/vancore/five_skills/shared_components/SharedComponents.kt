@@ -50,9 +50,8 @@ import vancore.five_skills.ui.theme.TransparentBlack50
 @Composable
 fun CategoryListEntry(
     descriptionText: String,
-    id: String,
     iconURL: String,
-    itemClicked: (String) -> Unit = {}
+    itemClicked: () -> Unit = {}
 ) {
 
     // can be used for expanding
@@ -64,7 +63,7 @@ fun CategoryListEntry(
             .fillMaxWidth()
             .clickable {
                 isClicked = !isClicked
-                itemClicked(id)
+                itemClicked()
             }
             .padding(vertical = 20.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -259,6 +258,41 @@ fun TopBarSubCategory(
                 titleText = categoryTitle,
                 alignment = TextAlign.Center,
                 modifier = Modifier.padding(12.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun TopBarSearchResult(
+    subcategoryTitle: String = ""
+) {
+    Box(
+        Modifier
+            .background(color = MaterialTheme.colors.primary)
+            .height(200.dp)
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = 32.dp, end = 32.dp, start = 32.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .border(4.dp, MaterialTheme.colors.secondary, CircleShape),
+            )
+            FiveSkillsSubTitleText(
+                titleText = subcategoryTitle,
+                alignment = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .border(4.dp, MaterialTheme.colors.secondary, CircleShape),
             )
         }
     }
@@ -686,6 +720,21 @@ fun TopBarWithImagePreview() {
 fun TopBarSubcategoryPreview() {
     FiveSkillsTheme {
         Scaffold(topBar = { TopBarSubCategory(categoryTitle = "Very long Category Title") }) {}
+    }
+}
+
+@Preview(
+    name = "TopBar SearchResult - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Preview(
+    name = "TopBar SearchResult - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Composable
+fun TopBarSearchResultPreview() {
+    FiveSkillsTheme {
+        Scaffold(topBar = { TopBarSearchResult(subcategoryTitle = "Very long Category Title") }) {}
     }
 }
 

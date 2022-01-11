@@ -31,4 +31,8 @@ class FiveSkillsRepositoryImpl @Inject constructor(
     override fun addFirebaseUser(firebaseUserId: String, email: String) {
         remoteRepository.addFirebaseUser(firebaseUserId, email = email)
     }
+
+    override suspend fun fetchSkillsForSubcategory(subcategoryId: String): ArrayList<SkillItem> {
+        return remoteRepository.fetchSkillsForSubcategory(subcategoryId = subcategoryId)
+    }
 }

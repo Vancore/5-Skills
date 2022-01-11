@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import vancore.five_skills.usecases.AuthenticationUseCase
 import vancore.five_skills.data.FiveSkillsRepository
@@ -11,12 +12,14 @@ import vancore.five_skills.data.models.CategoryItem
 import vancore.five_skills.data.models.SubcategoryItem
 import vancore.five_skills.usecases.AddSkillUseCase
 import vancore.five_skills.usecases.ProfileSkillListUseCase
+import vancore.five_skills.usecases.SearchSkillsUseCase
 import javax.inject.Inject
 
 class FiveSkillsViewModel @Inject constructor(
     private val categoriesRepository: FiveSkillsRepository,
     private val authenticationUseCase: AuthenticationUseCase,
     private val profileSkillListUseCase: ProfileSkillListUseCase,
+    private val searchSkillsUseCase: SearchSkillsUseCase,
     private val addSkillUseCase: AddSkillUseCase
 ) : ViewModel() {
 
@@ -28,6 +31,7 @@ class FiveSkillsViewModel @Inject constructor(
 
     var authenticationState = authenticationUseCase.authenticationState
     var profileSkillListState = profileSkillListUseCase.profileSkillListState
+    var searchSkillsState = searchSkillsUseCase.searchSkillState
     var addSkillState = addSkillUseCase.addSkillState
 
     init {
@@ -46,6 +50,13 @@ class FiveSkillsViewModel @Inject constructor(
     fun fetchSkillsForUser(firebaseUserId: String) {
         viewModelScope.launch {
             profileSkillListUseCase.fetchSkillListForUser(firebaseUserId)
+        }
+    }
+
+
+    fun fetchSkillsForSubcategory(subcategoryId: String) {
+        viewModelScope.launch {
+
         }
     }
 

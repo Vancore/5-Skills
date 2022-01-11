@@ -19,7 +19,8 @@ import androidx.navigation.navArgument
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
-import vancore.five_skills.NavArguments.BACKGROUND_IMAGE_URL
+import vancore.five_skills.NavArguments.CATEGORY_BACKGROUND_IMAGE_URL
+import vancore.five_skills.NavArguments.CATEGORY_ID
 import vancore.five_skills.NavArguments.CATEGORY_NAME
 import vancore.five_skills.NavArguments.SKILL_BACKGROUND_IMAGE
 import vancore.five_skills.NavArguments.SKILL_DESCRIPTION
@@ -28,9 +29,13 @@ import vancore.five_skills.NavArguments.SKILL_SELF_RATING
 import vancore.five_skills.NavArguments.SKILL_TITLE
 import vancore.five_skills.NavArguments.SKILL_USER_ID
 import vancore.five_skills.NavArguments.SKILL_USER_IMAGE
+import vancore.five_skills.NavArguments.SUBCATEGORY_BACKGROUND_IMAGE_URL
+import vancore.five_skills.NavArguments.SUBCATEGORY_ID
+import vancore.five_skills.NavArguments.SUBCATEGORY_NAME
 import vancore.five_skills.add_skill.AddSkillScreen
 import vancore.five_skills.category.CategoryScreen
 import vancore.five_skills.profile.ProfileScreen
+import vancore.five_skills.search_result.SearchResultScreen
 import vancore.five_skills.skill.SkillScreen
 import vancore.five_skills.subcategory.SubcategoryScreen
 import vancore.five_skills.ui.theme.FiveSkillsTheme
@@ -109,7 +114,8 @@ fun FiveSkillsNavHost(
                     navigateToAddSkill(navHostController)
                 },
                 onSingleSkillClicked = { skill ->
-                    val placeHolderUrl = if(skill.backgroundImageUrl.isEmpty()) PlaceHolderUrls.IMAGE_PLACEHOLDER else skill.backgroundImageUrl
+                    val placeHolderUrl =
+                        if (skill.backgroundImageUrl.isEmpty()) PlaceHolderUrls.IMAGE_PLACEHOLDER else skill.backgroundImageUrl
                     navigateToSingleSkill(
                         navHostController,
                         skillUserId = skill.userId,
@@ -124,9 +130,8 @@ fun FiveSkillsNavHost(
             )
         }
 
-        val singleSkillRoute = FiveSkillsScreen.Skill.name
         composable(
-            route = "$singleSkillRoute/{$SKILL_USER_ID}/{$SKILL_ID}/{$SKILL_TITLE}/{$SKILL_DESCRIPTION}/{$SKILL_SELF_RATING}/{$SKILL_BACKGROUND_IMAGE}/{$SKILL_USER_IMAGE}",
+            route = "${FiveSkillsScreen.Skill.name}/{$SKILL_USER_ID}/{$SKILL_ID}/{$SKILL_TITLE}/{$SKILL_DESCRIPTION}/{$SKILL_SELF_RATING}/{$SKILL_BACKGROUND_IMAGE}/{$SKILL_USER_IMAGE}",
             arguments = listOf(
                 navArgument(SKILL_USER_ID) { type = NavType.StringType },
                 navArgument(SKILL_ID) { type = NavType.StringType },
@@ -159,6 +164,7 @@ fun FiveSkillsNavHost(
                     navigateToSubCategory(
                         navHostController,
                         categoryName,
+                        categoryID,
                         categoryBackgroundImageUrl
                     )
                 },
@@ -167,24 +173,64 @@ fun FiveSkillsNavHost(
                 })
         }
 
-        val subcategoryRoute = FiveSkillsScreen.Subcategories.name
         composable(
-            route = "$subcategoryRoute/{$CATEGORY_NAME}/{$BACKGROUND_IMAGE_URL}",
+            route = "${FiveSkillsScreen.Subcategories.name}/{$CATEGORY_NAME}/{$CATEGORY_ID}/{$CATEGORY_BACKGROUND_IMAGE_URL}",
             arguments = listOf(
                 navArgument(CATEGORY_NAME) { type = NavType.StringType },
-                navArgument(BACKGROUND_IMAGE_URL) { type = NavType.StringType }
+                navArgument(CATEGORY_ID) { type = NavType.StringType },
+                navArgument(CATEGORY_BACKGROUND_IMAGE_URL) { type = NavType.StringType }
             )
         ) { backStackEntry ->
             val arguments = backStackEntry.arguments
             arguments?.getString(CATEGORY_NAME)?.let { categoryName ->
-
                 SubcategoryScreen(
                     categoryName = categoryName,
-                    imageUrl = arguments.getString(BACKGROUND_IMAGE_URL) ?: "",
+                    categoryId = arguments.getString(CATEGORY_ID) ?: "",
+                    categoryImageUrl = arguments.getString(CATEGORY_BACKGROUND_IMAGE_URL) ?: "",
                     fiveSkillsViewModel = viewModel
-                ) { subcategoryId ->
-                    //navigateToSkillList
+                ) { subcategoryName, subcategoryId, subcategoryIconUrl, categoryId, categoryImageUrl ->
+                    //viewModel.fetchSkillsForSubcategory(subcategoryId)
+                    navigateToSearchResult(
+                        navController = navHostController,
+                        subCategoryName = subcategoryName,
+                        subCategoryId = subcategoryId,
+                        categoryId = categoryId,
+                        subCategoryBackgroundImageUrl = subcategoryIconUrl,
+                        categoryImageUrl = categoryImageUrl
+                    )
                 }
+            }
+        }
+
+        composable(
+            route = "${FiveSkillsScreen.SearchResult.name}/{$SUBCATEGORY_NAME}/{$SUBCATEGORY_ID}/{$CATEGORY_ID}/{$SUBCATEGORY_BACKGROUND_IMAGE_URL}/{$CATEGORY_BACKGROUND_IMAGE_URL}",
+            arguments = listOf(
+                navArgument(SUBCATEGORY_NAME) { type = NavType.StringType },
+                navArgument(SUBCATEGORY_ID) { type = NavType.StringType },
+                navArgument(CATEGORY_ID) { type = NavType.StringType },
+                navArgument(SUBCATEGORY_BACKGROUND_IMAGE_URL) { type = NavType.StringType },
+                navArgument(CATEGORY_BACKGROUND_IMAGE_URL) { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val arguments = backStackEntry.arguments
+            SearchResultScreen(
+                viewModel = viewModel,
+                subcategoryName = arguments?.getString(SUBCATEGORY_NAME) ?: "",
+                subcategoryId = arguments?.getString(SUBCATEGORY_ID) ?: "",
+                categoryId = arguments?.getString(CATEGORY_ID) ?: "",
+                subcategoryImageUrl = arguments?.getString(SUBCATEGORY_BACKGROUND_IMAGE_URL) ?: "",
+                categoryImageUrl = arguments?.getString(CATEGORY_BACKGROUND_IMAGE_URL) ?: ""
+            ) { skill ->
+                navigateToSingleSkill(
+                    navHostController,
+                    skillUserId = skill.userId,
+                    skillId = skill.userId,
+                    skillTitle = skill.title,
+                    skillDescription = skill.description,
+                    skillSelfRating = skill.selfRating.toString(),
+                    skillBackgroundImageUrl = skill.backgroundImageUrl,
+                    skillUserImageUrl = skill.backgroundImageUrl
+                )
             }
         }
     }
@@ -193,6 +239,7 @@ fun FiveSkillsNavHost(
 private fun navigateToSubCategory(
     navController: NavHostController,
     categoryName: String,
+    categoryId: String,
     categoryBackgroundImageUrl: String
 ) {
     val encodedBackgroundImage = URLEncoder.encode(
@@ -200,7 +247,28 @@ private fun navigateToSubCategory(
         StandardCharsets.UTF_8.toString()
     )
     navController.navigate(
-        "${FiveSkillsScreen.Subcategories.name}/$categoryName/$encodedBackgroundImage"
+        "${FiveSkillsScreen.Subcategories.name}/$categoryName/$categoryId/$encodedBackgroundImage"
+    )
+}
+
+private fun navigateToSearchResult(
+    navController: NavHostController,
+    subCategoryName: String,
+    subCategoryId: String,
+    categoryId: String,
+    subCategoryBackgroundImageUrl: String,
+    categoryImageUrl: String
+) {
+    val encodedSubcategoryImage = URLEncoder.encode(
+        subCategoryBackgroundImageUrl,
+        StandardCharsets.UTF_8.toString()
+    )
+    val encodedCategoryImage = URLEncoder.encode(
+        categoryImageUrl,
+        StandardCharsets.UTF_8.toString()
+    )
+    navController.navigate(
+        "${FiveSkillsScreen.SearchResult.name}/$subCategoryName/$subCategoryId/$categoryId/$encodedSubcategoryImage/$encodedCategoryImage"
     )
 }
 
@@ -234,9 +302,11 @@ private fun navigateToAddSkill(navController: NavHostController) {
 object NavArguments {
     const val CATEGORY_ID = "categoryID"
     const val CATEGORY_NAME = "categoryName"
+    const val SUBCATEGORY_NAME = "subcategoryName"
     const val SUBCATEGORY_ID = "subcategoryID"
     const val ADD_SKILL_FOR_PROFILE = "addSkillForProfile"
-    const val BACKGROUND_IMAGE_URL = "backgroundImageUrl"
+    const val CATEGORY_BACKGROUND_IMAGE_URL = "backgroundImageUrl"
+    const val SUBCATEGORY_BACKGROUND_IMAGE_URL = "subBackgroundImageUrl"
 
     // Detail
     const val SKILL_USER_ID = "skill_user_id"
@@ -250,5 +320,6 @@ object NavArguments {
 }
 
 object PlaceHolderUrls {
-    const val IMAGE_PLACEHOLDER = "https://firebasestorage.googleapis.com/v0/b/five-skills-a3a1f.appspot.com/o/6313.jpeg?alt=media&token=3758f9cd-5e47-4cd0-b3f4-289a6f10bf8f"
+    const val IMAGE_PLACEHOLDER =
+        "https://firebasestorage.googleapis.com/v0/b/five-skills-a3a1f.appspot.com/o/6313.jpeg?alt=media&token=3758f9cd-5e47-4cd0-b3f4-289a6f10bf8f"
 }

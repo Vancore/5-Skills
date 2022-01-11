@@ -40,7 +40,6 @@ fun CategoriesList(list: List<CategoryItem>, categorySelected: (String, String, 
         items(list) { categoryItem ->
             CategoryListEntry(
                 descriptionText = categoryItem.name,
-                id = categoryItem.firebaseId,
                 iconURL = categoryItem.iconURL
             ) {
                 categorySelected(categoryItem.firebaseId, categoryItem.name, categoryItem.topBarImage)
@@ -90,7 +89,6 @@ fun SkillEntryPreview() {
     FiveSkillsTheme {
         CategoryListEntry(
             descriptionText = "Category 1",
-            id = "1",
             iconURL = "https://firebasestorage.googleapis.com/v0/b/five-skills-a3a1f.appspot.com/o/6313.jpeg?alt=media&token=3758f9cd-5e47-4cd0-b3f4-289a6f10bf8f"
         ) {}
     }

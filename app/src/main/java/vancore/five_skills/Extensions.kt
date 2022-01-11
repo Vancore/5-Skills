@@ -30,8 +30,8 @@ fun QuerySnapshot.getSubCategoryItems(): List<SubcategoryItem> {
                 id = subCategory["id"].toString().toInt(),
                 firebaseId = subCategory.id,
                 name = subCategory["name"].toString(),
-                iconURL = subCategory["name"].toString(),
-                backgroundURL = subCategory["name"].toString()
+                iconURL = subCategory["iconURL"].toString(),
+                backgroundURL = subCategory["backgroundURL"].toString()
             )
         )
     }

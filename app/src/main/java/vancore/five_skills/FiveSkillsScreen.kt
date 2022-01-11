@@ -24,6 +24,9 @@ enum class FiveSkillsScreen(
     ),
     Subcategories(
         icon = Icons.Filled.MoneyOff,
+    ),
+    SearchResult(
+        icon = Icons.Filled.Search,
     );
 
     companion object {
@@ -35,6 +38,7 @@ enum class FiveSkillsScreen(
                 AddSkill.name -> AddSkill
                 Categories.name -> Categories
                 Subcategories.name -> Subcategories
+                SearchResult.name -> SearchResult
                 null -> Categories
                 else -> throw IllegalArgumentException("Route $route is not recognized.")
             }

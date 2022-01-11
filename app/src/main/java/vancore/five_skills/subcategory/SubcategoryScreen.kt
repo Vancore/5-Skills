@@ -13,37 +13,51 @@ import vancore.five_skills.FiveSkillsViewModel
 import vancore.five_skills.shared_components.CategoryListEntry
 import vancore.five_skills.data.models.SubcategoryItem
 import vancore.five_skills.shared_components.TopBarSubCategory
-import vancore.five_skills.shared_components.TopBarWithImage
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 
 @Composable
 fun SubcategoryScreen(
     categoryName: String,
-    imageUrl: String,
+    categoryId: String,
+    categoryImageUrl: String,
     fiveSkillsViewModel: FiveSkillsViewModel,
-    onSubcategorySelected: (String) -> Unit = {}
+    onSubcategorySelected: (subcategoryName: String, subcategoryId: String, subcategoryImageUrl: String, categoryId: String, categoryImageUrl: String) -> Unit
 ) {
 
     val list = fiveSkillsViewModel.subcategoriesList
 
     Scaffold(topBar = { TopBarSubCategory(categoryTitle = categoryName) }) {
-        SubCategoriesList(list = list) { onSubcategorySelected(it) }
+        SubCategoriesList(list = list) { subcategoryName, subcategoryId, subcategoryIconUrl ->
+            onSubcategorySelected(
+                subcategoryName,
+                subcategoryId,
+                subcategoryIconUrl,
+                categoryId,
+                categoryImageUrl
+            )
+        }
     }
 
 }
 
 @Composable
-fun SubCategoriesList(list: List<SubcategoryItem>, onSubcategorySelected: (String) -> Unit = {}) {
+fun SubCategoriesList(
+    list: List<SubcategoryItem>,
+    onSubcategorySelected: (subcategoryName: String, subcategoryFirebaseId: String, subcategoryIconUrl: String) -> Unit
+) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
         items(list) { subCategoryItem ->
             CategoryListEntry(
                 descriptionText = subCategoryItem.name,
-                id = subCategoryItem.firebaseId,
                 iconURL = subCategoryItem.iconURL
             ) {
-                onSubcategorySelected(it)
+                onSubcategorySelected(
+                    subCategoryItem.name,
+                    subCategoryItem.firebaseId,
+                    subCategoryItem.iconURL
+                )
             }
         }
     }
@@ -67,7 +81,7 @@ fun SubcategoryScreenPreview() {
     )
     FiveSkillsTheme {
         Scaffold(topBar = { TopBarSubCategory(categoryTitle = "Category Name") }) {
-            SubCategoriesList(list = list) { }
+            SubCategoriesList(list = list) { _, _, _ -> }
         }
     }
 }

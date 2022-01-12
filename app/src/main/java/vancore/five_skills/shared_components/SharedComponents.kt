@@ -549,7 +549,7 @@ fun FiveSkillsFullStopText(titleText: String, modifier: Modifier) {
     }
     Text(
         text = styledText,
-        textAlign = TextAlign.Start,
+        textAlign = TextAlign.Center,
         style = MaterialTheme.typography.body1,
         fontSize = 16.sp,
         color = MaterialTheme.colors.onBackground,

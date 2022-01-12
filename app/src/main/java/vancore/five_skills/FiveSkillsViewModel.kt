@@ -29,6 +29,9 @@ class FiveSkillsViewModel @Inject constructor(
     var subcategoriesList = mutableStateListOf<SubcategoryItem>()
         private set
 
+    var allSubcategories = mutableStateListOf<SubcategoryItem>()
+        private set
+
     var authenticationState = authenticationUseCase.authenticationState
     var profileSkillListState = profileSkillListUseCase.profileSkillListState
     var searchSkillsState = searchSkillsUseCase.searchSkillState
@@ -37,6 +40,7 @@ class FiveSkillsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             categoriesList.addAll(categoriesRepository.loadCategories())
+            fetchAllSubcategories()
         }
     }
 
@@ -44,6 +48,16 @@ class FiveSkillsViewModel @Inject constructor(
         viewModelScope.launch {
             subcategoriesList.clear()
             subcategoriesList.addAll(categoriesRepository.loadSubcategories(categoryId = categoryID))
+        }
+    }
+
+    private fun fetchAllSubcategories(){
+        viewModelScope.launch {
+            val fullListOfSubcategories = mutableListOf<SubcategoryItem>()
+            for (category in categoriesList) {
+                fullListOfSubcategories.addAll(categoriesRepository.loadSubcategories(categoryId = category.firebaseId))
+            }
+            allSubcategories.addAll(fullListOfSubcategories)
         }
     }
 
@@ -56,7 +70,7 @@ class FiveSkillsViewModel @Inject constructor(
 
     fun fetchSkillsForSubcategory(subcategoryId: String) {
         viewModelScope.launch {
-
+            searchSkillsUseCase.fetchSkillsForSubcategory(subcategoryId = subcategoryId)
         }
     }
 
@@ -76,14 +90,22 @@ class FiveSkillsViewModel @Inject constructor(
         addSkillUseCase.step1Finished(skillTitle = skillTitle, userId = fireBaseUserId)
     }
 
-    fun addSkillStep2Finished(skillDescription: String, fireBaseUserId: String) {
-        addSkillUseCase.step2Finished(skillDescription = skillDescription, userId = fireBaseUserId)
+    fun addSkillStep2Finished(skillDescription: String) {
+        addSkillUseCase.step2Finished(skillDescription = skillDescription)
     }
 
-    fun addSkillStep3Finished(selfRating: Double, fireBaseUserId: String) {
+    fun addSkillStep3Finished(selfRating: Double) {
+        addSkillUseCase.step3Finished(selfRating = selfRating)
+    }
+
+    fun addSkillStep4Finished(subcategoryId: String, categoryId: String) {
         viewModelScope.launch {
-            addSkillUseCase.step3Finished(selfRating = selfRating, userId = fireBaseUserId)
+            addSkillUseCase.step4Finished(subcategoryId = subcategoryId, categoryId = categoryId)
         }
+    }
+
+    fun addSkillStepBack(){
+        addSkillUseCase.stepBack()
     }
 
     fun createUserInFirebase(firebaseUserId: String, email: String) {

@@ -1,7 +1,6 @@
 package vancore.five_skills
 
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import vancore.five_skills.data.models.CategoryItem
 import vancore.five_skills.data.models.SkillItem

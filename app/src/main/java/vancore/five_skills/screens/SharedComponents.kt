@@ -607,6 +607,7 @@ fun FiveSkillsBodyCenter(titleText: String, color: Color = MaterialTheme.colors.
 
 @Composable
 fun FiveSkillsDropdownList(
+    label: String = "Label",
     itemList: List<DropdownItem>,
     itemSelected: (String) -> Unit
 ) {
@@ -631,7 +632,7 @@ fun FiveSkillsDropdownList(
                     //This value is used to assign to the DropDown the same width
                     textFieldSize = coordinates.size.toSize()
                 },
-            label = { Text("Label") },
+            label = { Text(label) },
             trailingIcon = {
                 Icon(icon, "contentDescription",
                     Modifier.clickable { expanded = !expanded })

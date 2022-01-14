@@ -136,8 +136,6 @@ fun AddSkillPager(
     modifier: Modifier
 ) {
     val padding = 32.dp
-    var subcategoryExpanded by remember { mutableStateOf(false) }
-    var categoryExpanded by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -171,13 +169,15 @@ fun AddSkillPager(
             AddSkillStep.Step4 -> {
                 Column {
                     FiveSkillsDropdownList(
+                        label = "Category",
+                        itemList = categoryList,
+                        itemSelected = { firebaseId -> categoryChange(firebaseId) })
+                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                    FiveSkillsDropdownList(
+                        label = "Subcategory",
                         itemList = subcategoryList,
                         itemSelected = { firebaseId -> subcategoryChange(firebaseId) }
                     )
-                    Spacer(modifier = Modifier.padding(vertical = 16.dp))
-                    FiveSkillsDropdownList(
-                        itemList = categoryList,
-                        itemSelected = { firebaseId -> categoryChange(firebaseId) })
                 }
             }
         }

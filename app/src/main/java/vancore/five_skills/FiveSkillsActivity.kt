@@ -196,7 +196,7 @@ fun FiveSkillsNavHost(
                     categoryImageUrl = arguments.getString(CATEGORY_BACKGROUND_IMAGE_URL) ?: "",
                     fiveSkillsViewModel = viewModel
                 ) { subcategoryName, subcategoryId, subcategoryIconUrl, categoryId, categoryImageUrl ->
-                    //viewModel.fetchSkillsForSubcategory(subcategoryId)
+                    viewModel.fetchSkillsForSubcategory(subcategoryId)
                     navigateToSearchResult(
                         navController = navHostController,
                         subCategoryName = subcategoryName,

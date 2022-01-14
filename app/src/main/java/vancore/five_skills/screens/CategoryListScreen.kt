@@ -1,4 +1,4 @@
-package vancore.five_skills.category
+package vancore.five_skills.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,8 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import vancore.five_skills.FiveSkillsViewModel
 import vancore.five_skills.data.models.CategoryItem
-import vancore.five_skills.shared_components.CategoryListEntry
-import vancore.five_skills.shared_components.TopBar
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 
 @Composable

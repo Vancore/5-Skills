@@ -11,6 +11,8 @@ import javax.inject.Inject
 data class AddSkillState(
     val itemToAdd: SkillItem = SkillItem(),
     val step: AddSkillStep = AddSkillStep.Step1,
+    val subcategoryList: List<Pair<String, String>> = listOf(),
+    val categoryList: List<Pair<String, String>> = listOf(),
     val loadingState: AddSkillLoadingState = AddSkillLoadingState.Idle,
     val errorMessage: String = ""
 )
@@ -31,11 +33,11 @@ class AddSkillUseCase @Inject constructor(
         }
     }
 
-    fun step2Finished(skillDescription: String, userId: String) {
+    fun step2Finished(skillDescription: String) {
         _addSkillState.update {
             it.copy(
                 itemToAdd = SkillItem(
-                    userId = userId,
+                    userId = it.itemToAdd.userId,
                     title = it.itemToAdd.title,
                     description = skillDescription
                 ),
@@ -44,26 +46,55 @@ class AddSkillUseCase @Inject constructor(
         }
     }
 
-    suspend fun step3Finished(selfRating: Double, userId: String) {
+    fun step3Finished(selfRating: Double) {
         _addSkillState.update {
             it.copy(
                 itemToAdd = SkillItem(
-                    userId = userId,
+                    userId = it.itemToAdd.userId,
                     title = it.itemToAdd.title,
                     description = it.itemToAdd.description,
                     selfRating = selfRating
                 ),
+                step = AddSkillStep.Step4
+            )
+        }
+    }
+
+    suspend fun step4Finished(subcategoryId: String, categoryId: String) {
+        _addSkillState.update {
+            it.copy(
+                itemToAdd = SkillItem(
+                    userId = it.itemToAdd.userId,
+                    title = it.itemToAdd.title,
+                    description = it.itemToAdd.description,
+                    selfRating = it.itemToAdd.selfRating,
+                    subcategoryId = subcategoryId,
+                    categoryId = categoryId
+                ),
                 step = AddSkillStep.Step1
             )
         }
-        addSkillForUser(userId, _addSkillState.value.itemToAdd)
+        addSkillForUser(_addSkillState.value.itemToAdd)
     }
 
-    private suspend fun addSkillForUser(firebaseUserId: String, skillItem: SkillItem) {
-        repository.addSkillForUser(firebaseUserId = firebaseUserId, skillItem = skillItem)
+    private suspend fun addSkillForUser(skillItem: SkillItem) {
+        repository.addSkillForUser(firebaseUserId = skillItem.userId, skillItem = skillItem)
         // ToDo: Add error handling
         _addSkillState.update {
             it.copy(itemToAdd = skillItem, loadingState = AddSkillLoadingState.Idle)
+        }
+    }
+
+    fun stepBack() {
+        _addSkillState.update {
+            it.copy(
+                step = when (it.step) {
+                    AddSkillStep.Step1 -> AddSkillStep.Step1
+                    AddSkillStep.Step2 -> AddSkillStep.Step1
+                    AddSkillStep.Step3 -> AddSkillStep.Step2
+                    AddSkillStep.Step4 -> AddSkillStep.Step3
+                }
+            )
         }
     }
 }
@@ -90,5 +121,9 @@ enum class AddSkillStep(val title: String = "", val description: String = "") {
     Step3(
         "Give your skill a rating",
         "Give user an idea of your confidence.\n\nBe humble, be convincing."
+    ),
+    Step4(
+        "Last but not least, choose which category your skill belongs to",
+        "(I will add a feature to suggest categories/subcategories soon!)"
     )
 }

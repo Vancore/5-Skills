@@ -1,4 +1,4 @@
-package vancore.five_skills.subcategory
+package vancore.five_skills.screens
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -10,9 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import vancore.five_skills.FiveSkillsViewModel
-import vancore.five_skills.shared_components.CategoryListEntry
 import vancore.five_skills.data.models.SubcategoryItem
-import vancore.five_skills.shared_components.TopBarSubCategory
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 
 @Composable

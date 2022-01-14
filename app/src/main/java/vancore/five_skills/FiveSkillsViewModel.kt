@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import vancore.five_skills.usecases.AuthenticationUseCase
 import vancore.five_skills.data.FiveSkillsRepository
@@ -29,34 +31,45 @@ class FiveSkillsViewModel @Inject constructor(
     var subcategoriesList = mutableStateListOf<SubcategoryItem>()
         private set
 
+    var allSubcategories = mutableStateListOf<SubcategoryItem>()
+        private set
+
     var authenticationState = authenticationUseCase.authenticationState
     var profileSkillListState = profileSkillListUseCase.profileSkillListState
     var searchSkillsState = searchSkillsUseCase.searchSkillState
     var addSkillState = addSkillUseCase.addSkillState
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             categoriesList.addAll(categoriesRepository.loadCategories())
+            fetchAllSubcategories()
         }
     }
 
     fun fetchSubcategoriesFor(categoryID: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             subcategoriesList.clear()
             subcategoriesList.addAll(categoriesRepository.loadSubcategories(categoryId = categoryID))
         }
     }
 
+    private suspend fun fetchAllSubcategories() {
+        val fullListOfSubcategories = mutableListOf<SubcategoryItem>()
+        for (category in categoriesList) {
+            fullListOfSubcategories.addAll(categoriesRepository.loadSubcategories(categoryId = category.firebaseId))
+        }
+        allSubcategories.addAll(fullListOfSubcategories)
+    }
+
     fun fetchSkillsForUser(firebaseUserId: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             profileSkillListUseCase.fetchSkillListForUser(firebaseUserId)
         }
     }
 
-
     fun fetchSkillsForSubcategory(subcategoryId: String) {
-        viewModelScope.launch {
-
+        viewModelScope.launch(Dispatchers.IO) {
+            searchSkillsUseCase.fetchSkillsForSubcategory(subcategoryId = subcategoryId)
         }
     }
 
@@ -76,14 +89,22 @@ class FiveSkillsViewModel @Inject constructor(
         addSkillUseCase.step1Finished(skillTitle = skillTitle, userId = fireBaseUserId)
     }
 
-    fun addSkillStep2Finished(skillDescription: String, fireBaseUserId: String) {
-        addSkillUseCase.step2Finished(skillDescription = skillDescription, userId = fireBaseUserId)
+    fun addSkillStep2Finished(skillDescription: String) {
+        addSkillUseCase.step2Finished(skillDescription = skillDescription)
     }
 
-    fun addSkillStep3Finished(selfRating: Double, fireBaseUserId: String) {
-        viewModelScope.launch {
-            addSkillUseCase.step3Finished(selfRating = selfRating, userId = fireBaseUserId)
+    fun addSkillStep3Finished(selfRating: Double) {
+        addSkillUseCase.step3Finished(selfRating = selfRating)
+    }
+
+    fun addSkillStep4Finished(subcategoryId: String, categoryId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            addSkillUseCase.step4Finished(subcategoryId = subcategoryId, categoryId = categoryId)
         }
+    }
+
+    fun addSkillStepBack() {
+        addSkillUseCase.stepBack()
     }
 
     fun createUserInFirebase(firebaseUserId: String, email: String) {

@@ -1,11 +1,14 @@
 package vancore.five_skills
 
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
+import vancore.five_skills.data.FiveSkillsRemoteRepository.Companion.CATEGORY_ID
+import vancore.five_skills.data.FiveSkillsRemoteRepository.Companion.SUBCATEGORY_ID
+import vancore.five_skills.data.FiveSkillsRemoteRepository.Companion.USER_ID
 import vancore.five_skills.data.models.CategoryItem
 import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.data.models.SubcategoryItem
+import vancore.five_skills.data.models.User
 
 fun QuerySnapshot.getCategoryItems(): List<CategoryItem> {
     val listOfSkills = mutableListOf<CategoryItem>()
@@ -38,18 +41,32 @@ fun QuerySnapshot.getSubCategoryItems(): List<SubcategoryItem> {
     return listOfSubCategories
 }
 
-fun QuerySnapshot.getSkillListFromUser(): ArrayList<SkillItem> {
+fun QuerySnapshot.getSkills(): ArrayList<SkillItem> {
     val listOfSkills = arrayListOf<SkillItem>()
     for (skill in this.documents) {
-        val toString = if (skill["selfRating"] != null) skill["selfRating"].toString().toDouble() else 0.0
         listOfSkills.add(
             SkillItem(
-                userId = (this.query as CollectionReference).parent?.id ?: "userID not found",
+                userId = skill[USER_ID].toString(),
                 skillId = skill.id,
                 title = skill["title"].toString(),
                 description = skill["description"].toString(),
-                selfRating = toString,
-                ranking = skill["ranking"].toString().toInt()
+                selfRating = skill["selfRating"].toString().toDouble(),
+                ranking = skill["ranking"].toString().toInt(),
+                subcategoryId = skill[SUBCATEGORY_ID].toString(),
+                categoryId = skill[CATEGORY_ID].toString(),
+            )
+        )
+    }
+    return listOfSkills
+}
+
+fun QuerySnapshot.getUserList(): ArrayList<User> {
+    val listOfSkills = arrayListOf<User>()
+    for (user in this.documents) {
+        listOfSkills.add(
+            User(
+                firebaseId = user.id,
+                email = user["email"].toString()
             )
         )
     }

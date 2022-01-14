@@ -3,6 +3,7 @@ package vancore.five_skills
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -32,12 +33,12 @@ import vancore.five_skills.NavArguments.SKILL_USER_IMAGE
 import vancore.five_skills.NavArguments.SUBCATEGORY_BACKGROUND_IMAGE_URL
 import vancore.five_skills.NavArguments.SUBCATEGORY_ID
 import vancore.five_skills.NavArguments.SUBCATEGORY_NAME
-import vancore.five_skills.add_skill.AddSkillScreen
-import vancore.five_skills.category.CategoryScreen
-import vancore.five_skills.profile.ProfileScreen
-import vancore.five_skills.search_result.SearchResultScreen
-import vancore.five_skills.skill.SkillScreen
-import vancore.five_skills.subcategory.SubcategoryScreen
+import vancore.five_skills.screens.AddSkillScreen
+import vancore.five_skills.screens.CategoryScreen
+import vancore.five_skills.screens.ProfileScreen
+import vancore.five_skills.screens.SearchResultScreen
+import vancore.five_skills.screens.SkillScreen
+import vancore.five_skills.screens.SubcategoryScreen
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -49,6 +50,7 @@ class FiveSkillsActivity : ComponentActivity() {
     @Inject
     lateinit var fiveSkillsViewModel: FiveSkillsViewModel
 
+    @ExperimentalMaterialApi
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +62,7 @@ class FiveSkillsActivity : ComponentActivity() {
 }
 
 
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Composable
 fun FiveSkillsApp(fiveSkillsViewModel: FiveSkillsViewModel) {
@@ -84,6 +87,7 @@ fun FiveSkillsApp(fiveSkillsViewModel: FiveSkillsViewModel) {
     }
 }
 
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Composable
 fun FiveSkillsNavHost(
@@ -102,9 +106,12 @@ fun FiveSkillsNavHost(
         }
 
         composable(FiveSkillsScreen.AddSkill.name) {
-            AddSkillScreen(viewModel = viewModel) {
-                navHostController.popBackStack()
-            }
+            AddSkillScreen(
+                viewModel = viewModel,
+                onFinishAddingSkill = {
+                    navHostController.popBackStack()
+                }
+            )
         }
 
         composable(FiveSkillsScreen.Profile.name) {
@@ -189,7 +196,7 @@ fun FiveSkillsNavHost(
                     categoryImageUrl = arguments.getString(CATEGORY_BACKGROUND_IMAGE_URL) ?: "",
                     fiveSkillsViewModel = viewModel
                 ) { subcategoryName, subcategoryId, subcategoryIconUrl, categoryId, categoryImageUrl ->
-                    //viewModel.fetchSkillsForSubcategory(subcategoryId)
+                    viewModel.fetchSkillsForSubcategory(subcategoryId)
                     navigateToSearchResult(
                         navController = navHostController,
                         subCategoryName = subcategoryName,

@@ -16,10 +16,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.PersonOutline
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,8 +24,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -38,11 +38,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.skydoves.landscapist.glide.GlideImage
 import vancore.five_skills.FiveSkillsScreen
 import vancore.five_skills.R
+import vancore.five_skills.data.models.CategoryItem
+import vancore.five_skills.data.models.DropdownItem
 import vancore.five_skills.data.models.SkillItem
+import vancore.five_skills.data.models.SubcategoryItem
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 import vancore.five_skills.ui.theme.Rose600
 import vancore.five_skills.ui.theme.TransparentBlack50
@@ -601,6 +605,58 @@ fun FiveSkillsBodyCenter(titleText: String, color: Color = MaterialTheme.colors.
     )
 }
 
+@Composable
+fun FiveSkillsDropdownList(
+    itemList: List<DropdownItem>,
+    itemSelected: (String) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf("") }
+
+    var textFieldSize by remember { mutableStateOf(Size.Zero) }
+
+    val icon = if (expanded)
+        Icons.Filled.KeyboardArrowUp
+    else
+        Icons.Filled.KeyboardArrowDown
+
+
+    Column(Modifier.padding(20.dp)) {
+        TextField(
+            value = selectedText,
+            onValueChange = { selectedText = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .onGloballyPositioned { coordinates ->
+                    //This value is used to assign to the DropDown the same width
+                    textFieldSize = coordinates.size.toSize()
+                },
+            label = { Text("Label") },
+            trailingIcon = {
+                Icon(icon, "contentDescription",
+                    Modifier.clickable { expanded = !expanded })
+            },
+            colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colors.onPrimary)
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .width(with(LocalDensity.current) { textFieldSize.width.toDp() })
+        ) {
+            itemList.forEach { dropdownItem ->
+                DropdownMenuItem(onClick = {
+                    selectedText = dropdownItem.name
+                    expanded = false
+                    itemSelected(dropdownItem.firebaseId)
+                }) {
+                    Text(text = dropdownItem.name)
+                }
+            }
+        }
+    }
+}
+
 //region: Preview
 
 @Preview(
@@ -751,6 +807,40 @@ fun TopBarSearchResultPreview() {
 fun RatingBarNoSelectionPreview() {
     FiveSkillsTheme {
         FiveSkillsRatingBarNoSelection(rating = 4)
+    }
+}
+
+@Preview(
+    name = "DropdownList - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+)
+@Preview(
+    name = "DropdownList - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true
+)
+@Composable
+fun DropDownPreview() {
+    FiveSkillsTheme {
+        FiveSkillsDropdownList(
+            itemList = listOf(
+                SubcategoryItem(
+                    id = 1,
+                    name = "Subcategory Item 1",
+                    firebaseId = "firebaseId"
+                ),
+                SubcategoryItem(
+                    id = 1,
+                    name = "Subcategory Item 1",
+                    firebaseId = "firebaseId"
+                ),
+                SubcategoryItem(
+                    id = 1,
+                    name = "Subcategory Item 1",
+                    firebaseId = "firebaseId"
+                ),
+            ), itemSelected = {})
     }
 }
 

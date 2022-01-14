@@ -2,6 +2,7 @@ package vancore.five_skills.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -13,7 +14,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import vancore.five_skills.FiveSkillsViewModel
-import vancore.five_skills.data.models.CategoryItem
+import vancore.five_skills.data.models.DropdownItem
 import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.data.models.SubcategoryItem
 import vancore.five_skills.ui.theme.FiveSkillsTheme
@@ -49,12 +50,9 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel, onFinishAddingSkill: (SkillIt
                 titleChange = titleChange,
                 descriptionText = currentDescriptionInput,
                 descriptionTextChange = descriptionChange,
-                ratingInput = currentRatingInput,
                 ratingInputChange = ratingChange,
-                subcategoryInput = currentSubcategory,
                 subcategoryChange = subcategoryChosen,
                 subcategoryList = viewModel.allSubcategories,
-                categoryInput = currentCategory,
                 categoryChange = categoryChosen,
                 categoryList = viewModel.categoriesList,
                 modifier = Modifier.weight(1f)
@@ -91,6 +89,7 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel, onFinishAddingSkill: (SkillIt
                                     currentTitleInput,
                                     currentUserId
                                 )
+                                nextButtonText.value = "Next"
                             }
                             AddSkillStep.Step2 -> {
                                 viewModel.addSkillStep2Finished(
@@ -110,7 +109,8 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel, onFinishAddingSkill: (SkillIt
                                 onFinishAddingSkill(addSkillState.itemToAdd)
                             }
                         }
-                    }
+                    },
+                    enabled = currentTitleInput.isNotEmpty()
                 ) {
                     Text(text = nextButtonText.value)
                 }
@@ -128,14 +128,11 @@ fun AddSkillPager(
     titleChange: (String) -> Unit = {},
     descriptionText: String,
     descriptionTextChange: (String) -> Unit = {},
-    ratingInput: String,
     ratingInputChange: (String) -> Unit = {},
-    subcategoryInput: String = "",
     subcategoryChange: (id: String) -> Unit = {},
-    subcategoryList: List<SubcategoryItem> = listOf(),
-    categoryInput: String = "",
+    subcategoryList: List<DropdownItem> = listOf(),
     categoryChange: (id: String) -> Unit = {},
-    categoryList: List<CategoryItem> = listOf(),
+    categoryList: List<DropdownItem> = listOf(),
     modifier: Modifier
 ) {
     val padding = 32.dp
@@ -171,41 +168,16 @@ fun AddSkillPager(
                 modifier = Modifier.padding(bottom = padding),
                 onRatingSelected = ratingInputChange
             )
-            AddSkillStep.Step4 -> ExposedDropdownMenuBox(
-                expanded = false,
-                onExpandedChange = {
-                    subcategoryExpanded = !subcategoryExpanded
-                }
-            ) {
-                TextField(
-                    value = subcategoryInput,
-                    modifier = Modifier.padding(bottom = padding),
-                    readOnly = true,
-                    onValueChange = { subcategoryChange(it) },
-                    label = { Text(text = "Subcategory") },
-                    trailingIcon = {
-                        ExposedDropdownMenuDefaults.TrailingIcon(
-                            expanded = subcategoryExpanded
-                        ) {}
-                    },
-                    colors = ExposedDropdownMenuDefaults.textFieldColors()
-                )
-                ExposedDropdownMenu(
-                    expanded = subcategoryExpanded,
-                    onDismissRequest = {
-                        subcategoryExpanded = false
-                    }
-                ) {
-                    subcategoryList.forEach { subcategory ->
-                        DropdownMenuItem(
-                            onClick = {
-                                subcategoryChange(subcategory.firebaseId)
-                                subcategoryExpanded = false
-                            }
-                        ) {
-                            Text(text = subcategory.name)
-                        }
-                    }
+            AddSkillStep.Step4 -> {
+                Column {
+                    FiveSkillsDropdownList(
+                        itemList = subcategoryList,
+                        itemSelected = { firebaseId -> subcategoryChange(firebaseId) }
+                    )
+                    Spacer(modifier = Modifier.padding(vertical = 16.dp))
+                    FiveSkillsDropdownList(
+                        itemList = categoryList,
+                        itemSelected = { firebaseId -> categoryChange(firebaseId) })
                 }
             }
         }
@@ -237,8 +209,12 @@ fun AddSkillScreenPreview() {
                 AddSkillStep.Step4,
                 titleText = "Title Text",
                 descriptionText = "Description Text",
-                ratingInput = "",
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                subcategoryList = listOf(
+                    SubcategoryItem(1, "", "Subcategory Name"),
+                    SubcategoryItem(1, "", "Subcategory Name"),
+                    SubcategoryItem(1, "", "Subcategory Name")
+                )
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,

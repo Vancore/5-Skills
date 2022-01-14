@@ -1,4 +1,4 @@
-package vancore.five_skills.profile
+package vancore.five_skills.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
@@ -22,7 +22,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import vancore.five_skills.FiveSkillsViewModel
 import vancore.five_skills.data.models.SkillItem
-import vancore.five_skills.shared_components.*
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 import vancore.five_skills.usecases.RegistrationState
 

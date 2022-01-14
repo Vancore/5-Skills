@@ -1,4 +1,4 @@
-package vancore.five_skills.shared_components
+package vancore.five_skills.screens
 
 import android.content.res.Configuration
 import android.view.MotionEvent

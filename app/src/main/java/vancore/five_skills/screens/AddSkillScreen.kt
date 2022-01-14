@@ -1,4 +1,4 @@
-package vancore.five_skills.add_skill
+package vancore.five_skills.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -16,7 +16,6 @@ import vancore.five_skills.FiveSkillsViewModel
 import vancore.five_skills.data.models.CategoryItem
 import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.data.models.SubcategoryItem
-import vancore.five_skills.shared_components.*
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 import vancore.five_skills.usecases.AddSkillStep
 

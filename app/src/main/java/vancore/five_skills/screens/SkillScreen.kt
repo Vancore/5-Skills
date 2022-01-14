@@ -1,4 +1,4 @@
-package vancore.five_skills.skill
+package vancore.five_skills.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import vancore.five_skills.FiveSkillsViewModel
-import vancore.five_skills.shared_components.*
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 
 @ExperimentalComposeUiApi

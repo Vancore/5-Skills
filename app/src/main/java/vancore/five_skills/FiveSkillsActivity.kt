@@ -106,6 +106,7 @@ fun FiveSkillsNavHost(
         }
 
         composable(FiveSkillsScreen.AddSkill.name) {
+            viewModel.subcategoriesList.clear()
             AddSkillScreen(
                 viewModel = viewModel,
                 onFinishAddingSkill = {

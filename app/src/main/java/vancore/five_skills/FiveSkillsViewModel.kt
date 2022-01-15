@@ -42,7 +42,7 @@ class FiveSkillsViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             categoriesList.addAll(categoriesRepository.loadCategories())
-            fetchAllSubcategories()
+            //fetchAllSubcategories() // currently not needed, might remove it
         }
     }
 

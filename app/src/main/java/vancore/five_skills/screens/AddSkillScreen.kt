@@ -35,6 +35,9 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel, onFinishAddingSkill: (SkillIt
     val (currentRatingInput, ratingChange) = remember { mutableStateOf("3") }
     val (currentSubcategory, subcategoryChosen) = remember { mutableStateOf("") }
     val (currentCategory, categoryChosen) = remember { mutableStateOf("") }
+    if(currentCategory.isNotEmpty()) {
+        viewModel.fetchSubcategoriesFor(currentCategory)
+    }
 
     if (currentUserId != null) {
 
@@ -52,7 +55,7 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel, onFinishAddingSkill: (SkillIt
                 descriptionTextChange = descriptionChange,
                 ratingInputChange = ratingChange,
                 subcategoryChange = subcategoryChosen,
-                subcategoryList = viewModel.allSubcategories,
+                subcategoryList = viewModel.subcategoriesList,
                 categoryChange = categoryChosen,
                 categoryList = viewModel.categoriesList,
                 modifier = Modifier.weight(1f)
@@ -172,12 +175,14 @@ fun AddSkillPager(
                         label = "Category",
                         itemList = categoryList,
                         itemSelected = { firebaseId -> categoryChange(firebaseId) })
-                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
-                    FiveSkillsDropdownList(
-                        label = "Subcategory",
-                        itemList = subcategoryList,
-                        itemSelected = { firebaseId -> subcategoryChange(firebaseId) }
-                    )
+                    if (subcategoryList.isNotEmpty()) {
+                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                        FiveSkillsDropdownList(
+                            label = "Subcategory",
+                            itemList = subcategoryList,
+                            itemSelected = { firebaseId -> subcategoryChange(firebaseId) }
+                        )
+                    }
                 }
             }
         }

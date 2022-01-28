@@ -23,11 +23,11 @@ fun SearchResultScreen(
 ) {
     val searchSkillsState by viewModel.searchSkillsState.collectAsState()
     val skillList = searchSkillsState.currentList
-    
+
     Scaffold(topBar = { TopBarSearchResult(subcategoryTitle = subcategoryName) }) {
         LazyColumn(contentPadding = PaddingValues(8.dp)) {
             items(items = searchSkillsState.currentList) { skillItem ->
-
+                SearchResultItem(skillItem = skillItem, onItemClicked = { onSingleItemClicked(it) })
             }
         }
     }

@@ -33,6 +33,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -338,6 +340,44 @@ fun FiveSkillsTextInput(
     )
 }
 
+@ExperimentalComposeUiApi
+@Composable
+fun FiveSkillsPasswordInput(
+    modifier: Modifier = Modifier,
+    text: String,
+    onTextChange: (String) -> Unit = {},
+    onImeAction: () -> Unit = {},
+    keyboardOption: KeyboardOptions,
+    placeHolder: String,
+    label: String = "",
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var passwordVisibility: Boolean by remember { mutableStateOf(false) }
+
+    TextField(
+        value = text,
+        onValueChange = onTextChange,
+        placeholder = { Text(text = placeHolder) },
+        keyboardOptions = keyboardOption,
+        keyboardActions = KeyboardActions(onDone = {
+            onImeAction()
+            keyboardController?.hide()
+        }),
+        modifier = modifier,
+        visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+            IconButton(onClick = {
+                passwordVisibility = !passwordVisibility
+            }) {
+                when (passwordVisibility) {
+                    true -> Icon(imageVector = Icons.Default.Visibility, "")
+                    false -> Icon(imageVector = Icons.Default.VisibilityOff, "")
+                }
+            }
+        }
+    )
+}
+
 @Composable
 fun FiveSkillsErrorText(
     errorText: String,
@@ -500,6 +540,99 @@ fun SkillListItem(
                 fontSize = 16.sp,
                 color = MaterialTheme.colors.onBackground
             )
+        }
+    }
+}
+
+@Composable
+fun SearchResultItem(
+    skillItem: SkillItem,
+    onItemClicked: (SkillItem) -> Unit
+) {
+    Box(modifier = Modifier
+        .height(200.dp)
+        .padding(horizontal = 16.dp, vertical = 8.dp)
+        .clip(RoundedCornerShape(10.dp))
+        .clickable { onItemClicked(skillItem) }
+    ) { // rounded corners
+        Row {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .background(color = MaterialTheme.colors.primary)
+                    .fillMaxSize()
+                    .padding(8.dp)
+            ) {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    FiveSkillsSubTitleText(
+                        titleText = skillItem.title,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "Self-Rating",
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                            Text(
+                                text = skillItem.selfRating.toString(),
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        }
+                        Spacer(modifier = Modifier.padding(8.dp))
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "User-Rating",
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                            Text(
+                                text = "-",
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        }
+                    }
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .background(color = Rose600)
+                    .fillMaxSize()
+            ) {
+                GlideImage(
+                    imageModel = skillItem.backgroundImageUrl,
+                    modifier = Modifier.fillMaxSize(),
+                    loading = {
+                        ConstraintLayout(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            val indicator = createRef()
+                            CircularProgressIndicator(
+                                modifier = Modifier.constrainAs(indicator) {
+                                    top.linkTo(parent.top)
+                                    bottom.linkTo(parent.bottom)
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                }
+                            )
+                        }
+                    },
+                    previewPlaceholder = R.drawable.detail_placeholder,
+                    // shows an error text message when request failed.
+                    failure = {
+                        Text(text = "image request failed.")
+                    })
+            }
         }
     }
 }
@@ -842,6 +975,25 @@ fun DropDownPreview() {
                     firebaseId = "firebaseId"
                 ),
             ), itemSelected = {})
+    }
+}
+
+@Preview(
+    name = "Search Result Item - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+)
+@Preview(
+    name = "Search Result Item - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true
+)
+@Composable
+fun SearchResultItemPreview() {
+    FiveSkillsTheme {
+        SearchResultItem(
+            skillItem = SkillItem(title = "Skill Item Title", selfRating = 3.0),
+            onItemClicked = {})
     }
 }
 

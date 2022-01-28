@@ -106,7 +106,6 @@ fun FiveSkillsNavHost(
         }
 
         composable(FiveSkillsScreen.AddSkill.name) {
-            viewModel.subcategoriesList.clear()
             AddSkillScreen(
                 viewModel = viewModel,
                 onFinishAddingSkill = {
@@ -119,6 +118,7 @@ fun FiveSkillsNavHost(
             ProfileScreen(
                 fiveSkillsViewModel = viewModel,
                 onAddSkillClicked = {
+                    viewModel.subcategoriesList.clear()
                     navigateToAddSkill(navHostController)
                 },
                 onSingleSkillClicked = { skill ->
@@ -229,6 +229,8 @@ fun FiveSkillsNavHost(
                 subcategoryImageUrl = arguments?.getString(SUBCATEGORY_BACKGROUND_IMAGE_URL) ?: "",
                 categoryImageUrl = arguments?.getString(CATEGORY_BACKGROUND_IMAGE_URL) ?: ""
             ) { skill ->
+                val placeHolderUrl =
+                    if (skill.backgroundImageUrl.isEmpty()) PlaceHolderUrls.IMAGE_PLACEHOLDER else skill.backgroundImageUrl
                 navigateToSingleSkill(
                     navHostController,
                     skillUserId = skill.userId,
@@ -236,8 +238,8 @@ fun FiveSkillsNavHost(
                     skillTitle = skill.title,
                     skillDescription = skill.description,
                     skillSelfRating = skill.selfRating.toString(),
-                    skillBackgroundImageUrl = skill.backgroundImageUrl,
-                    skillUserImageUrl = skill.backgroundImageUrl
+                    skillBackgroundImageUrl = placeHolderUrl,
+                    skillUserImageUrl = placeHolderUrl
                 )
             }
         }

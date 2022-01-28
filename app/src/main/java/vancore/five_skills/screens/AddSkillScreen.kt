@@ -63,7 +63,7 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel, onFinishAddingSkill: (SkillIt
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 48.dp)
+                modifier = Modifier.padding(bottom = 72.dp)
             ) {
                 val nextButtonText = remember { mutableStateOf("Next") }
 

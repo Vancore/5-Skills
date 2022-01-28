@@ -50,7 +50,7 @@ fun QuerySnapshot.getSkills(): ArrayList<SkillItem> {
                 skillId = skill.id,
                 title = skill["title"].toString(),
                 description = skill["description"].toString(),
-                selfRating = skill["selfRating"].toString().toDouble(),
+                selfRating = skill["selfRating"]?.toString()?.toDouble() ?: 0.0,
                 ranking = skill["ranking"].toString().toInt(),
                 subcategoryId = skill[SUBCATEGORY_ID].toString(),
                 categoryId = skill[CATEGORY_ID].toString(),

@@ -124,7 +124,7 @@ fun LoginInputs(
                 placeHolder = placeHolderTextMail,
                 label = placeHolderTextMail,
             )
-            FiveSkillsTextInput(
+            FiveSkillsPasswordInput(
                 modifier = textModifier,
                 text = passwordText,
                 onTextChange = onPasswordChanged,
@@ -141,9 +141,9 @@ fun LoginInputs(
             onLoginClicked = onLoginClicked,
             onRegisterClicked = onRegisterClicked,
             modifier = Modifier.constrainAs(buttonSection) {
-                bottom.linkTo(parent.bottom, margin = 24.dp)
-                start.linkTo(parent.absoluteLeft, margin = 24.dp)
-                end.linkTo(parent.absoluteRight, margin = 24.dp)
+                bottom.linkTo(parent.bottom, margin = 72.dp)
+                start.linkTo(parent.absoluteLeft, margin = 72.dp)
+                end.linkTo(parent.absoluteRight, margin = 72.dp)
                 width = Dimension.fillToConstraints
             }
         )

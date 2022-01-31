@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
     kotlin ("android")
     kotlin("kapt")
 }
@@ -91,6 +92,7 @@ dependencies {
     implementation(Dependencies.firebaseBom)
     implementation(Dependencies.firebaseFirestore)
     implementation(Dependencies.firebaseAnalytics)
+    implementation(Dependencies.firebaseCrashlytics)
     implementation(Dependencies.firebaseAuthKTX)
     implementation(Dependencies.firebaseUIAuth)
     implementation(Dependencies.firebasePlayServices)

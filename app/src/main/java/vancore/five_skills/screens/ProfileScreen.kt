@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.navigationBarsWithImePadding
 import vancore.five_skills.FiveSkillsViewModel
 import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.ui.theme.FiveSkillsTheme
@@ -41,26 +43,28 @@ fun ProfileScreen(
         val (currentUserInput, userChange) = remember { mutableStateOf("") }
         val (currentPasswordInput, passwordChange) = remember { mutableStateOf("") }
 
-        Scaffold(topBar = { FiveSkillsTitleText(titleText = "Login") }) {
-            LoginInputs(
-                userNameText = currentUserInput,
-                passwordText = currentPasswordInput,
-                errorText = authenticationState.errorMessage,
-                onUserNameChanged = userChange,
-                onPasswordChanged = passwordChange,
-                onLoginClicked = {
-                    fiveSkillsViewModel.loginClicked(
-                        currentUserInput,
-                        currentPasswordInput
-                    )
-                },
-                onRegisterClicked = {
-                    fiveSkillsViewModel.registerClicked(
-                        currentUserInput,
-                        currentPasswordInput
-                    )
-                }
-            )
+        ProvideWindowInsets(windowInsetsAnimationsEnabled = true) {
+            Scaffold(topBar = { FiveSkillsTitleText(titleText = "Login") }) {
+                LoginInputs(
+                    userNameText = currentUserInput,
+                    passwordText = currentPasswordInput,
+                    errorText = authenticationState.errorMessage,
+                    onUserNameChanged = userChange,
+                    onPasswordChanged = passwordChange,
+                    onLoginClicked = {
+                        fiveSkillsViewModel.loginClicked(
+                            currentUserInput,
+                            currentPasswordInput
+                        )
+                    },
+                    onRegisterClicked = {
+                        fiveSkillsViewModel.registerClicked(
+                            currentUserInput,
+                            currentPasswordInput
+                        )
+                    }
+                )
+            }
         }
     } else {
         val firebaseUserId = authenticationState.currentUser!!.uid
@@ -107,7 +111,7 @@ fun LoginInputs(
         .padding(vertical = 16.dp, horizontal = 24.dp)
         .fillMaxWidth()
 
-    ConstraintLayout(modifier = Modifier.fillMaxHeight()) {
+    ConstraintLayout(modifier = Modifier.fillMaxHeight().navigationBarsWithImePadding()) {
 
         val (loginSection, buttonSection) = createRefs()
 
@@ -141,7 +145,7 @@ fun LoginInputs(
             onLoginClicked = onLoginClicked,
             onRegisterClicked = onRegisterClicked,
             modifier = Modifier.constrainAs(buttonSection) {
-                bottom.linkTo(parent.bottom, margin = 72.dp)
+                bottom.linkTo(parent.bottom, margin = 16.dp)
                 start.linkTo(parent.absoluteLeft, margin = 72.dp)
                 end.linkTo(parent.absoluteRight, margin = 72.dp)
                 width = Dimension.fillToConstraints

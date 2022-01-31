@@ -51,8 +51,12 @@ object Dependencies {
     const val firebaseBom = "com.google.firebase:firebase-bom:29.0.0"
     const val firebaseFirestore= "com.google.firebase:firebase-firestore-ktx:24.0.0"
     const val firebaseAnalytics = "com.google.firebase:firebase-analytics-ktx:20.0.2"
+    const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics"
     const val firebaseAuthKTX = "com.google.firebase:firebase-auth-ktx:21.0.1"
     const val firebaseUIAuth = "com.firebaseui:firebase-ui-auth:7.2.0"
     const val firebasePlayServices = "com.google.android.gms:play-services-auth:19.2.0"
     const val firebaseAuth = "com.google.firebase:firebase-auth" // No versioning needed because of BoM
+
+    /// Crashlytics PlugIn
+    const val crashLyticsPlugin = "com.google.firebase:firebase-crashlytics-gradle:2.8.1"
 }

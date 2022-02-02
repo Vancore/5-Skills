@@ -1,15 +1,27 @@
 package vancore.five_skills.screens
 
 import android.content.res.Configuration
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.DismissDirection.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -25,8 +37,12 @@ import com.google.accompanist.insets.navigationBarsWithImePadding
 import vancore.five_skills.FiveSkillsViewModel
 import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.ui.theme.FiveSkillsTheme
+import vancore.five_skills.ui.theme.Grey200
+import vancore.five_skills.ui.theme.Primary
+import vancore.five_skills.ui.theme.Primary_Dark
 import vancore.five_skills.usecases.RegistrationState
 
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Composable
 fun ProfileScreen(
@@ -88,6 +104,7 @@ fun ProfileScreen(
             SkillList(
                 skillItemList = profileSkillListState.currentList,
                 onSkillClicked = onSingleSkillClicked,
+                onSkillSwiped = { fiveSkillsViewModel.deleteSkill(it) },
                 onAddSkillClicked = onAddSkillClicked
             )
         }
@@ -111,7 +128,11 @@ fun LoginInputs(
         .padding(vertical = 16.dp, horizontal = 24.dp)
         .fillMaxWidth()
 
-    ConstraintLayout(modifier = Modifier.fillMaxHeight().navigationBarsWithImePadding()) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxHeight()
+            .navigationBarsWithImePadding()
+    ) {
 
         val (loginSection, buttonSection) = createRefs()
 
@@ -242,10 +263,12 @@ fun LoginButtons(
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun SkillList(
     onSkillClicked: (SkillItem) -> Unit = {},
     onAddSkillClicked: () -> Unit = {},
+    onSkillSwiped: (SkillItem) -> Unit = {},
     skillItemList: ArrayList<SkillItem>
 ) {
     Column {
@@ -268,10 +291,55 @@ fun SkillList(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.padding(start = 16.dp, end = 16.dp)
         ) {
+
             for (skill in skillItemList) {
-                SkillListItem(skillItem = skill, isSelected = false) {
-                    onSkillClicked(it)
-                }
+                val dismissState = rememberDismissState(
+                    confirmStateChange = {
+                        if (it == DismissValue.DismissedToEnd) onSkillSwiped(skill)
+                        true
+                    }
+                )
+                SwipeToDismiss(
+                    state = dismissState,
+                    directions = setOf(StartToEnd),
+                    dismissThresholds = { FractionalThreshold(0.3f) },
+                    background = {
+                        val direction = dismissState.dismissDirection ?: return@SwipeToDismiss
+                        val backgroundColor by animateColorAsState(
+                            targetValue = when (dismissState.targetValue) {
+                                DismissValue.Default -> Color.Transparent
+                                else -> MaterialTheme.colors.error
+                            }
+                        )
+                        val icon = Icons.Default.Delete
+                        val iconScale by animateFloatAsState(targetValue = if (dismissState.targetValue == DismissValue.Default) 0.8f else 1.2f)
+                        val alignment = Alignment.CenterStart
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color = backgroundColor)
+                                .padding(start = 16.dp, end = 16.dp),
+                            contentAlignment = alignment
+                        ) {
+                            Icon(
+                                imageVector = icon,
+                                contentDescription = "Icon",
+                                modifier = Modifier.scale(scale = iconScale),
+                                tint = if(dismissState.targetValue == DismissValue.Default) Grey200 else Primary_Dark
+                            )
+                        }
+                    },
+                    dismissContent = {
+                        SkillListItem(
+                            skillItem = skill,
+                            isSelected = dismissState.dismissDirection != null,
+                            onSkillClicked = { onSkillClicked(it) },
+                            backgroundColor = if(isSystemInDarkTheme()) Primary_Dark else Color.White
+                        )
+                    }
+                )
+
             }
         }
 
@@ -290,14 +358,96 @@ fun SkillList(
 }
 
 
+@ExperimentalMaterialApi
+@Composable
+fun SkillListItem(
+    skillItem: SkillItem,
+    isSelected: Boolean,
+    onSkillClicked: (SkillItem) -> Unit,
+    backgroundColor: Color = Primary
+) {
+    // Accompanist FlowRow maybe, to not need to set 52 DP fixed
+    Row(
+        modifier = Modifier
+            .height(52.dp)
+            .fillMaxWidth()
+            .clickable { onSkillClicked(skillItem) }
+            .background(backgroundColor),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(2.dp)
+                .background(
+                    color = if (isSelected) {
+                        MaterialTheme.colors.secondary
+                    } else {
+                        MaterialTheme.colors.onPrimary
+                    }
+                )
+                .alpha(0.7f)
+                .padding(start = 16.dp, end = 8.dp)
+                .clip(RoundedCornerShape(2.dp))
+        )
+        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+        Text(
+            text = skillItem.title, maxLines = 1, textAlign = TextAlign.Start,
+            style = MaterialTheme.typography.body1,
+            fontSize = 16.sp,
+            color = MaterialTheme.colors.onBackground,
+            modifier = Modifier.weight(1f)
+        )
+
+        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text(
+                text = "Self-Rating",
+                style = MaterialTheme.typography.body1,
+                fontSize = 12.sp,
+                color = MaterialTheme.colors.onBackground
+            )
+            Text(
+                text = skillItem.selfRating.toString(),
+                style = MaterialTheme.typography.body1,
+                fontSize = 16.sp,
+                color = MaterialTheme.colors.onBackground
+            )
+        }
+
+        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(start = 8.dp, end = 16.dp)
+        ) {
+            Text(
+                text = "Ranking",
+                style = MaterialTheme.typography.body1,
+                fontSize = 12.sp,
+                color = MaterialTheme.colors.onBackground
+            )
+            Text(
+                text = skillItem.ranking.toString(),
+                style = MaterialTheme.typography.body1,
+                fontSize = 16.sp,
+                color = MaterialTheme.colors.onBackground
+            )
+        }
+    }
+}
+
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Preview(
-    name = "Profile - Dark Mode",
+    name = "Profile with List - Dark Mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true,
 )
 @Preview(
-    name = "Profile - Light Mode",
+    name = "Profile with List - Light Mode",
     uiMode = Configuration.UI_MODE_NIGHT_NO,
     showBackground = true
 )
@@ -305,9 +455,7 @@ fun SkillList(
 fun ProfileScreen() {
     FiveSkillsTheme {
         Scaffold(topBar = {
-            ProfileTopBar(
-                userEmailText = "Your.Email@gmail.com"
-            )
+            ProfileTopBar(userEmailText = "Your.Email@gmail.com")
         }) {
             val skillList = arrayListOf(
                 SkillItem("userId", title = "Skill Title 1", selfRating = 1.0, ranking = 5),
@@ -316,7 +464,10 @@ fun ProfileScreen() {
                 SkillItem("userId", title = "Skill Title 4", selfRating = 4.0, ranking = 2),
                 //SkillItem("userId", "title 5", selfRating = 5.0, ranking = 1),
             )
-            SkillList(skillItemList = skillList)
+
+            SkillList(
+                skillItemList = skillList
+            )
         }
     }
 }
@@ -338,5 +489,33 @@ fun ProfileScreenLogin() {
         Scaffold(topBar = { FiveSkillsTitleText(titleText = "Login") }) {
             LoginInputs(userNameText = "Username", passwordText = "Password", errorText = "")
         }
+    }
+}
+
+@ExperimentalMaterialApi
+@Preview(
+    name = "Skill Item - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+)
+@Preview(
+    name = "Skill Item - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true
+)
+@Composable
+fun SkillListItemPreview() {
+    FiveSkillsTheme {
+        val skillItem = SkillItem(
+            userId = "something",
+            title = "Skill Item Title",
+            selfRating = 4.0,
+            ranking = 1
+        )
+        SkillListItem(
+            skillItem = skillItem,
+            isSelected = false,
+            onSkillClicked = {}
+        )
     }
 }

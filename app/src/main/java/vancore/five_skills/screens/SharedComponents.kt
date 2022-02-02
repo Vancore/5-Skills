@@ -432,84 +432,6 @@ fun FiveSkillsRatingBarNoSelection(
 }
 
 @Composable
-fun SkillListItem(
-    skillItem: SkillItem,
-    isSelected: Boolean,
-    onSkillClicked: (SkillItem) -> Unit
-) {
-    // Accompanist FlowRow maybe, to not need to set 52 DP fixed
-    Row(
-        modifier = Modifier
-            .height(52.dp)
-            .fillMaxWidth()
-            .clickable { onSkillClicked(skillItem) },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(2.dp)
-                .background(
-                    color = if (isSelected) {
-                        MaterialTheme.colors.secondary
-                    } else {
-                        MaterialTheme.colors.onPrimary
-                    }
-                )
-                .alpha(0.7f)
-                .padding(start = 16.dp, end = 8.dp)
-                .clip(RoundedCornerShape(2.dp))
-        )
-        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-        Text(
-            text = skillItem.title, maxLines = 1, textAlign = TextAlign.Start,
-            style = MaterialTheme.typography.body1,
-            fontSize = 16.sp,
-            color = MaterialTheme.colors.onBackground,
-            modifier = Modifier.weight(1f)
-        )
-
-        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Text(
-                text = "Self-Rating",
-                style = MaterialTheme.typography.body1,
-                fontSize = 12.sp,
-                color = MaterialTheme.colors.onBackground
-            )
-            Text(
-                text = skillItem.selfRating.toString(),
-                style = MaterialTheme.typography.body1,
-                fontSize = 16.sp,
-                color = MaterialTheme.colors.onBackground
-            )
-        }
-
-        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(start = 8.dp, end = 16.dp)
-        ) {
-            Text(
-                text = "Ranking",
-                style = MaterialTheme.typography.body1,
-                fontSize = 12.sp,
-                color = MaterialTheme.colors.onBackground
-            )
-            Text(
-                text = skillItem.ranking.toString(),
-                style = MaterialTheme.typography.body1,
-                fontSize = 16.sp,
-                color = MaterialTheme.colors.onBackground
-            )
-        }
-    }
-}
-
-@Composable
 fun AddSkillButton(
     onAddSkillClicked: () -> Unit = {}
 ) {
@@ -681,30 +603,6 @@ fun TitleTextPreview() {
         FiveSkillsTitleText("Five Skills")
     }
 }
-
-@Preview(
-    name = "Skill Item - Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
-)
-@Preview(
-    name = "Skill Item - Light Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showBackground = true
-)
-@Composable
-fun SkillListItemPreview() {
-    FiveSkillsTheme {
-        val skillItem = SkillItem(
-            userId = "something",
-            title = "Skill Item Title",
-            selfRating = 4.0,
-            ranking = 1
-        )
-        SkillListItem(skillItem = skillItem, isSelected = false) {}
-    }
-}
-
 
 @Preview(
     name = "Top Bar - Dark Mode",

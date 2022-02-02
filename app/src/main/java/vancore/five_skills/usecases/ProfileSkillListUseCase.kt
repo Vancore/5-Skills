@@ -30,6 +30,22 @@ class ProfileSkillListUseCase @Inject constructor(
             it.copy(currentList = userProfileList, loadingState = ListState.Idle)
         }
     }
+
+    suspend fun deleteSkill(skillItem: SkillItem) {
+        _profileSkillListState.update {
+            it.copy(loadingState = ListState.Loading)
+        }
+        val deletionSuccessful = repository.deleteSkill(skillItem)
+        if (_profileSkillListState.value.currentList.remove(skillItem) && deletionSuccessful) {
+            _profileSkillListState.update {
+                it.copy(currentList = it.currentList, loadingState = ListState.Idle)
+            }
+        } else {
+            _profileSkillListState.update {
+                it.copy(errorMessage = "Item could not be removed")
+            }
+        }
+    }
 }
 
 enum class ListState {

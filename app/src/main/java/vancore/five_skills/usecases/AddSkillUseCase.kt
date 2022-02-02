@@ -11,8 +11,6 @@ import javax.inject.Inject
 data class AddSkillState(
     val itemToAdd: SkillItem = SkillItem(),
     val step: AddSkillStep = AddSkillStep.Step1,
-    val subcategoryList: List<Pair<String, String>> = listOf(),
-    val categoryList: List<Pair<String, String>> = listOf(),
     val loadingState: AddSkillLoadingState = AddSkillLoadingState.Idle,
     val errorMessage: String = ""
 )
@@ -97,6 +95,7 @@ class AddSkillUseCase @Inject constructor(
             )
         }
     }
+
 }
 
 

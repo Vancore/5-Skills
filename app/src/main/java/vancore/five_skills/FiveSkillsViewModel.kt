@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import vancore.five_skills.usecases.AuthenticationUseCase
 import vancore.five_skills.data.FiveSkillsRepository
 import vancore.five_skills.data.models.CategoryItem
+import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.data.models.SubcategoryItem
 import vancore.five_skills.usecases.AddSkillUseCase
 import vancore.five_skills.usecases.ProfileSkillListUseCase
@@ -109,6 +110,12 @@ class FiveSkillsViewModel @Inject constructor(
 
     fun createUserInFirebase(firebaseUserId: String, email: String) {
         authenticationUseCase.addUserToDatabase(firebaseUserId, email = email)
+    }
+
+    fun deleteSkill(skillItem: SkillItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            profileSkillListUseCase.deleteSkill(skillItem)
+        }
     }
 
 }

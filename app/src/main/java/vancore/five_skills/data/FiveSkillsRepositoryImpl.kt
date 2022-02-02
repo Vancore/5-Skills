@@ -35,4 +35,8 @@ class FiveSkillsRepositoryImpl @Inject constructor(
     override suspend fun fetchSkillsForSubcategory(subcategoryId: String): ArrayList<SkillItem> {
         return remoteRepository.fetchSkillsForSubcategory(subcategoryId = subcategoryId)
     }
+
+    override suspend fun deleteSkill(skillItem: SkillItem): Boolean {
+        return remoteRepository.deleteSkill(skillItem)
+    }
 }

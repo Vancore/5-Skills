@@ -1,6 +1,8 @@
 package vancore.five_skills
 
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.QuerySnapshot
 import vancore.five_skills.data.FiveSkillsRemoteRepository.Companion.CATEGORY_ID
 import vancore.five_skills.data.FiveSkillsRemoteRepository.Companion.SUBCATEGORY_ID

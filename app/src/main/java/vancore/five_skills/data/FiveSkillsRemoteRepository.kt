@@ -80,6 +80,16 @@ class FiveSkillsRemoteRepository {
         return skillList
     }
 
+    suspend fun deleteSkill(skillItem: SkillItem): Boolean {
+        var success = false
+        db.collection("$USER_LIST/${skillItem.userId}/$FIVE_SKILLS")
+            .document(skillItem.skillId)
+            .delete()
+            .addOnSuccessListener { success = true }
+            .await()
+        return success
+    }
+
     companion object {
         const val CATEGORIES = "Categories"
         const val CATEGORY_ID = "CategoryId"

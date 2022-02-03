@@ -49,8 +49,7 @@ class FiveSkillsViewModel @Inject constructor(
 
     fun fetchSubcategoriesFor(categoryID: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            subcategoriesList.clear()
-            subcategoriesList.addAll(categoriesRepository.loadSubcategories(categoryId = categoryID))
+            subcategoriesList.swapList(categoriesRepository.loadSubcategories(categoryId = categoryID))
         }
     }
 

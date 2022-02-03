@@ -1,5 +1,6 @@
 package vancore.five_skills
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
@@ -73,4 +74,9 @@ fun QuerySnapshot.getUserList(): ArrayList<User> {
         )
     }
     return listOfSkills
+}
+
+fun <T> SnapshotStateList<T>.swapList(newList: List<T>){
+    clear()
+    addAll(newList)
 }

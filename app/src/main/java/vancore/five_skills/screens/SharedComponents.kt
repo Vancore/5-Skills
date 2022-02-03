@@ -2,6 +2,7 @@ package vancore.five_skills.screens
 
 import android.content.res.Configuration
 import android.view.MotionEvent
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -46,9 +47,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.skydoves.landscapist.glide.GlideImage
 import vancore.five_skills.FiveSkillsScreen
 import vancore.five_skills.R
-import vancore.five_skills.data.models.CategoryItem
 import vancore.five_skills.data.models.DropdownItem
-import vancore.five_skills.data.models.SkillItem
 import vancore.five_skills.data.models.SubcategoryItem
 import vancore.five_skills.ui.theme.FiveSkillsTheme
 import vancore.five_skills.ui.theme.Rose600
@@ -580,11 +579,16 @@ fun FiveSkillsDropdownList(
                 },
             label = { Text(label, color = MaterialTheme.colors.onBackground) },
             trailingIcon = {
-                Icon(icon, "contentDescription",
+                Icon(
+                    icon, "contentDescription",
                     Modifier.clickable { expanded = !expanded },
-                    tint = MaterialTheme.colors.onBackground)
+                    tint = MaterialTheme.colors.onBackground
+                )
             },
-            colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colors.onPrimary, unfocusedIndicatorColor = Color.Transparent),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = MaterialTheme.colors.onPrimary,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
             shape = RoundedCornerShape(8.dp)
         )
         DropdownMenu(
@@ -604,6 +608,33 @@ fun FiveSkillsDropdownList(
             }
         }
     }
+}
+
+@Composable
+fun FiveSkillsButton(
+    modifier: Modifier = Modifier,
+    buttonText: String,
+    onButtonClicked: () -> Unit = {},
+    isLoginButtonHighlighted: Boolean = false,
+    enabled: Boolean = true
+) {
+    val backgroundColor by animateColorAsState(
+        targetValue = when (isLoginButtonHighlighted) {
+            true -> MaterialTheme.colors.secondary
+            else -> MaterialTheme.colors.primary
+        }
+    )
+
+    Button(
+        onClick = onButtonClicked,
+        shape = RoundedCornerShape(24.dp),
+        modifier = modifier.height(48.dp),
+        enabled = enabled,
+        colors = ButtonDefaults.buttonColors(backgroundColor = backgroundColor)
+    ) {
+        Text(text = buttonText)
+    }
+
 }
 
 //region: Preview

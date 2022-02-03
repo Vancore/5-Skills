@@ -5,6 +5,8 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -251,39 +253,25 @@ fun LoginButtons(
     isLoginButtonHighlighted: Boolean = false,
     modifier: Modifier
 ) {
-    val buttonHeight = 48.dp
-    val backgroundColor by animateColorAsState(
-        targetValue = when (isLoginButtonHighlighted) {
-            true -> MaterialTheme.colors.secondary
-            else -> MaterialTheme.colors.primary
-        }
-    )
-
     Row(
         modifier = modifier, horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Button(
-            onClick = onRegisterClicked,
-            shape = RoundedCornerShape(24.dp),
+        FiveSkillsButton(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .height(buttonHeight)
-        ) {
-            Text(text = "Register")
-        }
+            .fillMaxWidth()
+            .weight(1f),
+            buttonText = "Register",
+            onButtonClicked = onRegisterClicked
+        )
         Spacer(modifier = Modifier.padding(horizontal = 16.dp))
-        Button(
-            onClick = onLoginClicked,
-            shape = RoundedCornerShape(24.dp),
+        FiveSkillsButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .height(buttonHeight),
-            colors = ButtonDefaults.buttonColors(backgroundColor = backgroundColor)
-        ) {
-            Text(text = "Login")
-        }
+                .weight(1f),
+            buttonText = "Login",
+            onButtonClicked = onLoginClicked,
+            isLoginButtonHighlighted
+        )
     }
 }
 
@@ -311,12 +299,16 @@ fun SkillList(
             fontSize = 14.sp
         )
 
-        Column(
+//        LazyColumn(
+//            verticalArrangement = Arrangement.spacedBy(12.dp),
+//            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+//        ) {
+        LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
         ) {
 
-            for (skill in skillItemList) {
+            items(skillItemList) { skill ->
                 val dismissState = rememberDismissState(
                     confirmStateChange = {
                         if (it == DismissValue.DismissedToEnd) onSkillSwiped(skill)
@@ -326,15 +318,8 @@ fun SkillList(
                 SwipeToDismiss(
                     state = dismissState,
                     directions = setOf(StartToEnd),
-                    dismissThresholds = { FractionalThreshold(0.3f) },
+                    dismissThresholds = { FractionalThreshold(0.5f) },
                     background = {
-                        val direction = dismissState.dismissDirection ?: return@SwipeToDismiss
-                        val backgroundColor by animateColorAsState(
-                            targetValue = when (dismissState.targetValue) {
-                                DismissValue.Default -> Color.Transparent
-                                else -> MaterialTheme.colors.error
-                            }
-                        )
                         val icon = Icons.Default.Delete
                         val iconScale by animateFloatAsState(targetValue = if (dismissState.targetValue == DismissValue.Default) 0.8f else 1.2f)
                         val alignment = Alignment.CenterStart
@@ -342,7 +327,6 @@ fun SkillList(
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(color = backgroundColor)
                                 .padding(start = 16.dp, end = 16.dp),
                             contentAlignment = alignment
                         ) {
@@ -350,7 +334,7 @@ fun SkillList(
                                 imageVector = icon,
                                 contentDescription = "Icon",
                                 modifier = Modifier.scale(scale = iconScale),
-                                tint = if (dismissState.targetValue == DismissValue.Default) Grey200 else Primary_Dark
+                                tint = MaterialTheme.colors.onBackground
                             )
                         }
                     },
@@ -363,7 +347,6 @@ fun SkillList(
                         )
                     }
                 )
-
             }
         }
 

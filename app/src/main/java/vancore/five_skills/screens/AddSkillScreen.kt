@@ -9,9 +9,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.navigationBarsWithImePadding
 import vancore.five_skills.FiveSkillsViewModel
 import vancore.five_skills.data.models.DropdownItem
 import vancore.five_skills.data.models.SkillItem
@@ -34,87 +39,107 @@ fun AddSkillScreen(viewModel: FiveSkillsViewModel, onFinishAddingSkill: (SkillIt
     val (currentRatingInput, ratingChange) = remember { mutableStateOf("3") }
     val (currentSubcategory, subcategoryChosen) = remember { mutableStateOf("") }
     val (currentCategory, categoryChosen) = remember { mutableStateOf("") }
-    if(currentCategory.isNotEmpty()) {
+    if (currentCategory.isNotEmpty()) {
         viewModel.fetchSubcategoriesFor(currentCategory)
     }
 
     if (currentUserId != null) {
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .background(MaterialTheme.colors.background)
-                .padding(horizontal = 32.dp)
-        ) {
-            AddSkillPager(
-                addSkillStep = addSkillState.step,
-                titleText = currentTitleInput,
-                titleChange = titleChange,
-                descriptionText = currentDescriptionInput,
-                descriptionTextChange = descriptionChange,
-                ratingInputChange = ratingChange,
-                subcategoryChange = subcategoryChosen,
-                subcategoryList = viewModel.subcategoriesList,
-                categoryChange = categoryChosen,
-                categoryList = viewModel.categoriesList,
-                modifier = Modifier.weight(1f)
-            )
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 72.dp)
-            ) {
-                val nextButtonText = remember { mutableStateOf("Next") }
-
-                // Back button
-                Button(
-                    onClick = {
-                        if (addSkillState.step == AddSkillStep.Step1) {
-                            onFinishAddingSkill(addSkillState.itemToAdd)
-                        } else {
-                            viewModel.addSkillStepBack()
-                        }
-                        nextButtonText.value = "Next"
-                    }
+        ProvideWindowInsets(windowInsetsAnimationsEnabled = true) {
+            Scaffold(topBar = { FiveSkillsTitleText(titleText = "Add a Skill") }) {
+                ConstraintLayout(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .navigationBarsWithImePadding()
                 ) {
-                    Text(text = "Back")
-                }
+                    val (inputSection, buttonSection) = createRefs()
 
-                Spacer(modifier = Modifier.padding(horizontal = 16.dp))
+                    AddSkillPager(
+                        addSkillStep = addSkillState.step,
+                        titleText = currentTitleInput,
+                        titleChange = titleChange,
+                        descriptionText = currentDescriptionInput,
+                        descriptionTextChange = descriptionChange,
+                        ratingInputChange = ratingChange,
+                        subcategoryChange = subcategoryChosen,
+                        subcategoryList = viewModel.subcategoriesList,
+                        categoryChange = categoryChosen,
+                        categoryList = viewModel.categoriesList,
+                        modifier = Modifier.constrainAs(inputSection) {
+                            top.linkTo(parent.top)
+                            end.linkTo(parent.absoluteRight, margin = 24.dp)
+                            start.linkTo(parent.absoluteLeft, margin = 24.dp)
+                            width = Dimension.fillToConstraints
+                        }
+                    )
 
-                // Next Button
-                Button(
-                    onClick = {
-                        when (addSkillState.step) {
-                            AddSkillStep.Step1 -> {
-                                viewModel.addSkillStep1Finished(
-                                    currentTitleInput,
-                                    currentUserId
-                                )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.constrainAs(buttonSection) {
+                            bottom.linkTo(parent.bottom, margin = 16.dp)
+                            start.linkTo(parent.absoluteLeft, margin = 24.dp)
+                            end.linkTo(parent.absoluteRight, margin = 24.dp)
+                            width = Dimension.fillToConstraints
+                        }
+                    ) {
+                        val nextButtonText = remember { mutableStateOf("Next") }
+
+                        // Back button
+                        FiveSkillsButton(
+                            buttonText = "Back",
+                            onButtonClicked = {
+                                if (addSkillState.step == AddSkillStep.Step1) {
+                                    onFinishAddingSkill(addSkillState.itemToAdd)
+                                } else {
+                                    viewModel.addSkillStepBack()
+                                }
                                 nextButtonText.value = "Next"
-                            }
-                            AddSkillStep.Step2 -> {
-                                viewModel.addSkillStep2Finished(
-                                    currentDescriptionInput
-                                )
-                            }
-                            AddSkillStep.Step3 -> {
-                                viewModel.addSkillStep3Finished(
-                                    currentRatingInput.toDouble()
-                                )
-                                nextButtonText.value = "Finish"
-                            }
-                            AddSkillStep.Step4 -> {
-                                viewModel.addSkillStep4Finished(
-                                    currentSubcategory, currentCategory
-                                )
-                                onFinishAddingSkill(addSkillState.itemToAdd)
-                            }
-                        }
-                    },
-                    enabled = currentTitleInput.isNotEmpty()
-                ) {
-                    Text(text = nextButtonText.value)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        )
+
+                        Spacer(modifier = Modifier.padding(horizontal = 16.dp))
+
+                        // Next Button
+                        FiveSkillsButton(
+                            buttonText = nextButtonText.value,
+                            onButtonClicked = {
+                                when (addSkillState.step) {
+                                    AddSkillStep.Step1 -> {
+                                        viewModel.addSkillStep1Finished(
+                                            currentTitleInput,
+                                            currentUserId
+                                        )
+                                        nextButtonText.value = "Next"
+                                    }
+                                    AddSkillStep.Step2 -> {
+                                        viewModel.addSkillStep2Finished(
+                                            currentDescriptionInput
+                                        )
+                                    }
+                                    AddSkillStep.Step3 -> {
+                                        viewModel.addSkillStep3Finished(
+                                            currentRatingInput.toDouble()
+                                        )
+                                        nextButtonText.value = "Finish"
+                                    }
+                                    AddSkillStep.Step4 -> {
+                                        viewModel.addSkillStep4Finished(
+                                            currentSubcategory, currentCategory
+                                        )
+                                        onFinishAddingSkill(addSkillState.itemToAdd)
+                                    }
+                                }
+                            },
+                            enabled = currentTitleInput.isNotEmpty(),
+                            isLoginButtonHighlighted = currentTitleInput.isNotEmpty(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        )
+                    }
                 }
             }
         }
@@ -139,11 +164,8 @@ fun AddSkillPager(
 ) {
     val padding = 32.dp
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier,
-    ) {
-        FiveSkillsTitleText(titleText = "Add a Skill")
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
+
         FiveSkillsFullStopText(
             titleText = addSkillStep.title,
             modifier = Modifier.padding(bottom = padding)
@@ -205,31 +227,55 @@ fun AddSkillPager(
 @Composable
 fun AddSkillScreenPreview() {
     FiveSkillsTheme {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.background(MaterialTheme.colors.background)
-        ) {
-            AddSkillPager(
-                AddSkillStep.Step4,
-                titleText = "Title Text",
-                descriptionText = "Description Text",
-                modifier = Modifier.weight(1f),
-                subcategoryList = listOf(
-                    SubcategoryItem(1, "", "Subcategory Name"),
-                    SubcategoryItem(1, "", "Subcategory Name"),
-                    SubcategoryItem(1, "", "Subcategory Name")
-                )
-            )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 48.dp)
+        Scaffold(topBar = { FiveSkillsTitleText(titleText = "Add a Skill") }) {
+            ConstraintLayout(
+                modifier = Modifier
+                    .background(MaterialTheme.colors.background)
+                    .fillMaxSize()
             ) {
-                Button(onClick = {}) {
-                    Text(text = "Back")
-                }
-                Spacer(modifier = Modifier.padding(horizontal = 16.dp))
-                Button(onClick = {}) {
-                    Text(text = "Next")
+
+                val (inputSection, buttonSection) = createRefs()
+
+                AddSkillPager(
+                    AddSkillStep.Step1,
+                    titleText = "Title Text",
+                    descriptionText = "Description Text",
+                    modifier = Modifier.constrainAs(inputSection) {
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end, margin = 24.dp)
+                        start.linkTo(parent.start, margin = 24.dp)
+                        width = Dimension.fillToConstraints
+                    },
+                    subcategoryList = listOf(
+                        SubcategoryItem(1, "", "Subcategory Name"),
+                        SubcategoryItem(1, "", "Subcategory Name"),
+                        SubcategoryItem(1, "", "Subcategory Name")
+                    )
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.constrainAs(buttonSection) {
+                        bottom.linkTo(parent.bottom, margin = 16.dp)
+                        start.linkTo(parent.absoluteLeft, margin = 24.dp)
+                        end.linkTo(parent.absoluteRight, margin = 24.dp)
+                        width = Dimension.fillToConstraints
+                    }
+                ) {
+                    FiveSkillsButton(
+                        onButtonClicked = {}, buttonText = "Back",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    )
+                    Spacer(modifier = Modifier.padding(horizontal = 16.dp))
+                    FiveSkillsButton(
+                        onButtonClicked = {},
+                        buttonText = "Next",
+                        isLoginButtonHighlighted = true,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    )
                 }
             }
         }

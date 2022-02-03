@@ -33,6 +33,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -301,7 +302,13 @@ fun FiveSkillsTextInput(
             onImeAction()
             keyboardController?.hide()
         }),
-        modifier = modifier
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        colors = TextFieldDefaults.textFieldColors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+            focusedLabelColor = MaterialTheme.colors.secondary
+        )
     )
 }
 
@@ -322,7 +329,7 @@ fun FiveSkillsPasswordInput(
     TextField(
         value = text,
         onValueChange = onTextChange,
-        placeholder = { Text(text = placeHolder) },
+        placeholder = { Text(text = placeHolder, color = MaterialTheme.colors.onBackground) },
         keyboardOptions = keyboardOption,
         keyboardActions = KeyboardActions(onDone = {
             onImeAction()
@@ -335,11 +342,23 @@ fun FiveSkillsPasswordInput(
                 passwordVisibility = !passwordVisibility
             }) {
                 when (passwordVisibility) {
-                    true -> Icon(imageVector = Icons.Default.Visibility, "")
-                    false -> Icon(imageVector = Icons.Default.VisibilityOff, "")
+                    true -> Icon(
+                        imageVector = Icons.Default.Visibility, "",
+                        tint = MaterialTheme.colors.onBackground
+                    )
+                    false -> Icon(
+                        imageVector = Icons.Default.VisibilityOff, "",
+                        tint = MaterialTheme.colors.onBackground
+                    )
                 }
             }
-        }
+        },
+        shape = RoundedCornerShape(8.dp),
+        colors = TextFieldDefaults.textFieldColors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+            focusedLabelColor = MaterialTheme.colors.secondary
+        )
     )
 }
 
@@ -559,12 +578,14 @@ fun FiveSkillsDropdownList(
                     //This value is used to assign to the DropDown the same width
                     textFieldSize = coordinates.size.toSize()
                 },
-            label = { Text(label) },
+            label = { Text(label, color = MaterialTheme.colors.onBackground) },
             trailingIcon = {
                 Icon(icon, "contentDescription",
-                    Modifier.clickable { expanded = !expanded })
+                    Modifier.clickable { expanded = !expanded },
+                    tint = MaterialTheme.colors.onBackground)
             },
-            colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colors.onPrimary)
+            colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colors.onPrimary, unfocusedIndicatorColor = Color.Transparent),
+            shape = RoundedCornerShape(8.dp)
         )
         DropdownMenu(
             expanded = expanded,
@@ -578,7 +599,7 @@ fun FiveSkillsDropdownList(
                     expanded = false
                     itemSelected(dropdownItem.firebaseId)
                 }) {
-                    Text(text = dropdownItem.name)
+                    Text(text = dropdownItem.name, color = MaterialTheme.colors.onBackground)
                 }
             }
         }
@@ -696,6 +717,34 @@ fun TopBarSubcategoryPreview() {
 fun RatingBarNoSelectionPreview() {
     FiveSkillsTheme {
         FiveSkillsRatingBarNoSelection(rating = 4)
+    }
+}
+
+@ExperimentalComposeUiApi
+@Preview(
+    name = "Text Input - Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Preview(
+    name = "Text Input - Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Composable
+fun TextInputPreview() {
+    FiveSkillsTheme {
+        val placeHolderTextMail = "User Name / Email"
+        val placeHolderTextPassword = "Password"
+        val textModifier = Modifier
+            .padding(vertical = 16.dp, horizontal = 24.dp)
+            .fillMaxWidth()
+
+        FiveSkillsTextInput(
+            modifier = textModifier,
+            text = "User Name",
+            keyboardOption = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+            placeHolder = placeHolderTextMail,
+            label = placeHolderTextMail,
+        )
     }
 }
 

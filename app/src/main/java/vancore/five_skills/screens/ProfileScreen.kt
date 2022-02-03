@@ -3,9 +3,7 @@ package vancore.five_skills.screens
 import android.content.res.Configuration
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,6 +20,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -167,10 +166,11 @@ fun LoginInputs(
             onRegisterClicked = onRegisterClicked,
             modifier = Modifier.constrainAs(buttonSection) {
                 bottom.linkTo(parent.bottom, margin = 16.dp)
-                start.linkTo(parent.absoluteLeft, margin = 72.dp)
-                end.linkTo(parent.absoluteRight, margin = 72.dp)
+                start.linkTo(parent.absoluteLeft, margin = 24.dp)
+                end.linkTo(parent.absoluteRight, margin = 24.dp)
                 width = Dimension.fillToConstraints
-            }
+            },
+            isLoginButtonHighlighted = userNameText.isNotEmpty() && passwordText.isNotEmpty()
         )
     }
 }
@@ -248,16 +248,40 @@ fun ProfileTopBar(
 fun LoginButtons(
     onLoginClicked: () -> Unit = {},
     onRegisterClicked: () -> Unit = {},
+    isLoginButtonHighlighted: Boolean = false,
     modifier: Modifier
 ) {
+    val buttonHeight = 48.dp
+    val backgroundColor by animateColorAsState(
+        targetValue = when (isLoginButtonHighlighted) {
+            true -> MaterialTheme.colors.secondary
+            else -> MaterialTheme.colors.primary
+        }
+    )
+
     Row(
         modifier = modifier, horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Button(onClick = onRegisterClicked) {
+        Button(
+            onClick = onRegisterClicked,
+            shape = RoundedCornerShape(24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .height(buttonHeight)
+        ) {
             Text(text = "Register")
         }
-        Spacer(modifier = Modifier.padding(horizontal = 24.dp))
-        Button(onClick = onLoginClicked) {
+        Spacer(modifier = Modifier.padding(horizontal = 16.dp))
+        Button(
+            onClick = onLoginClicked,
+            shape = RoundedCornerShape(24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .height(buttonHeight),
+            colors = ButtonDefaults.buttonColors(backgroundColor = backgroundColor)
+        ) {
             Text(text = "Login")
         }
     }
@@ -326,7 +350,7 @@ fun SkillList(
                                 imageVector = icon,
                                 contentDescription = "Icon",
                                 modifier = Modifier.scale(scale = iconScale),
-                                tint = if(dismissState.targetValue == DismissValue.Default) Grey200 else Primary_Dark
+                                tint = if (dismissState.targetValue == DismissValue.Default) Grey200 else Primary_Dark
                             )
                         }
                     },
@@ -335,7 +359,7 @@ fun SkillList(
                             skillItem = skill,
                             isSelected = dismissState.dismissDirection != null,
                             onSkillClicked = { onSkillClicked(it) },
-                            backgroundColor = if(isSystemInDarkTheme()) Primary_Dark else Color.White
+                            backgroundColor = if (isSystemInDarkTheme()) Primary_Dark else Color.White
                         )
                     }
                 )

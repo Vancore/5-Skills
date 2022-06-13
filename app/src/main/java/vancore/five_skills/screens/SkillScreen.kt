@@ -7,11 +7,10 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Message
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,13 +31,16 @@ fun SkillScreen(
     profileImageUrl: String
 ) {
     val authenticationState by viewModel.authenticationState.collectAsState()
+    var inEditMode by remember { mutableStateOf(false) }
+
     SkillScreenContent(
         isCurrentUser = authenticationState.currentUser?.uid == skillUserId,
         title = title,
         description = description,
         selfRating = selfRating.toDouble(),
         backgroundImageUrl = backgroundImageUrl,
-        profileImageUrl = profileImageUrl
+        profileImageUrl = profileImageUrl,
+        inEditMode = inEditMode
     )
 }
 
@@ -51,7 +53,9 @@ fun SkillScreenContent(
     selfRating: Double,
     backgroundImageUrl: String,
     profileImageUrl: String,
+    inEditMode: Boolean
 ) {
+
     Scaffold(topBar = {
         TopBarWithImage(
             titleText = title,
@@ -59,50 +63,65 @@ fun SkillScreenContent(
             profileImageUrl = profileImageUrl
         )
     }, floatingActionButton = {
-        FloatingActionButton(onClick = { /*TODO*/ }) {
+        FloatingActionButton(onClick = {
+            //if (isCurrentUser) inEditMode = true
+            //if (inEditMode) inEditMode = false
+        }) {
             if (isCurrentUser) {
                 Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit Button")
+            } else if(isCurrentUser && inEditMode) {
+                Icon(imageVector = Icons.Filled.Check, contentDescription = "Message Button")
             } else {
-                Icon(imageVector = Icons.Filled.Message, contentDescription = "Message Button")
+            Icon(imageVector = Icons.Filled.Message, contentDescription = "Message Button")
             }
         }
     }
     ) {
-        
-        val titlePaddingModifier = Modifier.padding(top = 28.dp, start = 16.dp, end = 16.dp)
-        val contentPaddingModifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp)
 
-        Column {
-            FiveSkillsSubTitleText(
-                titleText = "Description",
-                modifier = titlePaddingModifier
-            )
+        SkillContent(description = description, selfRating = selfRating)
 
-            FiveSkillsBodyText(
-                titleText = description,
-                modifier = contentPaddingModifier
-            )
+    }
+}
 
-            FiveSkillsSubTitleText(
-                titleText = "Self-Given Rating",
-                modifier = titlePaddingModifier
-            )
+@ExperimentalComposeUiApi
+@Composable
+fun SkillContent(
+    description: String,
+    selfRating: Double
+) {
+    val titlePaddingModifier = Modifier.padding(top = 28.dp, start = 16.dp, end = 16.dp)
+    val contentPaddingModifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp)
 
-            FiveSkillsRatingBarNoSelection(
-                rating = selfRating.toInt(),
-                modifierView = contentPaddingModifier
-            )
+    Column {
+        FiveSkillsSubTitleText(
+            titleText = "Description",
+            modifier = titlePaddingModifier
+        )
 
-            FiveSkillsSubTitleText(
-                titleText = "User Rating",
-                modifier = titlePaddingModifier
-            )
+        FiveSkillsBodyText(
+            titleText = description,
+            modifier = contentPaddingModifier
+        )
 
-            FiveSkillsRatingBarNoSelection(
-                rating = 4, // ToDo: Add real user rating
-                modifierView = contentPaddingModifier
-            )
-        }
+        FiveSkillsSubTitleText(
+            titleText = "Self-Given Rating",
+            modifier = titlePaddingModifier
+        )
+
+        FiveSkillsRatingBarNoSelection(
+            rating = selfRating.toInt(),
+            modifierView = contentPaddingModifier
+        )
+
+        FiveSkillsSubTitleText(
+            titleText = "User Rating",
+            modifier = titlePaddingModifier
+        )
+
+        FiveSkillsRatingBarNoSelection(
+            rating = 4, // ToDo: Add real user rating
+            modifierView = contentPaddingModifier
+        )
     }
 }
 
@@ -126,7 +145,8 @@ fun SkillScreenPreview() {
             description = "Long Description, but not as long as it could be. I might need to add restrictions for users so they do not put in 2 Million lines of Text into this data field.",
             selfRating = 3.0,
             backgroundImageUrl = "https://firebasestorage.googleapis.com/v0/b/five-skills-a3a1f.appspot.com/o/barbell.png?alt=media&token=dc7c7f3d-e3f3-4246-8a05-8160afd814aa",
-            profileImageUrl = "https://firebasestorage.googleapis.com/v0/b/five-skills-a3a1f.appspot.com/o/barbell.png?alt=media&token=dc7c7f3d-e3f3-4246-8a05-8160afd814aa"
+            profileImageUrl = "https://firebasestorage.googleapis.com/v0/b/five-skills-a3a1f.appspot.com/o/barbell.png?alt=media&token=dc7c7f3d-e3f3-4246-8a05-8160afd814aa",
+            inEditMode = false
         )
     }
 }

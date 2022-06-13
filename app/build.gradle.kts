@@ -47,6 +47,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    namespace = "vancore.five_skills"
 }
 
 dependencies {
@@ -98,4 +99,7 @@ dependencies {
     implementation(Dependencies.firebasePlayServices)
     // No versioning needed because of BoM
     implementation(Dependencies.firebaseAuth)
+
+    // tryout
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 }

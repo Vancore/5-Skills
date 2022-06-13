@@ -115,6 +115,7 @@ fun FiveSkillsNavHost(
         }
 
         composable(FiveSkillsScreen.Profile.name) {
+            // val exampleViewModel = hiltViewModel<FiveSkillsViewModel>() consider using this if I want to split my ViewModel
             ProfileScreen(
                 fiveSkillsViewModel = viewModel,
                 onAddSkillClicked = {

@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsWithImePadding
 import vancore.five_skills.FiveSkillsViewModel
@@ -258,8 +260,8 @@ fun LoginButtons(
     ) {
         FiveSkillsButton(
             modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f),
+                .fillMaxWidth()
+                .weight(1f),
             buttonText = "Register",
             onButtonClicked = onRegisterClicked
         )

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ import vancore.five_skills.usecases.ProfileSkillListUseCase
 import vancore.five_skills.usecases.SearchSkillsUseCase
 import javax.inject.Inject
 
+// @HiltViewModel use if you want to inject it separately
 class FiveSkillsViewModel @Inject constructor(
     private val categoriesRepository: FiveSkillsRepository,
     private val authenticationUseCase: AuthenticationUseCase,
